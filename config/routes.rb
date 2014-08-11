@@ -1,4 +1,7 @@
 DiagramRailsApp::Application.routes.draw do
+  get "training/index"
+  match "training", :controller => 'training', :action => 'index'
+
   root :to => "home#index"
   get "admin", :to => "admin/books#index"
 

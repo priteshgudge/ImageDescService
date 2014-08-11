@@ -33,7 +33,7 @@
           <% else %>
              <%#= link_to "Books", book_list_path %> &nbsp;
           <% end %>
-          <li><%= link_to "Guidelines", edit_book_description_guidance_path %> </li>
+          <li><%= link_to "Training", training_index_path %> </li>
           <li><%= link_to "Help", edit_book_help_path %> </li>
           <% if current_user %>
              <li><%= link_to 'User Profile', edit_user_path(current_user) %> </li>
