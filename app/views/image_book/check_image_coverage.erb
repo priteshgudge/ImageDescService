@@ -4,8 +4,27 @@
     <h1>Image Coverage Results</h1>
     <h2><%=	 @book_title %></h2>
     </br>    
+    <h4 id="altTexts"><b>Alt texts</b></h4>
+    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
+      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
+       <tbody>
+       <% @alt_text_hash.keys.each do |key| %>
+       <tr class= "odd"><td width="50%"><%= key %></td>
+       <td width= "60%">
+       <% value = @alt_text_hash[key]%>
+       <div class='convert-to-iframe'>
+          <%= value %>
+       </div>
+       </td> </tr>
+       <% end %>
+
+       <% if (@alt_text_hash.keys.size == 0) %>
+          <tr class= "odd"><td width="50%">No alt texts</td><td width= "60%"></td></tr>
+       <% end %>
+      </tbody>
+    </table>
     <% if @prodnotes_hash %>
-    <h4><b>Prodnotes </b></h4> 
+    <h4 id="prodNotes"><b>Prodnotes </b></h4> 
     <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
       <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
       <tbody>
@@ -31,7 +50,7 @@
     </table>
     <% end %>
     <% if @described_by_hash %>
-    <h4><b>Described by </b></h4> 
+    <h4 id="describedBy"><b>Described by </b></h4> 
     <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
       <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
       <tbody>
@@ -57,7 +76,7 @@
     </table>
     <% end %>
     <% if @described_at_hash %>
-    <h4><b>Described at </b></h4> 
+    <h4 id="describedAt"><b>Described at </b></h4> 
     <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
       <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
       <tbody>
@@ -83,7 +102,7 @@
     </table>
     <% end %>
     <% if @captions_hash %>
-    <h4><b>Captions</b></h4> 
+    <h4 id="captions"><b>Captions</b></h4> 
     <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
       <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
        <tbody>
@@ -103,25 +122,27 @@
       </tbody>
     </table>
     <% end %>
-    <h4><b>Alt texts</b></h4>
+    <% if @longdesc_hash %>
+    <h4 id="longDesc"><b>Long Descriptions</b></h4> 
     <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
       <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
        <tbody>
-       <% @alt_text_hash.keys.each do |key| %>
+       <% @longdesc_hash.keys.each do |key| %>
        <tr class= "odd"><td width="50%"><%= key %></td>
        <td width= "60%">
-       <% value = @alt_text_hash[key]%>
-       <div class='convert-to-iframe'>
-          <%= value %>
+       <% value = @longdesc_hash[key]%>
+       <div class='description-scroller'>
+          <%= value %> 
        </div>
        </td> </tr>
        <% end %>
-
-       <% if (@alt_text_hash.keys.size == 0) %>
-          <tr class= "odd"><td width="50%">No alt texts</td><td width= "60%"></td></tr>
+       
+       <% if (@longdesc_hash.keys.size == 0) %>
+         <tr class= "odd"><td width="50%">No Long Descriptions</td><td width= "60%"></td></tr>
        <% end %>
       </tbody>
     </table>
+    <% end %>
  </div>
  
 </div>
@@ -133,34 +154,40 @@
                 <td align="right">Total images </td>
                 <td align="right"><%= @num_images  %></td>
               </tr>
+              <tr>
+                <td align="right">Total  <a href="#altTexts">alt text</a></td>
+                <td align="right"><%= @alt_text_hash.size %></td>
+              </tr>
               <% if @prodnotes_hash %>
               <tr>
-                <td align="right">Total prodnotes </td>
+                <td align="right">Total <a href="#prodNotes">prodnotes</a></td>
                 <td align="right"><%= @prodnotes_hash.size %></td>
               </tr>
               <% end %>
               <% if @described_by_hash %>
               <tr>
-                <td align="right">Total described by </td>
+                <td align="right">Total <a href="#describedBy">described by</a></td>
                 <td align="right"><%= @described_by_hash.size %></td>
               </tr>
               <% end %>
               <% if @described_at_hash %>
               <tr>
-                <td align="right">Total described at </td>
+                <td align="right">Total <a href="#describedAt">described at</a></td>
                 <td align="right"><%= @described_at_hash.size %></td>
               </tr>
               <% end %>
               <% if @captions_hash %>
               <tr>
-                <td align="right">Total captions </td>
+                <td align="right">Total <a href="#captions">captions</a></td>
                 <td align="right"><%= @captions_hash.size %></td>
               </tr>
               <% end %>
+              <% if @longdesc_hash %>
               <tr>
-                <td align="right">Total  alt text </td>
-                <td align="right"><%= @alt_text_hash.size %></td>
-              </tr>   
+                <td align="right">Total <a href="#longDesc">long descriptions</a></td>
+                <td align="right"><%= @longdesc_hash.size %></td>
+              </tr>
+              <% end %>   
             </table>
           </div>    
   </div>
