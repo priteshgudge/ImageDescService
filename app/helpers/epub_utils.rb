@@ -73,8 +73,9 @@ module EpubUtils
   
   def extract_images_prod_notes_for_epub doc, book_directory
      @described_by_hash = Hash.new()
+     @described_at_hash = Hash.new()
      @alt_text_hash = Hash.new()
-     @captions_hash = Hash.new()
+     #@captions_hash = Hash.new()
      limit = 249
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
@@ -97,21 +98,13 @@ module EpubUtils
            @alt_text_hash[image_name] = alt_text
          end
          break if @alt_text_hash.size > limit
-       end
-     end
-     
-     doc.css('figure').each do |figure_node|
-       image_node = figure_node.css('img').first
-       unless (image_node['src']).blank? 
-         image_name = image_node['src'].gsub!(/images\//i, '') 
-         described_by = image_node['aria-describedby']
-         if described_by.try(:size) > 1
-             @described_by_hash[image_name]= described_by
-         end      
-         caption = figure_node.css('figcaption').text
-         if caption.try(:size) > 1
-           @captions_hash[image_name]= caption
-         end  
+         unless img_node['aria-describedby'].blank?
+           describer = doc.css('#' + img_node['aria-describedby'])[0]
+           @described_by_hash[image_name] = describer.text
+         end
+         unless img_node['aria-describedat'].blank?
+           @described_at_hash[image_name] = img_node['aria-describedat']
+         end
        end
      end
      
