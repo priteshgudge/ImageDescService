@@ -75,7 +75,7 @@ module EpubUtils
      @described_by_hash = Hash.new()
      @described_at_hash = Hash.new()
      @alt_text_hash = Hash.new()
-     #@captions_hash = Hash.new()
+     @longdesc_hash = Hash.new()
      limit = 249
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
@@ -86,6 +86,7 @@ module EpubUtils
       acc = "#{acc} #{cur_doc.css('body').children.to_s}"
       acc
      end
+     mainDirectory = EpubUtils.get_epub_file_main_directory(book_directory)
 
      file_contents = "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'><link rel='stylesheet' type='text/css' href='//s3.amazonaws.com/org-benetech-poet/html.css'/><body>#{file_contents}</body></html>"
      doc = Nokogiri::XML file_contents
@@ -105,9 +106,11 @@ module EpubUtils
          unless img_node['aria-describedat'].blank?
            @described_at_hash[image_name] = img_node['aria-describedat']
          end
+         unless img_node['longdesc'].blank?
+           @longdesc_hash[image_name] = img_node['longdesc']
+         end
        end
      end
-     
   end
  
   #  def caller_info
