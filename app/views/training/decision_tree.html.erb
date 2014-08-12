@@ -1,0 +1,53 @@
+<div id= "active_admin_content" class="with_sidebar">
+  <div id="main_content_wrapper">
+    <div id="main_content">  
+    	<h1>Decision Tree</h1>
+    	<div id="questionnaire">
+			<h2>Questionnaire</h2>
+			<% @questionnaire['questionnaire']['questions'].each_with_index do |question, question_index| %>
+			<%
+				question_id = "question#{question_index}" %>
+				<div id="<%= question_id %>" class="question">
+					<p><%= question['text'] %></p>
+					<% if defined?(question['response']['fixed']['category'])
+						question['response']['fixed']['category'].each_with_index do |category, category_index| 
+							answer_id = "#{question_id}_answer#{category_index}" %>
+							<div>
+								<input type="radio" value="<%= category['value'] %>" name="<%=question_id%>_answer" id="<%=answer_id%>">
+								<label for="<%=answer_id%>"><%= category['label'] %></label>
+								<% if category['value'] == "-oth" %>
+									<input type="text" name="<%=answer_id%>_other" />
+								<% end %>
+							</div>
+						<% end %>
+					<% elsif question['response'].is_a? Array 
+						question['response'].each_with_index do |response, response_index| 
+							category = response['fixed']['category'] 
+							answer_id = "#{question_id}_answer#{response_index}" %>
+							<div>
+								<input type="checkbox" value="<%= category['value'] %>" name="<%=answer_id%>" id="<%=answer_id%>">
+								<label for="<%=answer_id%>"><%= category['label'] %></label>
+								<% if defined?(category['contingentQuestion']['text']) %>
+									<input type="text" name="<%=answer_id%>_other" />
+								<% end %>
+							</div>
+						<%end %>
+					<% elsif defined?(question['response']['free']) %>
+						<textarea></textarea>
+					<% end %>
+					<% if defined?(question['directive']['text']) %>
+						<p><em><%= question['directive']['text'] %></em></p>
+					<% end %>
+				</div>
+			<% end %><br />
+			<div>
+				<input type="hidden" id="question_num" name="question_num" value="0" />
+				<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+			</div>
+			<script src="/javascripts/training.js" type="text/javascript"></script>
+		</div>
+    </div>
+  </div>
+  <%= render 'training_navigation' %>
+</div>
+<br clear="all"/>

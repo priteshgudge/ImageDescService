@@ -1,0 +1,358 @@
+{
+  "questionnaire": {
+    "title": "IMAGE SORTING TOOL",
+    "questions": [
+      {
+        "number":"1",
+        "text": "Which of the following best describes this type of image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "photo",
+                "value": "A1",
+                "next": "2"
+              },
+              {
+                "label": "drawing",
+                "value": "A2"
+              },
+              {
+                "label": "cartoon",
+                "value": "A3",
+                "next": "2"
+              },
+              {
+                "label": "illustration of a process",
+                "value": "A4",
+                "next": "2"
+              },
+              {
+                "label": "flowchart",
+                "value": "A5",
+                "next": "2"
+              },
+              {
+                "label": "table (data display)",
+                "value": "A6",
+                "next": "2"
+              },
+              {
+                "label": "graphic organizer",
+                "value": "A7",
+                "next": "2"
+              },
+              {
+                "label": "map",
+                "value": "A8",
+                "next": "2"
+              },
+              {
+                "label": "timeline",
+                "value": "A9",
+                "next": "2"
+              },
+              {
+                "label": "graph (e.g. bar, circle, pie, line)",
+                "value": "A10",
+                "next": "2"
+              },
+              {
+                "label": "displays text only, with no accompanying picture",
+                "value": "A11",
+                "next": "2"
+              },
+              {
+                "label": "displays an equation only, with no accompanying picture",
+                "value": "A12",
+                "next": "2"
+              },
+              {
+                "label": "Other",
+                "value": "-oth",
+                "next": "2",
+                "contingentQuestion": {
+                  "text": "Other",
+                  "length": "24"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "number":"2",
+        "text": "What is the purpose of this image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "None. it is not needed for understanding subject matter (the image provides visual interest only)",
+                "value": "6"
+              },
+              {
+                "label": "It is a graphical or activity icon.",
+                "value": "A2"
+              },
+              {
+                "label": "It provides information needed for understanding subject matter",
+                "value": "A1"
+              },
+              {
+                "label": "Other",
+                "value": "-oth",
+                "contingentQuestion": {
+                  "text": "Other",
+                  "length": "24"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Could a transcription of the equation alone adequately convey the meaning of this image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "5"
+              },
+              {
+                "label": "No",
+                "value": "A1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Could a transcription of the text alone adequately convey the meaning of this image?",
+        "directive": {
+          "position": "during",
+          "text": "(i.e. does not require further interpretation)",
+          "administration": "self"
+        },
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "5"
+              },
+              {
+                "label": "No",
+                "value": "A1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Does the image provide additional information essential to understanding that the student would not otherwise read in the surrounding chapter on the page?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "7"
+              },
+              {
+                "label": "No",
+                "value": "A1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Is there text shown within the image?",
+        "directive": {
+          "position": "during",
+          "text": "Some images may include some text. This type of text may be the same or different from what is written in the chapter content of the book page, but is treated as part of the image.",
+          "administration": "self"
+        },
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "A1"
+              },
+              {
+                "label": "No",
+                "value": "A2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Does the text within this image add any new information (not already covered in the chapter) that is essential to understanding the subject?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "A1"
+              },
+              {
+                "label": "No",
+                "value": "A2"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Would a verbal description adequately convey the main idea of this image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "4"
+              },
+              {
+                "label": "No",
+                "value": "A1"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "A verbal description is inadequate because...",
+        "response": [
+          {
+            "fixed": {
+              "category": {
+                "label": "there is spatial information that can only be conveyed through a tactile graphic",
+                "value": "1"
+              }
+            }
+          },
+          {
+            "fixed": {
+              "category": {
+                "label": "it would require an excessively longer time to describe the image than it would if the student explored it tactually",
+                "value": "1"
+              }
+            }
+          },
+          {
+            "fixed": {
+              "category": {
+                "label": "Other",
+                "value": "1",
+                "contingentQuestion": {
+                  "text": "Other",
+                  "length": "24"
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "text": "Although a verbal description would be lengthy, could it adequately convey the necessary information from the image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "1"
+              },
+              {
+                "label": "No",
+                "value": "1"
+              },
+              {
+                "label": "Other",
+                "value": "-oth",
+                "contingentQuestion": {
+                  "text": "Other",
+                  "length": "24"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Would a tactile representation be more useful to convey the main idea of this image?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "A1"
+              },
+              {
+                "label": "No",
+                "value": "0"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "How do you think this image could be best represented to a student who is visually impaired?",
+        "response": {
+          "free": {
+            "format": "longtext",
+            "length": "40"
+          }
+        }
+      },
+      {
+        "text": "This image should be converted to tactile format because:",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "It represents a spatial concept",
+                "value": "1"
+              },
+              {
+                "label": "It is needed for the student to participate in an activity",
+                "value": "2"
+              },
+              {
+                "label": "The subject matter is otherwise inaccessible",
+                "value": "3"
+              },
+              {
+                "label": "Other",
+                "value": "-oth",
+                "contingentQuestion": {
+                  "text": "Other",
+                  "length": "24"
+                }
+              }
+            ]
+          }
+        }
+      },
+      {
+        "text": "Does this icon prepare the student for an activity, or represent a concept necessary to understanding the subject?",
+        "response": {
+          "fixed": {
+            "category": [
+              {
+                "label": "Yes",
+                "value": "4"
+              },
+              {
+                "label": "No",
+                "value": "6"
+              }
+            ]
+          }
+        }
+      }
+    ]
+    
+  }
+}

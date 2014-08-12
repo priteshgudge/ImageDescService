@@ -1,5 +1,6 @@
 DiagramRailsApp::Application.routes.draw do
   get "training/index"
+  get "training/decision_tree"
   match "training", :controller => 'training', :action => 'index'
 
   root :to => "home#index"
