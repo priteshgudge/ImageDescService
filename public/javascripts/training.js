@@ -1,4 +1,4 @@
-jQuery(function($) {
+window.initDecisionTree = function() {
 
 	//hide all questions other than the first one. 
 	$(".question").not(":first").hide();
@@ -34,4 +34,13 @@ jQuery(function($) {
 			alert("Answer is required.");
 		}
 	});
+	$("#prev").click(function(evt) {
+		//what question are we on?
+		var question = $(".question:visible");
+		$("#question" + $("#last_question").val()).show();
+		question.hide();
+	});
+}
+jQuery(function($) {
+	initDecisionTree();
 });

@@ -4,12 +4,13 @@
     	<h1>Decision Tree</h1>
     	<div id="questionnaire">
 			<h2>Questionnaire</h2>
+			<img id="questionnaireImage" src="/images/heart.gif" width="200" />
 			<% @questionnaire['questionnaire']['questions'].each do |question| %>
 			<%
 				question_id = "question#{question['id']}" %>
 				<div id="<%= question_id %>" class="question">
 					<input type="hidden" name="<%=question_id%>_id" value="<%= question['id'] %>" class="id" />
-					<p><%= question['text'] %></p>
+					<p><strong><%= question['text'] %></strong></p>
 					<% if defined?(question['answers']) and question['answers'].is_a? Array
 						question['answers'].each_with_index do |answer, answer_index| 
 							answer_id = "#{question_id}_answer#{answer_index}" %>

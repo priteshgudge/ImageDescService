@@ -1,8 +1,8 @@
 <%= javascript_include_tag 'jquery.lazyload.min' %>
 <style type="text/css">
   .toolbar  { position:fixed; top:0px; left:1px; padding:1px; font-family:Arial; background:#fffea1; border:1px solid #fc0;}
-    a, a:link, a:visited {color: #ffffff;}
   </style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/excite-bike/jquery-ui.css">
 <script type="text/javascript">
 <!--
 function handleClick(book_id, image_id, src, image_number){
@@ -111,12 +111,40 @@ function handleFilterChange()
     window.location.href = "/edit_book/side_bar?book_id=<%=session[:book_id]%>" + "&filter=" + desired + "&book_fragment_id=<%= @fragment_id%>";
 }
 
+function bindNotSureLinks() {
+  $(".not_sure").click(function(event) {
+    var clickedLink = $(this);
+    $(this).addClass("clickedNotSureLink");
+    event.preventDefault();
+    var notSureDialog = $('<div id="not-sure-dialog"></div>');
+    $(window.parent.frames["content"].document.body).append(notSureDialog)
+    $("#not-sure-dialog", window.parent.frames["content"].document.body).load($(this).attr("href") + " #questionnaire", function() {
+      window.parent.frames["content"].initDecisionTree();
+      //update image
+      $("#questionnaireImage", window.parent.frames["content"].document.body).attr("src", $(clickedLink).attr("for_image"));
+    }).dialog({          
+      width: 600,
+      height: 650,
+      modal: true,
+      position: {  at: "center top", of: window.parent.frames["content"].document.body},
+      close: function(event, ui) {
+        $("#not-sure-dialog", window.parent.frames["content"].document.body).remove();
+        $(".clickedNotSureLink:first").focus().removeClass("clickedNotSureLink");
+      }
+    });
+    return false;
+  });
+}
+
 $(function() {
   $("img.lazyload").lazyload();
+  bindNotSureLinks();
 });
 <%
   book = Book.find session[:book_id] rescue nil
 %>
+
+
 //-->
 </script>
 <div class="toolbar" style="width:300px;">
@@ -157,10 +185,13 @@ $(function() {
 <%=
     form_for model do | form |
 %>
+      <div>
       <%= form.label("should_be_described_#{model.id}", "Should be described:") %>
       <%= form.select :should_be_described, [['Yes', true], ['No', false]],
         {:include_blank => 'Unspecified', :custom_label => 'Essential?'},
         {:id => "dynamic_image_should_be_described_#{model.id}", :onChange => "handleImageEssentialChange(this.form);" }  %>
+        <%= link_to "Not Sure?", training_decision_tree_path, :target => '_blank', :class => "not_sure", :for_image=>model.thumb_source(@host)%>
+      </div>
        <%= form.hidden_field(:id) %>
       <%= form.hidden_field(:book_id) %>
       <%= form.hidden_field(:image_location) %>
