@@ -4,34 +4,26 @@
     	<h1>Decision Tree</h1>
     	<div id="questionnaire">
 			<h2>Questionnaire</h2>
-			<% @questionnaire['questionnaire']['questions'].each_with_index do |question, question_index| %>
+			<% @questionnaire['questionnaire']['questions'].each do |question| %>
 			<%
-				question_id = "question#{question_index}" %>
+				question_id = "question#{question['id']}" %>
 				<div id="<%= question_id %>" class="question">
+					<input type="hidden" name="<%=question_id%>_id" value="<%= question['id'] %>" class="id" />
 					<p><%= question['text'] %></p>
-					<% if defined?(question['response']['fixed']['category'])
-						question['response']['fixed']['category'].each_with_index do |category, category_index| 
-							answer_id = "#{question_id}_answer#{category_index}" %>
+					<% if defined?(question['answers']) and question['answers'].is_a? Array
+						question['answers'].each_with_index do |answer, answer_index| 
+							answer_id = "#{question_id}_answer#{answer_index}" %>
 							<div>
-								<input type="radio" value="<%= category['value'] %>" name="<%=question_id%>_answer" id="<%=answer_id%>">
-								<label for="<%=answer_id%>"><%= category['label'] %></label>
-								<% if category['value'] == "-oth" %>
+								<input type="radio" value="<%= answer['value'] %>" name="<%=question_id%>_answer" id="<%=answer_id%>">
+								<label for="<%=answer_id%>"><%= answer['label'] %></label>
+								<% if answer['value'] == "-oth" %>
 									<input type="text" name="<%=answer_id%>_other" />
 								<% end %>
+								<input type="hidden" id="<%=answer_id%>_next" value="<%= answer['next'] %>" />
+								<input type="hidden" id="<%=answer_id%>_describe" value="<%= answer['describe'] %>" />
+								<input type="hidden" id="<%=answer_id%>_more_info" value="<%= answer['more_info'] %>" />
 							</div>
 						<% end %>
-					<% elsif question['response'].is_a? Array 
-						question['response'].each_with_index do |response, response_index| 
-							category = response['fixed']['category'] 
-							answer_id = "#{question_id}_answer#{response_index}" %>
-							<div>
-								<input type="checkbox" value="<%= category['value'] %>" name="<%=answer_id%>" id="<%=answer_id%>">
-								<label for="<%=answer_id%>"><%= category['label'] %></label>
-								<% if defined?(category['contingentQuestion']['text']) %>
-									<input type="text" name="<%=answer_id%>_other" />
-								<% end %>
-							</div>
-						<%end %>
 					<% elsif defined?(question['response']['free']) %>
 						<textarea></textarea>
 					<% end %>
@@ -40,14 +32,22 @@
 					<% end %>
 				</div>
 			<% end %><br />
-			<div>
-				<input type="hidden" id="question_num" name="question_num" value="0" />
+			<div id="buttons">
+				<input type="hidden" id="last_question" name="last_question" value="" />
 				<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+			</div>
+			<div id="describe" class="question">
+				<p>
+						<strong>Decision:</strong> 
+						<span id="no" class="question">Do not describe this image.</span>
+						<span id="yes" class="question">Describe the image.</span>
+				</p>
+				<p id="more_info"></p>
 			</div>
 			<script src="/javascripts/training.js" type="text/javascript"></script>
 		</div>
     </div>
   </div>
-  <%= render 'training_navigation' %>
+  <%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 </div>
 <br clear="all"/>

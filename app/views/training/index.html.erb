@@ -12,7 +12,7 @@
     	<h2>Tools &amp; Examples</h2>
 		<ul>
 			<li>Image Categories &amp; Image Types</li>
-			<li>Decision Tree &dash; When and How to Describe Images</li>
+			<li><%= link_to "Decision Tree - When and How to Describe Images", training_decision_tree_path %></li>
 			<li>Best Practices &dash; Examples and Guidelines from NCAM</li>
 			<li>Sample Book</li>
 		</ul>
@@ -28,7 +28,7 @@
         </ul>	
     </div>
   </div>
-  <%= render 'training_navigation' %>
+  <%= render partial: 'training_navigation', locals: {section: :introduction} %>
 </div>
 
 <br />

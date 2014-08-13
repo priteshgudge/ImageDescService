@@ -2,8 +2,28 @@
     <div class="sidebar_section panel">
       <div class="panel_contents">
       	<ul>
-      		<li>Introduction</li>
-      		<li>Tools &amp; Examples</li>
+      		<li>
+              <%= link_to "Training", training_index_path %>
+              <%if section == :introduction %>
+                <ul>
+                    <li>Why image descriptions are important</li>
+                    <li>When alternate descriptions are needed vs. not</li>
+                    <li>Options for providing access to images</li>
+                    <li>Style guides for writing image descriptions</li>
+                </ul>
+              <% end %>
+          </li>
+      		<li>
+              Tools &amp; Examples
+              <%if section == :tools_and_examples %>
+                <ul>
+                    <li>Image Categories &amp; Image Types</li>
+                    <li>Decision Tree &dash; When and How to Describe Images</li>
+                    <li>Best Practices &dash; Examples and Guidelines from NCAM</li>
+                    <li>Sample Book</li>
+                </ul>
+              <% end %>
+          </li>
       		<li>Practice</li>
       		<li>Additional Resources</li>
       	</ul>
