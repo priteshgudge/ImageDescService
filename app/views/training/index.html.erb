@@ -1,34 +1,10 @@
-<div id= "active_admin_content" class="with_sidebar">
-  <div id="main_content_wrapper">
-    <div id="main_content">  
-    	<h1>Training</h1>
-		<h2>Introduction</h2>
-		<ul>
-			<li>Why image descriptions are important</li>
-			<li>When alternate descriptions are needed vs. not</li>
-			<li>Options for providing access to images</li>
-			<li>Style guides for writing image descriptions</li>
-		</ul>
-    	<h2>Tools &amp; Examples</h2>
-		<ul>
-			<li>Image Categories &amp; Image Types</li>
-			<li><%= link_to "Decision Tree - When and How to Describe Images", training_decision_tree_path %></li>
-			<li>Best Practices &dash; Examples and Guidelines from NCAM</li>
-			<li>Sample Book</li>
-		</ul>
-        <h2>Practice</h2>
-        <ul>
-        	<li>Decision Tree in Application</li>
-        	<li>Templates for Generating Image Descriptions</li>
-        </ul>
-        <h2>Additional Resources</h2>
-        <ul>
-        	<li>BANA Guidelines</li>
-        	<li>WebAIM</li>
-        </ul>	
-    </div>
-  </div>
-  <%= render partial: 'training_navigation', locals: {section: :introduction} %>
+<div id= "container">
+	<div id="left_nav">
+		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
+	</div>
+	<div id="right">  
+		<h1>Training</h1>
+		Need intro paragraph.
+	</div>
 </div>
-
-<br />
+<div class="clear"></div>

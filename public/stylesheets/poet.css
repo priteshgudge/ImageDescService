@@ -54,3 +54,34 @@ overflow: auto; /* clears the floated search-bar div */
   height: 100px;
   overflow-y: auto;
 }
+
+/* Two column for training module. */
+#left_nav {
+  width: 230px;
+  float: left;
+  padding: 15px 10px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-font-smoothing: antialiased;
+  border: 1px dashed #DADADA;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+#right {
+  margin-left: 317px; 
+}
+
+.clear {
+  clear: both;
+}
+
+#yes.decision {
+  color: green;
+}
+
+#no.decision {
+  color: red;
+}
+

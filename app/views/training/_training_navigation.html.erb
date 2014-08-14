@@ -1,32 +1,29 @@
-<div id="sidebar">
-    <div class="sidebar_section panel">
-      <div class="panel_contents">
-      	<ul>
-      		<li>
-              <%= link_to "Training", training_index_path %>
-              <%if section == :introduction %>
-                <ul>
-                    <li>Why image descriptions are important</li>
-                    <li>When alternate descriptions are needed vs. not</li>
-                    <li>Options for providing access to images</li>
-                    <li>Style guides for writing image descriptions</li>
-                </ul>
-              <% end %>
-          </li>
-      		<li>
-              Tools &amp; Examples
-              <%if section == :tools_and_examples %>
-                <ul>
-                    <li>Image Categories &amp; Image Types</li>
-                    <li>Decision Tree &dash; When and How to Describe Images</li>
-                    <li>Best Practices &dash; Examples and Guidelines from NCAM</li>
-                    <li>Sample Book</li>
-                </ul>
-              <% end %>
-          </li>
-      		<li>Practice</li>
-      		<li>Additional Resources</li>
-      	</ul>
-      </div>    
-    </div>
-  </div>
+
+<div class="panel_contents">
+	<h2>Training</h2>
+  <h3>Introduction</h3>
+  <ul>
+    <li>Image Accessibility</li>
+    <li>When to provide access</li>
+    <li>How to provide access</li>
+    <li>Style guides</li>
+  </ul>
+  <h3>Tools &amp; Examples</h3>
+  <ul>
+    <li>Image Types</li>
+    <li><%= link_to "Decision Tree", training_decision_tree_path %></li>
+    <li>NCAM Best Practices</li>
+    <li>Sample Book</li>
+  </ul>
+  <h3>Practice</h3>
+  <ul>
+    <li>Decision Tree Exercises</li>
+    <li>Description Templates</li>
+  </ul>
+  <h3>Need More Info?</h3>
+  <ul>
+    <li>Guidelines</li>
+    <li>Tutorials</li>
+    <li>Other Resources</li>
+  </ul>
+</div>    
