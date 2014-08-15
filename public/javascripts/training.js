@@ -1,46 +1,157 @@
-window.initDecisionTree = function() {
+// Load the application once the DOM is ready, using `jQuery.ready`:
+$(function(){
 
-	//hide all questions other than the first one. 
-	$(".question").not(":first").hide();
-	$("#prev").hide();
-	$("#last_question").val("1");
+  _.templateSettings = {
+    interpolate: /\{\{\=(.+?)\}\}/g,
+    evaluate: /\{\{(.+?)\}\}/g
+  };	
 
-	//Bind next button.
-	$("#next").click(function(evt) {
-		//what question are we on?
-		var question = $(".question:visible");
-		//Find what checkbox is checked.
-		var answer = question.find("input[type='radio']:checked");
-		var id = question.find(".id").val();
-		if (answer.length > 0) {
-			//Where should we go next?
-			var answer_id = answer.attr("id");
-			var describe = $("#" + answer_id + "_describe").val();
-			if (describe != "") {
-				//Get more info.
-				$("#_more_info").html($("#" + answer_id + "_more_info").val());
-				question.hide();
-				$("#buttons").hide();
-				$("#describe").show();
-				$("#"+describe).show();
-			} else {
-				$("#last_question").val(id);
-				question.hide();
-				var next = $("#" + answer_id + "_next").val();
-				$("#question" + next).show();
-			}
-			$("#prev").show();
-		} else {
-			alert("Answer is required.");
-		}
-	});
-	$("#prev").click(function(evt) {
-		//what question are we on?
-		var question = $(".question:visible");
-		$("#question" + $("#last_question").val()).show();
-		question.hide();
-	});
-}
-jQuery(function($) {
-	initDecisionTree();
+  // Decision Tree Model
+  // ----------
+  var Question = Backbone.Model.extend({
+    findAnswerById: function(answer_id) {
+    	var answers = this.get("answers");
+    	return _.findWhere(answers, {"answer_id":answer_id});
+    }
+  });
+
+  var Answer = Backbone.Model.extend({
+
+  });
+
+  // Decision Tree Questions Collection
+  // ---------------
+  var QuestionList = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: Question,
+
+    // load the questions.
+    url: '/training/questionnaire'
+
+  });
+  // Create our global collection of questions.
+  var questions = new QuestionList;
+
+
+  // Decision Tree View
+  // --------------
+
+  // The DOM element for a question item...
+  var QuestionView = Backbone.View.extend({
+
+    //div.
+    tagName:  "div",
+
+    // Cache the template function for a single item.
+    template: _.template($('#question-template').html()),
+
+    // Render the question
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    }
+
+  });
+  // Create our global view for decision.
+  var question = new QuestionView;
+
+  // The DOM element for the decision.
+  var DescribeView = Backbone.View.extend({
+
+    //div.
+    tagName:  "div",
+
+    // The DOM events specific to an item.
+    events: {
+      "click #play_again_button" : "resetDecisionTree"
+    },
+
+    // Cache the template function for a single item.
+    template: _.template($('#describe-template').html()),
+    
+    // Render the recommendation.
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    },
+
+    resetDecisionTree: function() {
+    	$("#describe").html("");
+    	$("#question").show();
+    	$("#buttons").show();
+    	DecisionTreeView.initialize();
+    }
+
+  });
+  // Create our global view for recommendation.
+  var describe = new DescribeView;
+
+  // The Decision Tree
+  // ---------------
+  var DecisionTreeView = Backbone.View.extend({
+    
+    //Defaults.
+  	lastQuestion: "1",
+
+  	lastImage: -1,
+
+    el: $("#questionnaire"),
+
+    // The DOM events specific to an item.
+    events: {
+      "click #prev"     : "goBack",
+      "click #next"     : "getNextQuestion"
+    },
+
+    initialize: function() {
+    	var q = questions.fetch();
+    	this.lastImage = this.lastImage != 8 ? this.lastImage + 1 : 0;
+    	$("#questionnaireImage").attr("src", "/images/decision_tree/" + this.lastImage + ".jpg");
+    	q.done(function() {
+    	  question.model = questions.first();
+		  $("#question").html(question.render().el);
+    	});
+    },
+
+    goBack: function() {
+    	if (parseInt(this.lastQuestion) == 1) {
+    		$("#prev").hide();
+    	}
+    	DecisionTreeView.loadQuestion(this.lastQuestion);
+    	DecisionTreeView.lastQuestion = question.model.get("question_id");
+    },
+
+    getNextQuestion: function() {
+    	DecisionTreeView.lastQuestion = question.model.get("question_id");
+    	var selectedAnswer = $("input[type='radio']:checked");
+    	if (selectedAnswer.length > 0) {
+    		//Where should we go?
+    		var answer = question.model.findAnswerById(selectedAnswer.val());
+    		if (answer["describe"]) {
+    			describe.model = new Answer(answer);
+    			$("#describe").html(describe.render().el);
+    			describe.delegateEvents();
+    			$("#buttons").hide();
+    			$("#question").html("");
+    		} else {
+    			var next = answer["next"];
+    			DecisionTreeView.loadQuestion(next);
+    		}
+    	} else {
+    		alert("Answer is required.");
+    	}
+    },
+
+    loadQuestion: function(question_id) {
+    	var nextQuestion = questions.findWhere({"question_id":question_id});
+		question.model = nextQuestion;
+		$("#question").html(question.render().el);
+    }
+
+  });
+
+  // Finally, we kick things off by creating the **App**.
+  var DecisionTreeView = new DecisionTreeView;
+
 });

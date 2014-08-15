@@ -77,11 +77,21 @@ overflow: auto; /* clears the floated search-bar div */
   clear: both;
 }
 
-#yes.decision {
+#yes {
   color: green;
 }
 
-#no.decision {
+#no {
   color: red;
 }
+
+#question legend {
+  padding: 15px 0px;
+}
+
+#buttons {
+  padding: 15px 0px;
+}
+
+
 

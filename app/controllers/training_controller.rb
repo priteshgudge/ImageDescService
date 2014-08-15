@@ -3,7 +3,10 @@ class TrainingController < ApplicationController
   end
 
   def decision_tree
-    @questionnaire = JSON.parse(File.read("#{Rails.root}/public/ImageSortingTool.json"))
+  end
+
+  def questionnaire
+  	render :json => JSON.parse(File.read("#{Rails.root}/public/ImageSortingTool.json"))['questionnaire']['questions']
   end
 
   def tools_and_exapmles
