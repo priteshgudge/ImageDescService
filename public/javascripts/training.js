@@ -5,18 +5,19 @@ $(function(){
     interpolate: /\{\{\=(.+?)\}\}/g,
     evaluate: /\{\{(.+?)\}\}/g
   };	
-
-  // Decision Tree Model
+  
+  // Decision Tree Models
   // ----------
+  var Answer = Backbone.Model.extend({
+
+  });
+
   var Question = Backbone.Model.extend({
+
     findAnswerById: function(answer_id) {
     	var answers = this.get("answers");
     	return _.findWhere(answers, {"answer_id":answer_id});
     }
-  });
-
-  var Answer = Backbone.Model.extend({
-
   });
 
   // Decision Tree Questions Collection
@@ -30,6 +31,7 @@ $(function(){
     url: '/training/questionnaire'
 
   });
+
   // Create our global collection of questions.
   var questions = new QuestionList;
 
@@ -91,43 +93,40 @@ $(function(){
   // ---------------
   var DecisionTreeView = Backbone.View.extend({
     
-    //Defaults.
-  	lastQuestion: "1",
-
-  	lastImage: -1,
+    lastImage: -1,
 
     el: $("#questionnaire"),
 
     // The DOM events specific to an item.
     events: {
       "click #prev"     : "goBack",
-      "click #next"     : "getNextQuestion"
+      "click #next"     : "getNextQuestion",
+      "click .answer"	: "setAnswer"
     },
 
     initialize: function() {
     	var q = questions.fetch();
-    	this.lastImage = this.lastImage != 8 ? this.lastImage + 1 : 0;
-    	$("#questionnaireImage").attr("src", "/images/decision_tree/" + this.lastImage + ".jpg");
+    	var decisionTree = this;
     	q.done(function() {
-    	  question.model = questions.first();
-		  $("#question").html(question.render().el);
+    		decisionTree.lastImage = decisionTree.lastImage != 8 ? decisionTree.lastImage + 1 : 0;
+    		var newImagePath = "/images/decision_tree/" + decisionTree.lastImage + ".jpg";
+    		$("#questionnaireImage").attr("src", newImagePath);
+    		$("#lightboxTrigger").attr("href", newImagePath);
+    	  	question.model = questions.first();
+		  	$("#question").html(question.render().el);
+
     	});
     },
 
     goBack: function() {
-    	if (parseInt(this.lastQuestion) == 1) {
-    		$("#prev").hide();
-    	}
-    	DecisionTreeView.loadQuestion(this.lastQuestion);
-    	DecisionTreeView.lastQuestion = question.model.get("question_id");
+    	DecisionTreeView.loadQuestion(questions.get(question.model.cid).get("last_question_id"));
     },
 
     getNextQuestion: function() {
-    	DecisionTreeView.lastQuestion = question.model.get("question_id");
-    	var selectedAnswer = $("input[type='radio']:checked");
-    	if (selectedAnswer.length > 0) {
+    	var answer_id = questions.get(question.model.cid).get("answer_id");
+    	if (typeof(answer_id) !== 'undefined') {
     		//Where should we go?
-    		var answer = question.model.findAnswerById(selectedAnswer.val());
+    		var answer = question.model.findAnswerById(answer_id);
     		if (answer["describe"]) {
     			describe.model = new Answer(answer);
     			$("#describe").html(describe.render().el);
@@ -135,8 +134,11 @@ $(function(){
     			$("#buttons").hide();
     			$("#question").html("");
     		} else {
+    			$("#prev").show();
     			var next = answer["next"];
+    			var currentQuestionId = question.model.get("question_id");
     			DecisionTreeView.loadQuestion(next);
+    			DecisionTreeView.setLastQuestion(question.model, currentQuestionId);
     		}
     	} else {
     		alert("Answer is required.");
@@ -145,8 +147,18 @@ $(function(){
 
     loadQuestion: function(question_id) {
     	var nextQuestion = questions.findWhere({"question_id":question_id});
-		question.model = nextQuestion;
+    	question.model = nextQuestion;
 		$("#question").html(question.render().el);
+		question.delegateEvents();
+    },
+
+    setAnswer: function(evt) {
+    	var answer = $(evt.currentTarget).attr("id");
+    	questions.get(question.model.cid).set({"answer_id": answer});
+    },
+
+    setLastQuestion: function(currentQuestion, last_question_id) {
+    	questions.get(currentQuestion.cid).set({"last_question_id": last_question_id});
     }
 
   });

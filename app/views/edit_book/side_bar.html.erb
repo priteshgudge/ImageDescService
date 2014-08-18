@@ -190,7 +190,6 @@ $(function() {
       <%= form.select :should_be_described, [['Yes', true], ['No', false]],
         {:include_blank => 'Unspecified', :custom_label => 'Essential?'},
         {:id => "dynamic_image_should_be_described_#{model.id}", :onChange => "handleImageEssentialChange(this.form);" }  %>
-        <%= link_to "Not Sure?", training_decision_tree_path, :target => '_blank', :class => "not_sure", :for_image=>model.thumb_source(@host)%>
       </div>
        <%= form.hidden_field(:id) %>
       <%= form.hidden_field(:book_id) %>
