@@ -111,12 +111,12 @@ $(function(){
     		decisionTree.lastImage = decisionTree.lastImage != 8 ? decisionTree.lastImage + 1 : 0;
     		var newImagePath = "/images/decision_tree/" + decisionTree.lastImage + ".jpg";
     		$("#questionnaireImage").attr("src", newImagePath);
-    		$("#lightboxTrigger").attr("href", newImagePath);
-    	  	question.model = questions.first();
-		  	$("#question").html(question.render().el);
-
+    		$("#questionnaireImage").load(function() {
+				$("#lightboxTrigger").attr("href", newImagePath);
+    	  		question.model = questions.first();
+		  		$("#question").html(question.render().el);
+    		});
     	});
-    	decisionTree.preloadImages();
     },
 
     goBack: function() {
@@ -160,12 +160,6 @@ $(function(){
 
     setLastQuestion: function(currentQuestion, last_question_id) {
     	questions.get(currentQuestion.cid).set({"last_question_id": last_question_id});
-    },
-
-    preloadImages: function() {
-    	for (var i=0; i<=8; i++) {
-    		$("body").append("<img src='/images/decision_tree/" + i + ".jpg' class='hidden-image' />");
-    	}
     }
 
   });
