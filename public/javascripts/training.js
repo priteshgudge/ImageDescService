@@ -116,6 +116,7 @@ $(function(){
 		  	$("#question").html(question.render().el);
 
     	});
+    	decisionTree.preloadImages();
     },
 
     goBack: function() {
@@ -159,6 +160,12 @@ $(function(){
 
     setLastQuestion: function(currentQuestion, last_question_id) {
     	questions.get(currentQuestion.cid).set({"last_question_id": last_question_id});
+    },
+
+    preloadImages: function() {
+    	for (var i=0; i<=8; i++) {
+    		$("body").append("<img src='/images/decision_tree/" + i + ".jpg' class='hidden-image' />");
+    	}
     }
 
   });

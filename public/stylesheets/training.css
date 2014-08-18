@@ -6,3 +6,7 @@
 #viewOriginalImage {
     width: 300px;
 }
+
+.hidden-image {
+    display: none;
+}
