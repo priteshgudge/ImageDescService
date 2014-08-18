@@ -103,6 +103,11 @@ module EpubUtils
            describer = doc.css('#' + img_node['aria-describedby'])[0]
            @described_by_hash[image_name] = describer.text
          end
+         unless img_node.parent().name() != "figure" && img_node.parent()['aria-describedby'].blank?
+           describer = doc.css('#' + img_node.parent()['aria-describedby'])[0]
+           @described_by_hash[image_name] = describer.text
+         end
+
          unless img_node['aria-describedat'].blank?
            @described_at_hash[image_name] = img_node['aria-describedat']
          end
