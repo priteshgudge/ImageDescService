@@ -76,6 +76,7 @@ module EpubUtils
      @described_at_hash = Hash.new()
      @alt_text_hash = Hash.new()
      @longdesc_hash = Hash.new()
+     @figcaption_hash = Hash.new()
      limit = 249
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
@@ -103,17 +104,26 @@ module EpubUtils
            describer = doc.css('#' + img_node['aria-describedby'])[0]
            @described_by_hash[image_name] = describer.text
          end
-         unless img_node.parent().name() != "figure" && img_node.parent()['aria-describedby'].blank?
-           describer = doc.css('#' + img_node.parent()['aria-describedby'])[0]
-           @described_by_hash[image_name] = describer.text
+         #See if the image is wrapped in a figure element.
+         img_parent = img_node.parent()
+         unless img_parent.nil? and img_parent.name() != "figure"
+           #get described by from figure parent aria-describedby attribute.
+           unless img_parent['aria-describedby'].blank?
+            describer = doc.css('#' + img_parent['aria-describedby'])[0]
+            @described_by_hash[image_name] = describer.text
+           end
+           #see if the figure has a figcaption.
+           figcaption = img_parent.css("figcaption").first
+           unless figcaption.nil?
+            @figcaption_hash[image_name] = figcaption.text
+           end
          end
-
          unless img_node['aria-describedat'].blank?
            @described_at_hash[image_name] = img_node['aria-describedat']
          end
          unless img_node['longdesc'].blank?
            @longdesc_hash[image_name] = img_node['longdesc']
-         end
+         end         
        end
      end
   end

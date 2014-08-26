@@ -23,6 +23,27 @@
        <% end %>
       </tbody>
     </table>
+    <% if @figcaption_hash %>
+    <h4 id="figcaptions"><b>Figcaptions</b></h4>
+    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
+      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
+       <tbody>
+       <% @figcaption_hash.keys.each do |key| %>
+       <tr class= "odd"><td width="50%"><%= key %></td>
+       <td width= "60%">
+       <% value = @figcaption_hash[key]%>
+       <div class='convert-to-iframe'>
+          <%= value %>
+       </div>
+       </td> </tr>
+       <% end %>
+
+       <% if (@figcaption_hash.keys.size == 0) %>
+          <tr class= "odd"><td width="50%">No figcaptions</td><td width= "60%"></td></tr>
+       <% end %>
+      </tbody>
+    </table>
+    <% end %>
     <% if @prodnotes_hash %>
     <h4 id="prodNotes"><b>Prodnotes </b></h4> 
     <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
@@ -158,6 +179,12 @@
                 <td align="right">Total  <a href="#altTexts">alt text</a></td>
                 <td align="right"><%= @alt_text_hash.size %></td>
               </tr>
+              <% if @figcaption_hash %>
+              <tr>
+                <td align="right">Total <a href="#figcaptions">figcaptions</a></td>
+                <td align="right"><%= @figcaption_hash.size %></td>
+              </tr>
+              <% end %>
               <% if @prodnotes_hash %>
               <tr>
                 <td align="right">Total <a href="#prodNotes">prodnotes</a></td>
