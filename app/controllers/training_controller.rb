@@ -12,6 +12,9 @@ class TrainingController < ApplicationController
   def tools_and_exapmles
   end
 
-  def how_to
+  def when_to_describe
+  end
+
+  def how_to_describe
   end
 end

@@ -1,7 +1,8 @@
 DiagramRailsApp::Application.routes.draw do
   get "training/index"
   get "training/decision_tree"
-  get "training/how_to"
+  get "training/how_to_describe"
+  get "training/when_to_describe"
   get "training/questionnaire"
   match "training", :controller => 'training', :action => 'index'
 
