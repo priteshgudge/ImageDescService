@@ -21,19 +21,19 @@ module EpubUtils
   end
   
   def self.get_epub_file_main_directory(book_directory)
-       opf_file = "**/package.opf" 
+       opf_file = "**/*.opf" 
        opf_dir = Dir.glob("#{book_directory}/#{opf_file}").first
        File.dirname opf_dir
   end     
   
   def self.get_contents_xml_name(book_directory)
       book_dir = get_epub_file_main_directory book_directory
-      return Dir.glob(File.join(book_dir, 'package.opf'))[0]
+      return Dir.glob(File.join(book_dir, '*.opf'))[0]
   end
   
   def self.get_epub_book_xml_file_names(book_directory)
      # Get opf
-     doc = Nokogiri::XML get_xml_from_dir(book_directory, "Epub")
+     doc = Nokogiri::XML UnzipUtils.get_xml_from_dir(book_directory, "Epub")
      
      # get main directory
      mainDirectory = EpubUtils.get_epub_file_main_directory(book_directory)

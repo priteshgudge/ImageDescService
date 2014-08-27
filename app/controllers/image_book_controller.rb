@@ -108,14 +108,7 @@ class ImageBookController < ApplicationController
 
   def poll_file_with_descriptions
     job = Job.where(:id => params[:job_id], :user_id => current_user.id).first
-    
-    if job && job.state == 'complete'
-      render :text => "Complete"
-    elsif job && job.state == 'error'
-      render :text => "Error"
-    else
-      render :text => "Not Complete"
-    end
+    render json: job
   end
   
   def download_with_descriptions
