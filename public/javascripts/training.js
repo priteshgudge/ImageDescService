@@ -108,7 +108,7 @@ $(function(){
     	var q = questions.fetch();
     	var decisionTree = this;
     	q.done(function() {
-    		decisionTree.lastImage = decisionTree.lastImage != 8 ? decisionTree.lastImage + 1 : 0;
+    		decisionTree.lastImage = decisionTree.lastImage != 7 ? decisionTree.lastImage + 1 : 0;
     		var newImagePath = "/images/decision_tree/" + decisionTree.lastImage + ".jpg";
     		$("#questionnaireImage").attr("src", newImagePath);
 			  $("#lightboxTrigger").attr("href", newImagePath);
