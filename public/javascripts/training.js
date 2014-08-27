@@ -101,7 +101,7 @@ $(function(){
     events: {
       "click #prev"     : "goBack",
       "click #next"     : "getNextQuestion",
-      "click .answer"	: "setAnswer"
+      "click .answer"	  : "setAnswer"
     },
 
     initialize: function() {
@@ -111,11 +111,8 @@ $(function(){
     		decisionTree.lastImage = decisionTree.lastImage != 8 ? decisionTree.lastImage + 1 : 0;
     		var newImagePath = "/images/decision_tree/" + decisionTree.lastImage + ".jpg";
     		$("#questionnaireImage").attr("src", newImagePath);
-    		$("#questionnaireImage").load(function() {
-				$("#lightboxTrigger").attr("href", newImagePath);
-    	  		question.model = questions.first();
-		  		$("#question").html(question.render().el);
-    		});
+			  $("#lightboxTrigger").attr("href", newImagePath);
+        decisionTree.loadQuestion(questions.first().get("question_id"));
     	});
     },
 
@@ -149,8 +146,11 @@ $(function(){
     loadQuestion: function(question_id) {
     	var nextQuestion = questions.findWhere({"question_id":question_id});
     	question.model = nextQuestion;
-		$("#question").html(question.render().el);
-		question.delegateEvents();
+		  $("#question").html(question.render().el);
+      if (question_id == "1") {
+        $("#prev").hide();
+      }
+		  question.delegateEvents();
     },
 
     setAnswer: function(evt) {
