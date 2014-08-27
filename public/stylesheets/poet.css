@@ -71,6 +71,7 @@ overflow: auto; /* clears the floated search-bar div */
 
 #right {
   margin-left: 317px; 
+  padding-right: 2em;
 }
 
 .clear {
