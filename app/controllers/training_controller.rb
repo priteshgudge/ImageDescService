@@ -11,4 +11,7 @@ class TrainingController < ApplicationController
 
   def tools_and_exapmles
   end
+
+  def how_to
+  end
 end
