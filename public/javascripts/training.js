@@ -55,7 +55,7 @@ $(function(){
     }
 
   });
-  // Create our global view for decision.
+  // Create our global view for question.
   var question = new QuestionView;
 
   // The DOM element for the decision.
@@ -105,13 +105,10 @@ $(function(){
     },
 
     initialize: function() {
+      $(".fancybox").fancybox({aspectRatio: true});
     	var q = questions.fetch();
     	var decisionTree = this;
     	q.done(function() {
-    		decisionTree.lastImage = decisionTree.lastImage != 7 ? decisionTree.lastImage + 1 : 0;
-    		var newImagePath = "/images/decision_tree/" + decisionTree.lastImage + ".jpg";
-    		$("#questionnaireImage").attr("src", newImagePath);
-			  $("#lightboxTrigger").attr("href", newImagePath);
         decisionTree.loadQuestion(questions.first().get("question_id"));
     	});
     },
@@ -166,5 +163,31 @@ $(function(){
 
   // Finally, we kick things off by creating the **App**.
   var DecisionTreeView = new DecisionTreeView;
+
+  //Image gallery.
+  //--------------
+  var ImageGalleryView = Backbone.View.extend({
+    el: $("#imageGallery"),
+
+    // The DOM events specific to an item.
+    events: {
+      "click .toDescribe" : "startDecisionTreeForImage"
+    },
+
+    startDecisionTreeForImage: function(evt) {
+      $("#questionnaireImage").attr("src", $(evt.target).attr("src"));
+      $("#lightboxTrigger").attr("href", $(evt.target).attr("src"));
+      DecisionTreeView.initialize();
+      var dialog = $("#questionnaire").dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true
+      });
+      dialog.dialog("open");
+    }
+
+  });
+  // Create our global view for recommendation.
+  var images = new ImageGalleryView;
 
 });

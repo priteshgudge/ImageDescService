@@ -94,5 +94,15 @@ overflow: auto; /* clears the floated search-bar div */
   padding: 15px 0px;
 }
 
+body ul.inline {
+    padding: 15px; 
+}
+
+body ul.inline > li {
+    display: inline-block;
+    zoom:1;
+    *display:inline;
+}
+
 
 

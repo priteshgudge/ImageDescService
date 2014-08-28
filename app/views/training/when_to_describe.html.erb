@@ -5,8 +5,89 @@
 	<div id="right">  
 		<h1>When to describe?</h1>
 		<p>
-			Need content.
+			This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed below:<br />
+			<img src="/images/decision_tree_flow_chart.jpg" width="600" height="800" alt="flow chart" />
 		</p>
+		<h2>Now, pick an image and start making decisions!</h2>
+		<div id="imageGallery">
+			<ul class="inline">
+				<li><img class="toDescribe" src="/images/decision_tree/0_thumb.jpg" alt="The circulatory and respitory systems" /></li>
+				<li><img src="/images/decision_tree/1_thumb.jpg" alt="Pathogens Versus the Immune System" class="toDescribe"/></li>
+				<li><img src="/images/decision_tree/2_thumb.jpg" alt="About Puberty" class="toDescribe"/></li>
+				<li><img src="/images/decision_tree/3_thumb.jpg" alt="Baseball player at bat" class="toDescribe"/></li>
+			</ul>
+			<div class="clear"></div>
+			<ul class="inline">
+				<li><img src="/images/decision_tree/4_thumb.jpg" alt="Line Graph" class="toDescribe"/></li>
+				<li><img src="/images/decision_tree/5_thumb.jpg" alt="Pie Chart" class="toDescribe"/></li>
+				<li><img src="/images/decision_tree/6_thumb.jpg" alt="Header" class="toDescribe"/></li>
+				<li><img src="/images/decision_tree/7_thumb.jpg" alt="United States" class="toDescribe"/></li>
+			</ul>
+		</div>
 	</div>
 </div>
 <div class="clear"></div>
+<div id="questionnaire"  title="Decision Tree" style="display: none;">
+	<!-- IMAGE -->
+	<img src="/images/decision_tree/0.jpg" class="fancybox-image" id="questionnaireImage" />
+	<div id="viewOriginalImage">
+		<a id="lightboxTrigger" class="fancybox right" href="/images/decision_tree/0.jpg">View Original Image</a>
+	</div><br />
+	<div id="question">
+	</div>
+	<div id="describe"></div>
+	<div id="buttons">
+		<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+	</div>
+</div>
+<!-- Templates -->
+<script type="text/template" id="question-template">
+	<div class="question">
+		<fieldset>
+			<legend><strong>{{= text }}</strong></legend>
+			{{ if (typeof(answers) !== "undefined") { }}
+				{{ _.each(answers, function(answer) { }}
+					<div>
+						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }}} checked {{ } }}>
+						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
+						{{ if (answer['value'] == "-oth") { }}
+							<input type="text" name="answer_other" id="other" />
+						{{ } }}
+					</div>
+				{{ 	}); }}
+			{{ } else { }}
+					<div>
+						<textarea id="free" name="free"></textarea>
+					</div>
+			{{	} }}
+		</fieldset>
+	</div>
+</script>
+
+<script type="text/template" id="describe-template">
+	<div>
+		<p>
+			<h3>Recommendation:</h3> 
+			{{ if (describe == "no") { }}
+				<span id="no">Do not describe this image.</span>
+			{{ } else { }}
+				<span id="yes">Describe the image.</span>
+			{{ } }}
+		</p>
+		<p id="more_info">{{= typeof(more_info) != "undefined" ? more_info : "" }}</p>
+		<p id="play_again"><input type="button" id="play_again_button" value="Request New Image" /></p>
+	</div>
+</script>
+
+
+
+
+<script src="/javascripts/underscore-min.js" type="text/javascript"></script>
+<script src="/javascripts/backbone-min.js" type="text/javascript"></script>
+<script src="/javascripts/training.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+     $(document).ready(function() {
+      	$(".fancybox").fancybox({aspectRatio: true});
+     });
+</script>
