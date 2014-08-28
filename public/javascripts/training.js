@@ -174,18 +174,28 @@ $(function(){
       "click .toDescribe" : "startDecisionTreeForImage"
     },
 
+    initialize: function() {
+      //Preload regular size images.
+      for (var i=0; i<=7; i++) {
+        var newImage = new Image();
+        newImage.src = "/images/decision_tree/" + i + ".jpg";
+      }
+    },
+
     startDecisionTreeForImage: function(evt) {
       var mainImage = $(evt.target).attr("src").replace("_thumb", "");
       $("#questionnaireImage").attr("src", mainImage);
       $("#lightboxTrigger").attr("href", mainImage);
-      DecisionTreeView.initialize();
       var wWidth = $(window).width();
       var dialog = $("#questionnaire").dialog({
         autoOpen: false,
         modal: true,
         width: wWidth * 0.50,
         minHeight: "50%",
-        minWidth: "50%"
+        minWidth: "50%",
+        open: function() {
+          DecisionTreeView.initialize();
+        }
       });
       dialog.dialog("open");
     }
