@@ -1,8 +1,8 @@
 <div id= "container">
-	<div id="left_nav">
+	<div class="left-col">
 		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 	</div>
-	<div id="right">  
+	<div class="right-col">  
 		<h1>When to describe?</h1>
 		<p>
 			This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed below:<br />
@@ -28,16 +28,20 @@
 </div>
 <div class="clear"></div>
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
-	<!-- IMAGE -->
-	<img src="/images/decision_tree/0.jpg" class="fancybox-image" id="questionnaireImage" />
-	<div id="viewOriginalImage">
-		<a id="lightboxTrigger" class="fancybox right" href="/images/decision_tree/0.jpg">View Original Image</a>
-	</div><br />
-	<div id="question">
+	<div class="left-col">
+		<!-- IMAGE -->
+		<img src="/images/decision_tree/0.jpg" class="fancybox-image" id="questionnaireImage" /><br clear="all" />
+		<div id="viewOriginalImage">
+			<a id="lightboxTrigger" class="fancybox right" href="/images/decision_tree/0.jpg">View Original Image</a>
+		</div>
 	</div>
-	<div id="describe"></div>
-	<div id="buttons">
-		<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+	<div class="right-col">
+		<div id="question">
+		</div>
+		<div id="describe"></div>
+		<div id="buttons">
+			<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+		</div>
 	</div>
 </div>
 <!-- Templates -->

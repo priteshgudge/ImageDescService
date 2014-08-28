@@ -55,54 +55,6 @@ overflow: auto; /* clears the floated search-bar div */
   overflow-y: auto;
 }
 
-/* Two column for training module. */
-#left_nav {
-  width: 230px;
-  float: left;
-  padding: 15px 10px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-  -webkit-font-smoothing: antialiased;
-  border: 1px dashed #DADADA;
-  margin-right: 15px;
-  margin-left: 15px;
-}
-
-#right {
-  margin-left: 317px; 
-  padding-right: 2em;
-}
-
-.clear {
-  clear: both;
-}
-
-#yes {
-  color: green;
-}
-
-#no {
-  color: red;
-}
-
-#question legend {
-  padding: 15px 0px;
-}
-
-#buttons {
-  padding: 15px 0px;
-}
-
-body ul.inline {
-    padding: 15px; 
-}
-
-body ul.inline > li {
-    display: inline-block;
-    zoom:1;
-    *display:inline;
-}
 
 
 

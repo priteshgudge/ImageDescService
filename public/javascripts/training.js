@@ -175,13 +175,17 @@ $(function(){
     },
 
     startDecisionTreeForImage: function(evt) {
-      $("#questionnaireImage").attr("src", $(evt.target).attr("src"));
-      $("#lightboxTrigger").attr("href", $(evt.target).attr("src"));
+      var mainImage = $(evt.target).attr("src").replace("_thumb", "");
+      $("#questionnaireImage").attr("src", mainImage);
+      $("#lightboxTrigger").attr("href", mainImage);
       DecisionTreeView.initialize();
+      var wWidth = $(window).width();
       var dialog = $("#questionnaire").dialog({
         autoOpen: false,
-        width: 400,
-        modal: true
+        modal: true,
+        width: wWidth * 0.50,
+        minHeight: "50%",
+        minWidth: "50%"
       });
       dialog.dialog("open");
     }
