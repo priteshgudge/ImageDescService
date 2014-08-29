@@ -3,13 +3,16 @@ body.active_admin .left-col {
   width: 230px;
   float: left;
   padding: 15px 10px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+body.active_admin .left-col-nav {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   -webkit-font-smoothing: antialiased;
   border: 1px dashed #DADADA;
-  margin-right: 15px;
-  margin-left: 15px;
 }
 
 body.active_admin .right-col {
@@ -56,7 +59,7 @@ body.active_admin > #questionnaire {
 	max-width: 250px;
 }
 
-#viewOriginalImage {
+.viewOriginalImage {
     width: 300px;
     clear: both;
     display: inline;
@@ -65,3 +68,13 @@ body.active_admin > #questionnaire {
 .hidden-image {
     display: none;
 }
+
+#imageGallery img {
+	width: 90%;
+}
+
+.shadow {
+	box-shadow: 2px 2px 3px #666;
+}
+
+

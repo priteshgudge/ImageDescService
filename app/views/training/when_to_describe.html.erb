@@ -1,27 +1,45 @@
 <div id= "container">
-	<div class="left-col">
+	<div class="left-col left-col-nav">
 		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 	</div>
 	<div class="right-col">  
 		<h1>When to describe?</h1>
 		<p>
 			This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed below:<br />
-			<img src="/images/decision_tree_flow_chart.jpg" width="600" height="800" alt="flow chart" />
+			<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="flow chart" height="250" /></a>
 		</p>
+		
+		<div class="clear"></div>
 		<h2>Now, pick an image and start making decisions!</h2>
 		<div id="imageGallery">
 			<ul class="inline">
-				<li><img class="toDescribe" src="/images/decision_tree/0_thumb.jpg" alt="The circulatory and respitory systems" /></li>
-				<li><img src="/images/decision_tree/1_thumb.jpg" alt="Pathogens Versus the Immune System" class="toDescribe"/></li>
-				<li><img src="/images/decision_tree/2_thumb.jpg" alt="About Puberty" class="toDescribe"/></li>
-				<li><img src="/images/decision_tree/3_thumb.jpg" alt="Baseball player at bat" class="toDescribe"/></li>
+				<li>
+					<a href="/images/decision_tree/0.jpg" class="toDescribe"><img src="/images/decision_tree/0_thumb.jpg" alt="The circulatory and respitory systems" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/1.jpg" class="toDescribe"><img src="/images/decision_tree/1_thumb.jpg" alt="Pathogens Versus the Immune System" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/2.jpg" class="toDescribe"><img src="/images/decision_tree/2_thumb.jpg" alt="About Puberty" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/3.jpg" class="toDescribe"><img src="/images/decision_tree/3_thumb.jpg" alt="Baseball player at bat" class="shadow" /></a>
+				</li>
 			</ul>
 			<div class="clear"></div>
 			<ul class="inline">
-				<li><img src="/images/decision_tree/4_thumb.jpg" alt="Line Graph" class="toDescribe"/></li>
-				<li><img src="/images/decision_tree/5_thumb.jpg" alt="Pie Chart" class="toDescribe"/></li>
-				<li><img src="/images/decision_tree/6_thumb.jpg" alt="Header" class="toDescribe"/></li>
-				<li><img src="/images/decision_tree/7_thumb.jpg" alt="United States" class="toDescribe"/></li>
+				<li>
+					<a href="/images/decision_tree/4.jpg" class="toDescribe"><img src="/images/decision_tree/4_thumb.jpg" alt="Line Graph" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/5.jpg" class="toDescribe"><img src="/images/decision_tree/5_thumb.jpg" alt="Pie Chart" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/6.jpg" class="toDescribe"><img src="/images/decision_tree/6_thumb.jpg" alt="Header" class="shadow" /></a>
+				</li>
+				<li>
+					<a href="/images/decision_tree/7.jpg" class="toDescribe"><img src="/images/decision_tree/7_thumb.jpg" alt="United States" class="shadow" /></a>
+				</li>
 			</ul>
 		</div>
 	</div>
@@ -30,8 +48,8 @@
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
 	<div class="left-col">
 		<!-- IMAGE -->
-		<img src="/images/decision_tree/0.jpg" class="fancybox-image" id="questionnaireImage" /><br clear="all" />
-		<div id="viewOriginalImage">
+		<img src="/images/decision_tree/0.jpg" class="fancybox-image shadow" id="questionnaireImage" /><br clear="all" />
+		<div class="viewOriginalImage">
 			<a id="lightboxTrigger" class="fancybox right" href="/images/decision_tree/0.jpg">View Original Image</a>
 		</div>
 	</div>
@@ -79,7 +97,7 @@
 			{{ } }}
 		</p>
 		<p id="more_info">{{= typeof(more_info) != "undefined" ? more_info : "" }}</p>
-		<p id="play_again"><input type="button" id="play_again_button" value="Request New Image" /></p>
+		<p id="play_again"><input type="button" id="play_again_button" value="Choose a New Image" /></p>
 	</div>
 </script>
 
