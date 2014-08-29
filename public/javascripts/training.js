@@ -119,7 +119,7 @@ $(function(){
 
     getNextQuestion: function() {
     	var answer_id = questions.get(question.model.cid).get("answer_id");
-    	if (typeof(answer_id) !== 'undefined') {
+    	if (typeof(answer_id) !== 'undefined' && DecisionTreeView.verifyOther(answer_id)) {
     		//Where should we go?
     		var answer = question.model.findAnswerById(answer_id);
     		if (answer["describe"]) {
@@ -157,6 +157,10 @@ $(function(){
 
     setLastQuestion: function(currentQuestion, last_question_id) {
     	questions.get(currentQuestion.cid).set({"last_question_id": last_question_id});
+    },
+
+    verifyOther: function(answer_id) {
+      return answer_id != $("input[name='answer']").last().val() || ($("#other").length == 0 || $("#other").val() != "");
     }
 
   });

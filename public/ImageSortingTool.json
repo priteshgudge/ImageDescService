@@ -243,19 +243,9 @@
             "answer_id": "29",
             "label": "No",
             "value": "A2",
-            "next": "9"
+            "describe": "yes"
           }
         ]
-      },
-      {
-        "question_id": "9",
-        "text": "9. Give us your feedback - how do you think this image could be best represented to a student who is visually impaired?",
-        "response": {
-          "free": {
-            "format": "longtext",
-            "length": "40"
-          }
-        }
       }
     ]
   }

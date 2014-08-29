@@ -70,7 +70,7 @@
 			{{ if (typeof(answers) !== "undefined") { }}
 				{{ _.each(answers, function(answer) { }}
 					<div>
-						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }}} checked {{ } }}>
+						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
 						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
 						{{ if (answer['value'] == "-oth") { }}
 							<input type="text" name="answer_other" id="other" />
