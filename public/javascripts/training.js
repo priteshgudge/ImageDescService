@@ -192,6 +192,7 @@ $(function(){
       $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
       $("#questionnaireImage").attr("src", mainImage);
       $("#lightboxTrigger").attr("href", mainImage);
+      $("#contextTrigger").attr("href", mainImage.replace(".jpg", "_context.jpg"));
       var wWidth = $(window).width();
       var dialog = $("#questionnaire").dialog({
         autoOpen: false,
