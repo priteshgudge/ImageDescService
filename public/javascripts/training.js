@@ -189,7 +189,7 @@ $(function(){
     startDecisionTreeForImage: function(evt) {
       evt.preventDefault();
       var mainImage = $(evt.currentTarget).attr("href");
-      $("#questionnaireImage").attr('src','');
+      $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
       $("#questionnaireImage").attr("src", mainImage);
       $("#lightboxTrigger").attr("href", mainImage);
       var wWidth = $(window).width();
