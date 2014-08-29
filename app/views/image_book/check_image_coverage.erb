@@ -33,7 +33,7 @@
        <td width= "60%">
        <% value = @figcaption_hash[key]%>
        <div class='convert-to-iframe'>
-          <%= value %>
+          <%= value.html_safe %>
        </div>
        </td> </tr>
        <% end %>
@@ -86,7 +86,7 @@
        <td width= "60%">
         <% value = @described_by_hash[key]%>
         <div class='description-scroller'>
-          <%= value %>
+          <%= value.html_safe %>
         </div>
        </td> </tr>
       <% end %>
