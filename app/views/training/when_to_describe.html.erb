@@ -115,7 +115,7 @@
 							<strong>{{= question["text"] }}</strong>
 							{{ _.each(question["answers"], function(answer) { }}
 								{{ if (answer["answer_id"] == question["answer_id"]) { }}
-									{{= answer["label"]}}
+									<p>{{= answer["label"]}}</p>
 								{{ } }}
 							{{ }); }}
 						</li>
