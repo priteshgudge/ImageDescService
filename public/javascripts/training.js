@@ -58,6 +58,24 @@ $(function(){
   // Create our global view for question.
   var question = new QuestionView;
 
+  // The DOM element for the summary view.
+  var SummaryView = Backbone.View.extend({
+
+    //div.
+    tagName:  "div",
+
+    // Cache the template function for a single item.
+    template: _.template($('#questionnaire-summary-template').html()),
+    
+    // Render the recommendation.
+    render: function() {
+      this.$el.html(this.template({questions: this.model.toJSON()}));
+      return this;
+    }
+  });
+  // Create our global view for summary.
+  var summary = new SummaryView;
+
   // The DOM element for the decision.
   var DescribeView = Backbone.View.extend({
 
@@ -80,7 +98,8 @@ $(function(){
 
     resetDecisionTree: function() {
     	$("#describe").html("");
-    	$("#question").show();
+    	$("#summary").html("");
+      $("#question").show();
     	$("#buttons").show();
       $("#questionnaire").dialog("close");
     }
@@ -123,11 +142,7 @@ $(function(){
     		//Where should we go?
     		var answer = question.model.findAnswerById(answer_id);
     		if (answer["describe"]) {
-    			describe.model = new Answer(answer);
-    			$("#describe").html(describe.render().el);
-    			describe.delegateEvents();
-    			$("#buttons").hide();
-    			$("#question").html("");
+    			DecisionTreeView.outputDecision(answer);
     		} else {
     			$("#prev").show();
     			var next = answer["next"];
@@ -161,6 +176,18 @@ $(function(){
 
     verifyOther: function(answer_id) {
       return answer_id != $("input[name='answer']").last().val() || ($("#other").length == 0 || $("#other").val() != "");
+    },
+
+    outputDecision: function(answer) {
+      //Display summary.
+      summary.model = questions;
+      $("#summary").html(summary.render().el);  
+
+      describe.model = new Answer(answer);
+      $("#describe").html(describe.render().el);
+      describe.delegateEvents();
+      $("#buttons").hide();
+      $("#question").html("");
     }
 
   });

@@ -3,14 +3,13 @@
 		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 	</div>
 	<div class="right-col">  
-		<div style="width: 1000px">
-		
-		<p>
-			<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="right" /></a>
-			<h1>When to describe?</h1>
-			Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
-			
-		</p>
+		<div id="when-to-describe">
+			<p>
+				<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="right" /></a>
+				<h1>When to describe?</h1>
+				Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
+				
+			</p>
 		</div>
 		<div class="clear"></div>
 		<h2>Now, pick an image and start making decisions!</h2>
@@ -60,6 +59,7 @@
 	<div class="right-col">
 		<div id="question">
 		</div>
+		<div id="summary"></div>
 		<div id="describe"></div>
 		<div id="buttons">
 			<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
@@ -93,20 +93,38 @@
 <script type="text/template" id="describe-template">
 	<div>
 		<p>
-			<h3>Recommendation:</h3> 
+			<h3>Based on your answers, the recommended action is to:</h3> 
 			{{ if (describe == "no") { }}
 				<span id="no">Do not describe this image.</span>
 			{{ } else { }}
 				<span id="yes">Describe the image.</span>
 			{{ } }}
 		</p>
-		<p id="more_info">{{= typeof(more_info) != "undefined" ? more_info : "" }}</p>
 		<p id="play_again"><input type="button" id="play_again_button" value="Choose a New Image" /></p>
 	</div>
 </script>
 
-
-
+<script type="text/template" id="questionnaire-summary-template">
+	<div>
+		<p>
+			<h3>Your Answers:</h3> 
+			<ol>
+				{{ _.each(questions, function(question) { }}
+					{{ if (typeof(question["answer_id"]) !== "undefined") { }}	
+						<li>
+							<strong>{{= question["text"] }}</strong>
+							{{ _.each(question["answers"], function(answer) { }}
+								{{ if (answer["answer_id"] == question["answer_id"]) { }}
+									{{= answer["label"]}}
+								{{ } }}
+							{{ }); }}
+						</li>
+					{{ } }}
+				{{ }); }}
+			</ol>
+		</p>
+	</div>
+</script>
 
 <script src="/javascripts/underscore-min.js" type="text/javascript"></script>
 <script src="/javascripts/backbone-min.js" type="text/javascript"></script>

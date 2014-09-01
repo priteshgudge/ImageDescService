@@ -50,9 +50,8 @@ body ul.inline > li {
     *display:inline;
 }
 
-body.active_admin > #questionnaire {
-  width: 1px solid;
-  padding: 1.5em;
+#when-to-describe {
+	max-width: 1000px;
 }
 
 #questionnaireImage {
