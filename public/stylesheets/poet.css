@@ -63,9 +63,9 @@ overflow: auto; /* clears the floated search-bar div */
 
 #main_content {
   min-height: 100%;
-  height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
+  height: auto !important; 
   height: 100%;
-  margin: 0 auto -200px; /* the bottom margin is the negative value of the footer's height */
+  margin: 0 auto -200px; 
 }
 
 #main_content:after {
@@ -73,7 +73,7 @@ overflow: auto; /* clears the floated search-bar div */
   display: block;
 }
 #poet_footer, #main_content:after {
-  height: 200px; /* .push must be the same height as .footer */
+  height: 200px; 
 }
 
 #poet_footer {
