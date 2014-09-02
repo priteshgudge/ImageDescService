@@ -54,6 +54,10 @@ body ul.inline > li {
 	max-width: 1000px;
 }
 
+#when-to-describe img {
+  padding-left: 20px;
+}
+
 #questionnaireImage {
 	max-width: 250px;
 }

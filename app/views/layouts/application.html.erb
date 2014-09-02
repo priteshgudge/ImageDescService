@@ -55,10 +55,10 @@
          </ul>
        </div>
      </div>
-
+     <div id="main_content">
        <%= render "shared/error_display" %>
        <%= yield %>
-
+     </div>
    <div id="poet_footer" class="poet_footer"> <!-- TODO -- footer font smaller !-->
     <p><p>
     <p><br><strong>Legal Disclaimer</strong>: The Poet tool is intended to assist in the creation of accessible content. Use of the Poet tool is limited to activities for creating content that comply with applicable copyright law and contractual agreements. By using this tool, you accept all provisions contained in the <%= link_to('Terms of Use', user_terms_of_service_path, :target => '_blank' ) %>. If you do not wish to be bound by the provisions contained in the Terms of Use, do not use the Poet tool.</p>

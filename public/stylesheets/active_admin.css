@@ -30,6 +30,7 @@ body.active_admin table, body.active_admin caption, body.active_admin tbody, bod
   font-family: inherit;
   vertical-align: baseline; }
 body.active_admin body {
+  height: 100%;
   line-height: 1;
   color: black;
   background: white; }
