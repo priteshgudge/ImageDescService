@@ -229,6 +229,9 @@ $(function(){
         minWidth: "50%",
         open: function() {
           DecisionTreeView.initialize();
+        }, 
+        close: function() {
+          describe.resetDecisionTree();
         }
       });
       dialog.dialog("open");
