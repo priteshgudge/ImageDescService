@@ -1,3 +1,7 @@
+/* remember to define focus styles! */
+body.active_admin :focus {
+    outline: 0.3em solid #44484b;
+}
 body.active_admin span.icon {
   vertical-align: middle;
   display: inline-block; }
@@ -212,7 +216,7 @@ body.active_admin #header {
       position: relative;
       top: -2px; }
   body.active_admin #header a, body.active_admin #header a:link {
-    color: #cdcdcd; }
+    color: #ffffff; }
   body.active_admin #header .header-item {
     float: left;
     top: 2px;
@@ -228,6 +232,7 @@ body.active_admin #header {
       margin-right: 4px;
       font-size: 1.0em;
       position: relative;
+      color: #dedede;
       /* Hover on li, display the ul */
       /* Drop down menus */ }
       body.active_admin #header ul.tabs > li a {
@@ -424,7 +429,7 @@ body.active_admin form {
     font-size: 0.95em;
     font-family: Helvetica, Arial, sans-serif;
     outline: none;
-    padding: 8px 10px 7px; }
+    padding: 5px 5px 5px; }
     body.active_admin form input[type=text]:focus, body.active_admin form input[type=password]:focus, body.active_admin form input[type=email]:focus, body.active_admin form input[type=number]:focus, body.active_admin form input[type=url]:focus, body.active_admin form input[type=tel]:focus, body.active_admin form textarea:focus {
       border: 1px solid #99a2aa;
       box-shadow: 0 0 4px #99a2aa;
@@ -509,7 +514,7 @@ body.active_admin form {
     font-family: Helvetica, Arial, sans-serif;
     line-height: 12px;
     margin-right: 3px;
-    padding: 7px 16px 6px;
+    padding: 5px 16px 6px;
     text-decoration: none;
     -webkit-font-smoothing: antialiased;
     background: #838a90;

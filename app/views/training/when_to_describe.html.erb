@@ -1,3 +1,4 @@
+<% @title="When to Describe?" %>
 <div id= "container">
 	<div class="left-col left-col-nav">
 		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
@@ -47,7 +48,7 @@
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
 	<div class="left-col">
 		<!-- IMAGE -->
-		<img src="/images/decision_tree/0.jpg" class="fancybox-image shadow" id="questionnaireImage" /><br clear="all" />
+		<img src="/images/decision_tree/0.jpg" class="fancybox-image shadow" id="questionnaireImage" alt="Image for Questionnaire" /><br clear="all" />
 		<div class="viewOriginalImage">
 			<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Original Image</a>
 			<a id="contextTrigger" class="fancybox right" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
@@ -75,6 +76,7 @@
 						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
 						{{ if (answer['value'] == "-oth") { }}
 							<input type="text" name="answer_other" id="other" />
+							<label for="other" class="invisible1">Other</label>
 						{{ } }}
 					</div>
 				{{ 	}); }}
