@@ -102,7 +102,7 @@ class EpubParser <  S3UnzippingJob
     end
   
     def get_image_path(book_directory, image_location)
-        get_epub_file_main_directory(book_directory) + "/" + image_location
+        get_epub_file_main_directory(book_directory) + "/" + image_location.gsub("../", "")
     end
   
 end

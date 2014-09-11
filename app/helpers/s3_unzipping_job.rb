@@ -116,6 +116,9 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
     images.each do | image_node |
       yield(image_node)
     end
+    doc.css('img').each do | image_node |
+      yield(image_node)
+    end
   end
 
 
