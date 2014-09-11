@@ -101,6 +101,12 @@ class EpubParser <  S3UnzippingJob
       node.text
     end
   
+    def each_image (doc)
+      doc.css('img').each do | image_node |
+        yield(image_node)
+      end
+    end
+
     def get_image_path(book_directory, image_location)
         get_epub_file_main_directory(book_directory) + "/" + image_location.gsub("../", "")
     end

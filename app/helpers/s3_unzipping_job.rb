@@ -111,17 +111,6 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
     return width, height
   end
 
-  def each_image (doc)
-    images = doc.xpath( doc, "//xmlns:img")
-    images.each do | image_node |
-      yield(image_node)
-    end
-    doc.css('img').each do | image_node |
-      yield(image_node)
-    end
-  end
-
-
   def before(job)
     puts 'before'
   end
