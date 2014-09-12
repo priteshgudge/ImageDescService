@@ -124,7 +124,21 @@ $(function(){
     },
 
     initialize: function() {
-      $(".fancybox").fancybox({aspectRatio: true});
+      $(".fancybox").fancybox({
+        afterShow: function() {
+          $('.fancybox-image').attr("data-image-zoom", this.href);
+          $('.fancybox-image').elevateZoom({
+             zoomType   : "lens",
+             lensShape : "round",
+             lensSize    : 200
+           });
+        }
+      });
+      $('#questionnaireImage').elevateZoom({
+             zoomType   : "lens",
+             lensShape : "round",
+             lensSize    : 200
+           });
     	var q = questions.fetch();
     	var decisionTree = this;
     	q.done(function() {
@@ -218,6 +232,7 @@ $(function(){
       var mainImage = $(evt.currentTarget).attr("href");
       $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
       $("#questionnaireImage").attr("src", mainImage);
+      $("#questionnaireImage").data("zoom-image", mainImage);
       $("#lightboxTrigger").attr("href", mainImage);
       $("#contextTrigger").attr("href", mainImage.replace(".jpg", "_context.jpg"));
       var wWidth = $(window).width();

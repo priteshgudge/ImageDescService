@@ -6,6 +6,10 @@
   <%= javascript_include_tag :defaults %>
   <link rel="stylesheet" type="text/css" href="/javascripts/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
   <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+  <script src='/javascripts/jquery.elevatezoom.js'></script>
+  <style type="text/css">
+  .zoomContainer { z-index: 100000; }
+</style>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   <%= csrf_meta_tag %>
   <% if ENV['POET_HOST'] == 'diagram-center.herokuapp.com' %>
