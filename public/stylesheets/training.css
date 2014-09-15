@@ -1,10 +1,14 @@
 /* Two column for training module. */
 body.active_admin .left-col {
-  width: 250px;
+  width: 20%;
   float: left;
   padding: 15px 10px;
   margin-right: 15px;
   margin-left: 15px;
+}
+
+body.active_admin #questionnaire .left-col {
+  min-width: 410px;
 }
 
 body.active_admin .left-col-nav {
@@ -16,7 +20,7 @@ body.active_admin .left-col-nav {
 }
 
 body.active_admin .right-col {
-  margin-left: 317px; 
+  margin-left: 25%; 
   padding-right: 2em;
 }
 
@@ -58,9 +62,6 @@ body ul.inline > li {
   padding-left: 20px;
 }
 
-#questionnaireImage {
-	max-width: 250px;
-}
 
 
 .hidden-image {
@@ -78,5 +79,6 @@ body ul.inline > li {
 body.active_admin .invisible1 {
   display: none;
 }
+
 
 

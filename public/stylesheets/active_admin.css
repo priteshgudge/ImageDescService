@@ -1,6 +1,9 @@
 /* remember to define focus styles! */
 body.active_admin :focus {
-    outline: 0.3em solid #44484b;
+    border: 1px solid #99a2aa;
+      box-shadow: 0 0 4px #99a2aa;
+      -moz-box-shadow: 0 0 4px #99a2aa;
+      -webkit-box-shadow: 0 0 4px #99a2aa;
 }
 body.active_admin span.icon {
   vertical-align: middle;

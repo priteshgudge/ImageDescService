@@ -101,6 +101,7 @@ $(function(){
     	$("#summary").html("");
       $("#question").show();
     	$("#buttons").show();
+      $("#zoomerReset").trigger("click");
       $("#questionnaire").dialog("close");
     }
 
@@ -124,21 +125,12 @@ $(function(){
     },
 
     initialize: function() {
-      $(".fancybox").fancybox({
-        afterShow: function() {
-          $('.fancybox-image').attr("data-image-zoom", this.href);
-          $('.fancybox-image').elevateZoom({
-             zoomType   : "lens",
-             lensShape : "round",
-             lensSize    : 200
-           });
-        }
+      $('.fancybox').fancybox({ 
+        'scrolling'     : 'no',
+        'overlayOpacity': 0.1,
+        'showCloseButton'   : true
       });
-      $('#questionnaireImage').elevateZoom({
-             zoomType   : "lens",
-             lensShape : "round",
-             lensSize    : 200
-           });
+      
     	var q = questions.fetch();
     	var decisionTree = this;
     	q.done(function() {
@@ -229,19 +221,40 @@ $(function(){
 
     startDecisionTreeForImage: function(evt) {
       evt.preventDefault();
+
+      //Set image.
       var mainImage = $(evt.currentTarget).attr("href");
       $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
       $("#questionnaireImage").attr("src", mainImage);
-      $("#questionnaireImage").data("zoom-image", mainImage);
-      $("#lightboxTrigger").attr("href", mainImage);
-      $("#contextTrigger").attr("href", mainImage.replace(".jpg", "_context.jpg"));
-      var wWidth = $(window).width();
+
+      images.bindContextToggle(images.getToggleImageSource(mainImage));
+      images.openDialog();
+    },
+
+    bindContextToggle: function(imageSrc) {
+      $("#lightboxTrigger").attr("href", imageSrc);
+      $("#contextToggle").off("click");
+      $("#contextToggle").attr("href", imageSrc);
+      $("#contextToggle").on("click", function(evt) {
+        evt.preventDefault();
+        $("#questionnaireImage").attr("src", imageSrc);
+        images.bindContextToggle(images.getToggleImageSource(imageSrc));
+        $("#zoomerReset").trigger("click");
+      });
+    },
+
+    getToggleImageSource: function(currentSrc) {
+      console.log(currentSrc + ": " + currentSrc.indexOf("_context"));
+      return currentSrc.indexOf("_context") > -1 ? currentSrc.replace("_context.jpg", ".jpg") 
+        : currentSrc.replace(".jpg", "_context.jpg");
+    },
+
+    openDialog: function() {
       var dialog = $("#questionnaire").dialog({
         autoOpen: false,
         modal: true,
-        width: wWidth * 0.50,
-        minHeight: "50%",
-        minWidth: "50%",
+        width: 850,
+        height: 550,
         open: function() {
           DecisionTreeView.initialize();
         }, 
@@ -251,7 +264,6 @@ $(function(){
       });
       dialog.dialog("open");
     }
-
   });
   // Create our global view for recommendation.
   var images = new ImageGalleryView;

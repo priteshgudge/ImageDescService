@@ -48,10 +48,40 @@
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
 	<div class="left-col">
 		<!-- IMAGE -->
-		<img src="/images/decision_tree/0.jpg" class="shadow" id="questionnaireImage" alt="Image for Questionnaire" data-zoom-image="/images/decision_tree/0.jpg" /><br clear="all" />
+		<div id="zoomer" class="zoomer-container">
+			<!-- ZOOMER CONTENTS -->
+			<div class="zoomer">
+				<!-- HOLDER -->
+				<div class="holder">
+					<!-- IMAGE -->
+					<div class="image"><img src="/images/decision_tree/0.jpg" id="questionnaireImage" class="target" alt="Image for Questionnaire" /></div>
+					<!-- CONSOLE -->
+					<div class="console">
+						<ul class="left">	
+							<li>
+								<a id="zoomerIn" href="#"></a>
+								<a id="zoomerOut" href="#"></a>
+							</li>				
+							<li>
+								<a id="zoomerUp" href="#"></a>
+								<a id="zoomerDown" href="#"></a>
+								<a id="zoomerLeft" href="#"></a>
+								<a id="zoomerRight" href="#"></a>		
+							</li>
+						</ul>
+						<ul class="right">
+							<li>
+								<a id="zoomerReset" href="#"></a>
+							</li>
+						</ul>
+					</div>	<!-- end console -->
+				</div>	<!-- end holder -->
+			</div>	<!-- end zoomer -->
+		</div>	<!-- end container -->
+		<br clear="all" />
 		<div class="viewOriginalImage">
-			<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Original Image</a>
-			<a id="contextTrigger" class="fancybox right" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+			<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
+			<a id="contextToggle" class="right" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
 		</div>
 	</div>
 	<div class="right-col">
@@ -64,6 +94,8 @@
 		</div>
 	</div>
 </div>
+
+
 <!-- Templates -->
 <script type="text/template" id="question-template">
 	<div class="question">
@@ -125,6 +157,31 @@
 	</div>
 </script>
 
+
+
+
 <script src="/javascripts/underscore-min.js" type="text/javascript"></script>
 <script src="/javascripts/backbone-min.js" type="text/javascript"></script>
 <script src="/javascripts/training.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+			$(document).ready(function(){
+			
+				<!-- START ZOOMER -->
+				$.zoomer({
+					defaultWidthValue: 402,				<!-- INITIAL VIEWER IMAGE WIDTH (IN PIXELS) -->
+					defaultHeightValue: 402,			<!-- INITIAL VIEWER IMAGE HEIGHT (IN PIXELS) -->
+					maxWidthValue: 1000,				<!-- MAXIMUM IMAGE WIDTH VALUE (IN PIXELS) -->
+					maxHeightValue: 1000,				<!-- MAXIMUM IMAGE HEIGHT VALUE (IN PIXELS) -->
+					moveValue: 50,						<!-- MOVE AMOUNT (IN PIXELS) -->
+					zoomValue: 1.4,						<!-- ZOOMING FACTOR (Must be more than 1) -->
+					thumbnailsWidthValue: 62,			<!-- THUMBNAILS WIDTH (IN PIXELS) -->
+					thumbnailsHeightValue: 62,			<!-- THUMBNAILS HEIGHT (IN PIXELS) -->
+					thumbnailsBoxWidthValue: 410,		<!-- THUMBNAILS CONTENT BOX WIDTH (IN PIXELS) -->
+					zoomerTheme: 'light'				<!-- THEME STYLE - OPTIONS: 'dark' 'light' 'compact' -->
+				});
+
+			});
+		</script>
+
+
