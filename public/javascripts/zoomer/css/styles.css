@@ -1,0 +1,35 @@
+﻿
+/* ---------- Zoomer ---------- */
+.zoomer .holder {
+	border: 1px solid #e6e6e6;
+	background: #ffffff;
+}
+.zoomer .holder .image {
+	overflow: hidden;
+}
+
+/* console */
+.zoomer .holder .console {
+	height: 35px;
+	padding-top: 7px;
+	background-color:#ffffff;
+}
+.zoomer .holder .console .left {
+	margin: 0;
+	float: left;
+	padding-left: 6px;
+}
+.zoomer .holder .console .right {
+	margin: 0;
+	float: right;
+	padding-right: 2px;
+}
+.zoomer .holder .console li {
+	list-style-type: none;
+	float: left;
+	margin-right: 6px;
+}
+.zoomer .holder .console li a {
+	float: left;
+	cursor: pointer;
+}
