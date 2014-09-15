@@ -155,6 +155,8 @@ $(function(){
     			var currentQuestionId = question.model.get("question_id");
     			DecisionTreeView.loadQuestion(next);
     			DecisionTreeView.setLastQuestion(question.model, currentQuestionId);
+          var inputField = $("#answers").find("input[type=radio]").eq(0).select();
+          inputField.focus();
     		}
     	} else {
     		alert("Answer is required.");

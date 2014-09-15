@@ -156,7 +156,6 @@
 		};
 
 		$.zoomer.stopDrag = function(i) {
-			console.log(i);
 			if (i.data('draggable')) {
 				i.draggable("destroy");
 				i.css("cursor", "default");
