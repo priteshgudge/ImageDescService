@@ -228,27 +228,36 @@ $(function(){
       var mainImage = $(evt.currentTarget).attr("href");
       $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
       $("#questionnaireImage").attr("src", mainImage);
-
-      images.bindContextToggle(images.getToggleImageSource(mainImage));
+      images.bindImageToggle(images.getToggleImageSource(mainImage));
       images.openDialog();
     },
 
-    bindContextToggle: function(imageSrc) {
-      $("#lightboxTrigger").attr("href", imageSrc);
+    bindImageToggle: function(imageSrc) {
+
+      var toggleImageSource = images.getToggleImageSource(imageSrc);
+      $("#lightboxTrigger").attr("href", toggleImageSource);
       $("#contextToggle").off("click");
       $("#contextToggle").attr("href", imageSrc);
       $("#contextToggle").on("click", function(evt) {
+        $(this).html(images.getToggleImageLabel(imageSrc));
         evt.preventDefault();
         $("#questionnaireImage").attr("src", imageSrc);
-        images.bindContextToggle(images.getToggleImageSource(imageSrc));
-        $("#zoomerReset").trigger("click");
+        images.bindImageToggle(toggleImageSource);
+        
       });
     },
 
     getToggleImageSource: function(currentSrc) {
-      console.log(currentSrc + ": " + currentSrc.indexOf("_context"));
-      return currentSrc.indexOf("_context") > -1 ? currentSrc.replace("_context.jpg", ".jpg") 
+      return images.isContext(currentSrc) ? currentSrc.replace("_context.jpg", ".jpg") 
         : currentSrc.replace(".jpg", "_context.jpg");
+    },
+
+    getToggleImageLabel: function(currentSrc) {
+      return images.isContext(currentSrc) ? "View Image" : "View Image In Context";
+    },
+
+    isContext: function(currentSrc) {
+      return currentSrc.indexOf("_context") > -1;
     },
 
     openDialog: function() {
