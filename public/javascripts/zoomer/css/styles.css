@@ -10,27 +10,27 @@
 }
 
 /* console */
-.zoomer .holder .console {
+body.active_admin .console {
 	height: 35px;
 	padding-top: 7px;
 	background-color:#ffffff;
 }
-.zoomer .holder .console .left {
+.zoomer .console .left {
 	margin: 0;
 	float: left;
 	padding-left: 6px;
 }
-.zoomer .holder .console .right {
+.zoomer .console .right {
 	margin: 0;
 	float: right;
 	padding-right: 2px;
 }
-.zoomer .holder .console li {
+.zoomer .console li {
 	list-style-type: none;
 	float: left;
 	margin-right: 6px;
 }
-.zoomer .holder .console li a {
+.zoomer .console li a {
 	float: left;
 	cursor: pointer;
 }

@@ -103,6 +103,7 @@ $(function(){
     	$("#buttons").show();
       $("#zoomerReset").trigger("click");
       $("#questionnaire").dialog("close");
+      $("#contextToggle").html("View Image In Context");
     }
 
   });
@@ -242,10 +243,10 @@ $(function(){
       $("#contextToggle").on("click", function(evt) {
         $(this).html(images.getToggleImageLabel(imageSrc));
         evt.preventDefault();
+        $("#zoomerReset").trigger("click");
         $("#questionnaireImage").attr("src", imageSrc);
-        images.updateZoomer();
         images.bindImageToggle(toggleImageSource);
-        
+        images.updateZoomer();
       });
     },
 
@@ -287,11 +288,7 @@ $(function(){
           if (pic_real_width > 402) {
             images.updateWidth();
           } else {
-            console.log("adjusting height");
-            $("#questionnaireImage").css("width", "");
-            $(".image-resize", "#image").css("height", 402);
-            $(".image-resize").css("width", $("#questionnaireImage").width());
-            $.zoomer.setSettings({defaultWidthValue: $("#questionnaireImage").width(), defaultHeightValue: 402});
+            images.updateHeight();
           }
       });
     },
@@ -299,20 +296,22 @@ $(function(){
     updateWidth: function() {
       $("#questionnaireImage").css("height", "");
       $(".image-resize").css("width", 402);
+      $("#zoomer").css("width", 402);
       var newHeight = $("#questionnaireImage").height();
       if (newHeight > 402) {
         images.updateHeight();
       } else {
-        $("#image").css("height", $("#questionnaireImage").height());
+        $(".image-resize").css("height", $("#questionnaireImage").height());
          $.zoomer.setSettings({defaultWidthValue: 402, defaultHeightValue: newHeight});
       }
     },
 
     updateHeight: function() {
       $("#questionnaireImage").css("width", "");
-      $("#questionnaireImage").css("height", 402);
+      $(".image-resize").css("height", 402);
       var newWidth = $("#questionnaireImage").width();
       $(".image-resize").css("width", newWidth);
+      $("#zoomer").css("width", newWidth);
       $.zoomer.setSettings({defaultHeightValue: 402, defaultWeightValue: newWidth});
     }
 
