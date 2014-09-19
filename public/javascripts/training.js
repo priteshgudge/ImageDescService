@@ -227,10 +227,8 @@ $(function(){
 
       //Set image.
       var mainImage = $(evt.currentTarget).attr("href");
-      $("#questionnaireImage").attr('src','/javascripts/fancybox/fancybox_loading.gif');
-      $("#questionnaireImage").attr("src", mainImage);
       images.bindImageToggle(images.getToggleImageSource(mainImage));
-      images.updateZoomer();
+      $.zoomer.replaceImage(mainImage);
       images.openDialog();
     },
 
@@ -243,10 +241,9 @@ $(function(){
       $("#contextToggle").on("click", function(evt) {
         $(this).html(images.getToggleImageLabel(imageSrc));
         evt.preventDefault();
-        $("#zoomerReset").trigger("click");
-        $("#questionnaireImage").attr("src", imageSrc);
+        console.log(imageSrc);
+        $.zoomer.replaceImage(imageSrc);
         images.bindImageToggle(toggleImageSource);
-        images.updateZoomer();
       });
     },
 
@@ -277,42 +274,6 @@ $(function(){
         }
       });
       dialog.dialog("open");
-    },
-
-    updateZoomer: function() {
-      //Get image width and height.
-      var pic_real_width, pic_real_height;
-      $("<img/>").attr("src", $("#questionnaireImage").attr("src")).load(function() {
-          pic_real_width = this.width;   
-          pic_real_height = this.height; 
-          if (pic_real_width > 402) {
-            images.updateWidth();
-          } else {
-            images.updateHeight();
-          }
-      });
-    },
-
-    updateWidth: function() {
-      $("#questionnaireImage").css("height", "");
-      $(".image-resize").css("width", 402);
-      $("#zoomer").css("width", 402);
-      var newHeight = $("#questionnaireImage").height();
-      if (newHeight > 402) {
-        images.updateHeight();
-      } else {
-        $(".image-resize").css("height", $("#questionnaireImage").height());
-         $.zoomer.setSettings({defaultWidthValue: 402, defaultHeightValue: newHeight});
-      }
-    },
-
-    updateHeight: function() {
-      $("#questionnaireImage").css("width", "");
-      $(".image-resize").css("height", 402);
-      var newWidth = $("#questionnaireImage").width();
-      $(".image-resize").css("width", newWidth);
-      $("#zoomer").css("width", newWidth);
-      $.zoomer.setSettings({defaultHeightValue: 402, defaultWeightValue: newWidth});
     }
 
   });

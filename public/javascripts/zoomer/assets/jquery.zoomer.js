@@ -195,23 +195,57 @@
 		
 		/* IMAGE REPLACEMENT & PRETTYLOADER */
 		$.prettyLoader();
-		z.find(".thumbs img").click(function() {
+		$.zoomer.replaceImage = function(newImageSrc) {
 			$.zoomer.stopDrag(i);
 			$.prettyLoader.show();
-			var id = $(this).attr("id");
 			i.stop(true, true).animate({height: settings.defaultHeightValue, width: settings.defaultWidthValue, top: 0, left: 0}, 300, function() {
 				i.stop(true, true).fadeTo('fast', 0, function() {
-					var $newImg = $("<img src='" + id + "' style='display:none;'>");
+					var $newImg = $("<img src='" + newImageSrc + "' style='display:none;'>");
 					$newImg.load(function() {
-						i.attr("src", id);
+						i.attr("src", newImageSrc);
+						$.zoomer.updateImageSizes(i);
 						i.stop(true, true).fadeTo('slow', 1, 'linear');
 						$.prettyLoader.hide();
 					});
 				});
 			});
-		});
-		
-		return this;
+		};
+
+		$.zoomer.updateImageSizes = function (i) {
+	      //Get image width and height.
+	      var pic_real_width, pic_real_height;
+	      $("<img/>").attr("src", $(i).attr("src")).load(function() {
+	          pic_real_width = this.width;   
+	          pic_real_height = this.height; 
+	          if (pic_real_width > $.zoomer.settings.maxWidthValue) {
+	            $.zoomer.updateWidth(i);
+	          } else {
+	            $.zoomer.updateHeight(i);
+	          }
+	      });
+	    };
+
+	    $.zoomer.updateWidth = function(i) {
+	      $(i).css("height", "");
+	      $(".image-resize").css("width", $.zoomer.settings.maxWidthValue);
+	      $("#zoomer").css("width", $.zoomer.settings.maxWidthValue);
+	      var newHeight = $(i).height();
+	      if (newHeight > $.zoomer.settings.maxWidthValue) {
+	        $.zoomer.updateHeight(i);
+	      } else {
+	        $(".image-resize").css("height", $(i).height());
+	         $.zoomer.setSettings({defaultWidthValue: $.zoomer.settings.maxWidthValue, defaultHeightValue: newHeight});
+	      }
+	    };
+
+	    $.zoomer.updateHeight = function(i) {
+	      $(i).css("width", "");
+	      $(".image-resize").css("height", $.zoomer.settings.maxHeightValue);
+	      var newWidth = $(i).width();
+	      $(".image-resize").css("width", newWidth);
+	      $("#zoomer").css("width", newWidth);
+	      $.zoomer.setSettings({defaultHeightValue: $.zoomer.settings.maxHeightValue, defaultWeightValue: newWidth});
+	    };
 	};
 
 })(jQuery);
