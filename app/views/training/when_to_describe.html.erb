@@ -46,16 +46,15 @@
 </div>
 <div class="clear"></div>
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
-	<div class="left-col">
+	<div class="left-col" style="height: 100%;">
 		<!-- IMAGE -->
 		<div id="zoomer" class="zoomer-container">
 			<!-- ZOOMER CONTENTS -->
 			<div class="zoomer">
 				<!-- HOLDER -->
-				<div class="holder">
+				<div class="holder image-resize" id="holder">
 					<!-- IMAGE -->
-					<div class="image"><img src="/images/decision_tree/0.jpg" id="questionnaireImage" class="target" alt="Image for Questionnaire" /></div>
-					<!-- CONSOLE -->
+					<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="questionnaireImage" class="target image-resize" alt="Image for Questionnaire" /></div>
 					<div class="console">
 						<ul class="left">	
 							<li>
@@ -75,15 +74,15 @@
 							</li>
 						</ul>
 					</div>	<!-- end console -->
+					<br clear="all" />
+					<div class="viewOriginalImage">
+						<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
+						<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+					</div>
 				</div>	<!-- end holder -->
-				<br clear="all" />
-				<div class="viewOriginalImage">
-					<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
-					<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
-				</div>
 			</div>	<!-- end zoomer -->
 		</div>	<!-- end container -->
-		
+		<div class="clear"></div>
 	</div>
 	<div class="right-col">
 		<div id="question">
@@ -168,18 +167,17 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 	
-		<!-- START ZOOMER -->
 		$.zoomer({
-			defaultWidthValue: 402,				<!-- INITIAL VIEWER IMAGE WIDTH (IN PIXELS) -->
-			defaultHeightValue: 402,			<!-- INITIAL VIEWER IMAGE HEIGHT (IN PIXELS) -->
-			maxWidthValue: 1000,				<!-- MAXIMUM IMAGE WIDTH VALUE (IN PIXELS) -->
-			maxHeightValue: 1000,				<!-- MAXIMUM IMAGE HEIGHT VALUE (IN PIXELS) -->
-			moveValue: 50,						<!-- MOVE AMOUNT (IN PIXELS) -->
-			zoomValue: 1.4,						<!-- ZOOMING FACTOR (Must be more than 1) -->
-			thumbnailsWidthValue: 62,			<!-- THUMBNAILS WIDTH (IN PIXELS) -->
-			thumbnailsHeightValue: 62,			<!-- THUMBNAILS HEIGHT (IN PIXELS) -->
-			thumbnailsBoxWidthValue: 410,		<!-- THUMBNAILS CONTENT BOX WIDTH (IN PIXELS) -->
-			zoomerTheme: 'light'				<!-- THEME STYLE - OPTIONS: 'dark' 'light' 'compact' -->
+			defaultWidthValue: 402,
+			defaultHeightValue: 402,
+			maxWidthValue: 1000,
+			maxHeightValue: 1000,
+			moveValue: 50,
+			zoomValue: 1.4,
+			thumbnailsWidthValue: 62,
+			thumbnailsHeightValue: 62,
+			thumbnailsBoxWidthValue: 410,
+			zoomerTheme: 'light'
 		});
 
 	});

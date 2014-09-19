@@ -3,6 +3,7 @@
 .zoomer .holder {
 	border: 1px solid #e6e6e6;
 	background: #ffffff;
+	min-width: 250px;
 }
 .zoomer .holder .image {
 	overflow: hidden;

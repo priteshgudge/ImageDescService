@@ -80,5 +80,9 @@ body.active_admin .invisible1 {
   display: none;
 }
 
+body.active_admin .holder {
+  text-align: center;
+} 
+
 
 
