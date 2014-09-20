@@ -14,6 +14,8 @@
 			/*----- DEFAULT SETTINGS - NOTE: HTML SETTINGS WILL OVERWRITE THESE ONES -----*/
 			defaultWidthValue: 361,				/*	INITIAL VIEWER IMAGE WIDTH (IN PIXELS) */
 			defaultHeightValue: 361,			/*	INITIAL VIEWER IMAGE HEIGHT (IN PIXELS) */
+			defaultMaxWidthValue: 361,
+			defaultMaxHeightValue: 361,
 			maxWidthValue: 1000,				/*	MAXIMUM WIDTH VALUE (IN PIXELS) */
 			maxHeightValue: 1000,				/*	MAXIMUM HEIGHT VALUE (IN PIXELS) */
 			moveValue: 50,						/*	MOVE AMOUNT (IN PIXELS) */
@@ -217,7 +219,7 @@
 	      $("<img/>").attr("src", $(i).attr("src")).load(function() {
 	          pic_real_width = this.width;   
 	          pic_real_height = this.height; 
-	          if (pic_real_width > $.zoomer.settings.maxWidthValue) {
+	          if (pic_real_width > $.zoomer.settings.defaultMaxWidthValue) {
 	            $.zoomer.updateWidth(i);
 	          } else {
 	            $.zoomer.updateHeight(i);
@@ -227,24 +229,24 @@
 
 	    $.zoomer.updateWidth = function(i) {
 	      $(i).css("height", "");
-	      $(".image-resize").css("width", $.zoomer.settings.maxWidthValue);
-	      $("#zoomer").css("width", $.zoomer.settings.maxWidthValue);
+	      $(".image-resize").css("width", $.zoomer.settings.defaultMaxWidthValue);
+	      $("#zoomer").css("width", $.zoomer.settings.defaultMaxWidthValue);
 	      var newHeight = $(i).height();
-	      if (newHeight > $.zoomer.settings.maxWidthValue) {
+	      if (newHeight > $.zoomer.settings.defaultMaxWidthValue) {
 	        $.zoomer.updateHeight(i);
 	      } else {
 	        $(".image-resize").css("height", $(i).height());
-	         $.zoomer.setSettings({defaultWidthValue: $.zoomer.settings.maxWidthValue, defaultHeightValue: newHeight});
+	         $.zoomer.setSettings({defaultWidthValue: $.zoomer.settings.defaultMaxWidthValue, defaultHeightValue: newHeight});
 	      }
 	    };
 
 	    $.zoomer.updateHeight = function(i) {
 	      $(i).css("width", "");
-	      $(".image-resize").css("height", $.zoomer.settings.maxHeightValue);
+	      $(".image-resize").css("height", $.zoomer.settings.defaultMaxHeightValue);
 	      var newWidth = $(i).width();
 	      $(".image-resize").css("width", newWidth);
 	      $("#zoomer").css("width", newWidth);
-	      $.zoomer.setSettings({defaultHeightValue: $.zoomer.settings.maxHeightValue, defaultWeightValue: newWidth});
+	      $.zoomer.setSettings({defaultHeightValue: $.zoomer.settings.defaultMaxHeightValue, defaultWeightValue: newWidth});
 	    };
 	};
 
