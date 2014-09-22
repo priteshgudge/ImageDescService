@@ -6,6 +6,10 @@ class TrainingController < ApplicationController
   	render :json => JSON.parse(File.read("#{Rails.root}/public/ImageSortingTool.json"))['questionnaire']['questions']
   end
 
+  def decision_tree_images
+    render :json => JSON.parse(File.read("#{Rails.root}/public/DecisionTreeImages.json"))['gallery']['images']
+  end
+
   def tools_and_exapmles
   end
 

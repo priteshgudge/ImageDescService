@@ -116,6 +116,8 @@ $(function(){
     
     lastImage: -1,
 
+    selectedImage: -1,
+
     el: $("#questionnaire"),
 
     // The DOM events specific to an item.
@@ -125,7 +127,9 @@ $(function(){
       "click .answer"	  : "setAnswer"
     },
 
-    initialize: function() {
+    initialize: function(decisionTreeImage) {
+      this.selectedImage = decisionTreeImage;
+
       $('.fancybox').fancybox({ 
         'scrolling'     : 'no',
         'overlayOpacity': 0.1,
@@ -192,9 +196,11 @@ $(function(){
       summary.model = questions;
       $("#summary").html(summary.render().el);  
 
+      //Display recommendation
       describe.model = new Answer(answer);
       $("#describe").html(describe.render().el);
       describe.delegateEvents();
+      $("#comments").html("<h3>Comments From the Experts:</h3>" + DecisionTreeView.selectedImage.get("comments"));
       $("#buttons").hide();
       $("#question").html("");
     }
@@ -204,10 +210,33 @@ $(function(){
   // Finally, we kick things off by creating the **App**.
   var DecisionTreeView = new DecisionTreeView;
 
+  var DecisionTreeImage = Backbone.Model.extend({
+
+  });
+
+  // Decision Tree Image Collection
+  // ---------------
+  var DecisionTreeImageList = Backbone.Collection.extend({
+
+    // Reference to this collection's model.
+    model: DecisionTreeImage,
+
+    // load the questions.
+    url: '/training/decision_tree_images'
+
+  });
+
+  // Create our global collection of images
+  var images = new DecisionTreeImageList;
+
   //Image gallery.
   //--------------
   var ImageGalleryView = Backbone.View.extend({
+
     el: $("#imageGallery"),
+
+    // Cache the template function for a single item.
+    template: _.template($('#image-gallery-template').html()),
 
     // The DOM events specific to an item.
     events: {
@@ -215,61 +244,88 @@ $(function(){
     },
 
     initialize: function() {
-      //Preload regular size images.
-      for (var i=0; i<=7; i++) {
+
+      var q = images.fetch();
+      var gallery = this;
+      q.done(function() {
+        gallery.render();
+      });
+
+      _.each(images, function(img) {
         var newImage = new Image();
-        newImage.src = "/images/decision_tree/" + i + ".jpg";
-        var newImage = new Image();
-        newImage.src = "/images/decision_tree/" + i + "_context.jpg";
-      }
+        newImage.src = img["path"];
+        var newContextImage = new Image();
+        newContextImage.src = img["context_image_path"];
+      });
+
+      //Defaults for zoomer.
+      $.zoomer({
+        defaultWidthValue: 402,
+        defaultHeightValue: 402,
+        defaultMaxWidthValue: 402,
+        defaultMaxHeightValue: 402,
+        maxWidthValue: 1000,
+        maxHeightValue: 1000,
+        moveValue: 50,
+        zoomValue: 1.4,
+        thumbnailsWidthValue: 62,
+        thumbnailsHeightValue: 62,
+        thumbnailsBoxWidthValue: 410,
+        zoomerTheme: 'light'
+      });
+    },
+
+    // Render the gallery
+    render: function() {
+      this.$el.html(this.template({images: images.toJSON()}));
+      return this;
     },
 
     startDecisionTreeForImage: function(evt) {
       evt.preventDefault();
-
       //Set image.
-      var mainImage = $(evt.currentTarget).attr("href");
-      images.bindImageToggle(images.getToggleImageSource(mainImage));
-      $.zoomer.replaceImage(mainImage);
-      images.openDialog();
+      var imageId = $(evt.currentTarget).data("image-id").toString();
+      var selectedImage = images.findWhere({"image_id":imageId});
+      imageGallery.bindImageToggle(imageGallery.getToggleImageSource(selectedImage.get("path")));
+      $.zoomer.replaceImage(selectedImage.get("path"));
+      imageGallery.openDialog(selectedImage);
     },
 
     bindImageToggle: function(imageSrc) {
 
-      var toggleImageSource = images.getToggleImageSource(imageSrc);
+      var toggleImageSource = imageGallery.getToggleImageSource(imageSrc);
       $("#lightboxTrigger").attr("href", toggleImageSource);
       $("#contextToggle").off("click");
       $("#contextToggle").attr("href", imageSrc);
       $("#contextToggle").on("click", function(evt) {
-        $(this).html(images.getToggleImageLabel(imageSrc));
+        $(this).html(imageGallery.getToggleImageLabel(imageSrc));
         evt.preventDefault();
-        console.log(imageSrc);
         $.zoomer.replaceImage(imageSrc);
-        images.bindImageToggle(toggleImageSource);
+        imageGallery.bindImageToggle(toggleImageSource);
       });
     },
 
     getToggleImageSource: function(currentSrc) {
-      return images.isContext(currentSrc) ? currentSrc.replace("_context.jpg", ".jpg") 
+      return imageGallery.isContext(currentSrc) ? currentSrc.replace("_context.jpg", ".jpg") 
         : currentSrc.replace(".jpg", "_context.jpg");
     },
 
     getToggleImageLabel: function(currentSrc) {
-      return images.isContext(currentSrc) ? "View Image" : "View Image In Context";
+      return imageGallery.isContext(currentSrc) ? "View Image" : "View Image In Context";
     },
 
     isContext: function(currentSrc) {
       return currentSrc.indexOf("_context") > -1;
     },
 
-    openDialog: function() {
+    openDialog: function(selectedImage) {
       var dialog = $("#questionnaire").dialog({
         autoOpen: false,
         modal: true,
         width: 850,
         height: 550,
         open: function() {
-          DecisionTreeView.initialize();
+          DecisionTreeView.initialize(selectedImage);
         }, 
         close: function() {
           describe.resetDecisionTree();
@@ -280,6 +336,6 @@ $(function(){
 
   });
   // Create our global view for recommendation.
-  var images = new ImageGalleryView;
+  var imageGallery = new ImageGalleryView;
 
 });

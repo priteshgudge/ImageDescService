@@ -221,8 +221,12 @@
 	          pic_real_height = this.height; 
 	          if (pic_real_width > $.zoomer.settings.defaultMaxWidthValue) {
 	            $.zoomer.updateWidth(i);
-	          } else {
+	          } else if (pic_real_height > $.zoomer.settings.defaultMaxHeightValue) {
 	            $.zoomer.updateHeight(i);
+	          } else {
+	          	$(".image-resize").css("height", pic_real_height);
+	          	$(".image-resize").css("width", pic_real_width);
+	         	$.zoomer.setSettings({defaultWidthValue: pic_real_width, defaultHeightValue: pic_real_height});
 	          }
 	      });
 	    };
@@ -232,7 +236,7 @@
 	      $(".image-resize").css("width", $.zoomer.settings.defaultMaxWidthValue);
 	      $("#zoomer").css("width", $.zoomer.settings.defaultMaxWidthValue);
 	      var newHeight = $(i).height();
-	      if (newHeight > $.zoomer.settings.defaultMaxWidthValue) {
+	      if (newHeight > $.zoomer.settings.defaultMaxHeightValue) {
 	        $.zoomer.updateHeight(i);
 	      } else {
 	        $(".image-resize").css("height", $(i).height());
