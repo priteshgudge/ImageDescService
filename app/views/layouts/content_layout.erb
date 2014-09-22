@@ -191,11 +191,11 @@
                     //insert altimg and alttext attributes
                     xmlDoc=loadXMLString(mml);
                     newatt=xmlDoc.createAttribute("altimg");
-                    newatt.nodeValue="";
+                    newatt.value="";
                     x=xmlDoc.getElementsByTagName("math");
                     x[0].setAttributeNode(newatt);
                     newatt=xmlDoc.createAttribute("alttext");
-                    newatt.nodeValue= altText;
+                    newatt.value= altText;
                     x[0].setAttributeNode(newatt);
                     var output = xmlToString(xmlDoc);
                     contents = my_editor.getData();
