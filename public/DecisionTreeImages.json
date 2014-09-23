@@ -48,7 +48,7 @@
         "context_image_path": "/images/decision_tree/5_context.jpg",
         "thumb_image_path": "/images/decision_tree/5_thumb.jpg",
         "alt": "Pie Chart",
-        "comments": "<p>The image is a &quot;cartoon&quot; that requires a text description.</p><p>The image is found in a children’s picture book and contains essential information critical for understanding the story. The image can be made fully accessible via a text description including a transcription of the embedded text and supplemental details about the relationship between characters in dialogue.</p>"
+        "comments": "<p>The image is a &quot;cartoon&quot; that requires a text description.</p><p>The image is found in a children’s picture book and contains information that helps paint a more comprehensive portrait of the story. The image can be made fully accessible via a text description that provides supplemental details about the relationships and mannerisms between characters in the book.</p>"
       },
       {
         "image_id":"6",
