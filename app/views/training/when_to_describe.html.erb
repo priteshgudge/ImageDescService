@@ -21,52 +21,54 @@
 </div>
 <div class="clear"></div>
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
-	<div class="left-col" style="height: 100%;">
-		<!-- IMAGE -->
-		<div id="zoomer" class="zoomer-container">
-			<!-- ZOOMER CONTENTS -->
-			<div class="zoomer">
-				<!-- HOLDER -->
-				<div class="holder image-resize" id="holder">
-					<!-- IMAGE -->
-					<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="target" class="target image-resize" alt="Image for Questionnaire" /></div>
-				</div>	<!-- end holder -->
-				<div class="console">
-					<ul class="left">	
-						<li>
-							<a id="zoomerIn" href="#"></a>
-							<a id="zoomerOut" href="#"></a>
-						</li>				
-						<li>
-							<a id="zoomerUp" href="#"></a>
-							<a id="zoomerDown" href="#"></a>
-							<a id="zoomerLeft" href="#"></a>
-							<a id="zoomerRight" href="#"></a>		
-						</li>
-					</ul>
-					<ul class="right">
-						<li>
-							<a id="zoomerReset" href="#"></a>
-						</li>
-					</ul>
-				</div>	<!-- end console -->
-				<br clear="all" />
-				<div class="viewOriginalImage">
-					<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
-					<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+	<div id="container2">
+		<div id="container1">
+			<div id="col1">
+				<!-- IMAGE -->
+				<div id="zoomer" class="zoomer-container">
+					<!-- ZOOMER CONTENTS -->
+					<div class="zoomer">
+						<!-- HOLDER -->
+						<div class="holder image-resize" id="holder">
+							<!-- IMAGE -->
+							<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="target" class="target image-resize" alt="Image for Questionnaire" /></div>
+						</div>	<!-- end holder -->
+						<div class="console">
+							<ul class="left">	
+								<li>
+									<a id="zoomerIn" href="#"></a>
+									<a id="zoomerOut" href="#"></a>
+								</li>				
+								<li>
+									<a id="zoomerUp" href="#"></a>
+									<a id="zoomerDown" href="#"></a>
+									<a id="zoomerLeft" href="#"></a>
+									<a id="zoomerRight" href="#"></a>		
+								</li>
+							</ul>
+							<ul class="right">
+								<li>
+									<a id="zoomerReset" href="#"></a>
+								</li>
+							</ul>
+						</div>	<!-- end console -->
+						<br clear="all" />
+						<div class="viewOriginalImage">
+							<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
+							<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+						</div>
+					</div>	<!-- end zoomer -->
+				</div>	<!-- end container -->
+				<div class="clear"></div>
+			</div>
+			<div id="col2">
+				<div id="question"></div>
+				<div id="summary"></div>
+				<div id="describe"></div>
+				<div id="buttons">
+					<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
 				</div>
-			</div>	<!-- end zoomer -->
-		</div>	<!-- end container -->
-		<div class="clear"></div>
-	</div>
-	<div class="right-col" style="height: 100%;">
-		<div id="question">
-		</div>
-		<div id="summary"></div>
-		<div id="describe"></div>
-
-		<div id="buttons">
-			<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+			</div>
 		</div>
 	</div>
 </div>

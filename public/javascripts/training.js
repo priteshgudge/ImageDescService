@@ -260,10 +260,10 @@ $(function(){
 
       //Defaults for zoomer.
       $.zoomer({
-        defaultWidthValue: 402,
-        defaultHeightValue: 402,
-        defaultMaxWidthValue: 402,
-        defaultMaxHeightValue: 402,
+        defaultWidthValue: 350,
+        defaultHeightValue: 350,
+        defaultMaxWidthValue: 350,
+        defaultMaxHeightValue: 350,
         maxWidthValue: 1000,
         maxHeightValue: 1000,
         moveValue: 50,
