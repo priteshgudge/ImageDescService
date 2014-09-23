@@ -1,4 +1,9 @@
 <% book_fragment_id=@book.book_fragments.first.id %>
-
-hi
-
+<%
+	book = Book.find session[:book_id] rescue nil
+%>
+<div id="left">
+	<%= render partial: 'side_bar', locals: {book: book} %>
+</div>
+<div id="right">
+</div>
