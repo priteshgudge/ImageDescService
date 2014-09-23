@@ -16,7 +16,7 @@
         "context_image_path": "/images/decision_tree/1_context.jpg",
         "thumb_image_path": "/images/decision_tree/1_thumb.jpg",
         "alt": "Pathogens Versus the Immune System",
-        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image is a decorative series of photographs that does not provide additional information critical for understanding the content. The photographs serve a presentational role (&quot;eye-candy&quot;) and do not need to be made accessible.</p>"
+        "comments": "<p>The image is one that &quot;displays an equation only, with no accompanying picture&quot; and requires MathML (mathematics markup language) encoding or a text description.</p><p>Math expressions are often treated as images in books, resulting in inaccessible content. Mathematics can be made accessible using special math encoding (e.g. MathML) or prose transcriptions. Semantically-rich MathML is preferred when supported by authoring and reading tools. When MathML is not an option, a plain-English text description should be provided.</p>"
       },
       {
         "image_id":"2",
@@ -32,7 +32,7 @@
         "context_image_path": "/images/decision_tree/3_context.jpg",
         "thumb_image_path": "/images/decision_tree/3_thumb.jpg",
         "alt": "Baseball player at bat",
-        "comments": "<p>The image is a &quot;graphic organizer&quot; that requires a brief text description.</p><p>The image does not provide additional information critical for understanding the content, but serves a functional role that needs to be made accessible. The lack of a functional and textual description makes it difficult for readers to get quickly oriented with the content to follow. The role of the image (i.e. section header) should be identified along with a text description transcribing the embedded copy.</p>"
+        "comments": "<p>The image is a &quot;cartoon&quot; that requires a text description.</p><p>The image is found in a children’s picture book and contains information that helps paint a more comprehensive portrait of the story. The image can be made fully accessible via a text description that provides supplemental details about the relationships and mannerisms between characters in the book.</p>"
       },
       {
         "image_id":"4",
@@ -48,7 +48,7 @@
         "context_image_path": "/images/decision_tree/5_context.jpg",
         "thumb_image_path": "/images/decision_tree/5_thumb.jpg",
         "alt": "Pie Chart",
-        "comments": "<p>The image is a &quot;cartoon&quot; that requires a text description.</p><p>The image is found in a children’s picture book and contains information that helps paint a more comprehensive portrait of the story. The image can be made fully accessible via a text description that provides supplemental details about the relationships and mannerisms between characters in the book.</p>"
+        "comments": "<p>The image is a &quot;(bar) graph&quot; and requires a text description or tactile graphic.</p><p>The text surrounding the image provides a high-level description, but lacks details only available in the image. The image can be made fully accessible via a detailed text description and accompanying data table. Alternatively, a tactile graphic also produces the same results while catering to different learner types and braille readers.</p><p><strong>Reminder:</strong> The image contains embedded text and a legend that also need to be made accessible.</p>"
       },
       {
         "image_id":"6",
@@ -56,7 +56,7 @@
         "context_image_path": "/images/decision_tree/6_context.jpg",
         "thumb_image_path": "/images/decision_tree/6_thumb.jpg",
         "alt": "Header",
-        "comments": "<p>The image is one that &quot;displays an equation only, with no accompanying picture&quot; and requires MathML (mathematics markup language) encoding or a text description.</p><p>Math expressions are often treated as images in books, resulting in inaccessible content. Mathematics can be made accessible using special math encoding (e.g. MathML) or prose transcriptions. Semantically-rich MathML is preferred when supported by authoring and reading tools. When MathML is not an option, a plain-English text description should be provided.</p>"
+        "comments": "<p>The image is a &quot;graphic organizer&quot; that requires a brief text description.</p><p>The image does not provide additional information critical for understanding the content, but serves a functional role that needs to be made accessible. The lack of a functional and textual description makes it difficult for readers to get quickly oriented with the content to follow. The role of the image (i.e. section header) should be identified along with a text description transcribing the embedded copy.</p>"
       },
       {
         "image_id":"7",
