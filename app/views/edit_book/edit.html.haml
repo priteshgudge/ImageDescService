@@ -1,8 +1,0 @@
-- book_fragment_id = @book.book_fragments.first.id
-%frameset{:onload => "//document.getElementById('content').focus()", :cols => '300px, *'}
-  %frame{:name => 'side_bar', :id => 'side_bar', :src => "/edit_book/side_bar?book_id=#{@book.id}&book_fragment_id=#{book_fragment_id}"}
-  - if @book.book_fragments && !@book.book_fragments.empty?
-    %frame{:name => 'content', :id => 'content', :src => "/edit_book/content?book_fragment_id=#{book_fragment_id}#top"}
-  %noframes Frames are required for this feature to work.
-%noframes Frames are required for this feature to work
-
