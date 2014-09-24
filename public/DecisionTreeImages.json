@@ -24,7 +24,7 @@
         "context_image_path": "/images/decision_tree/2_context.jpg",
         "thumb_image_path": "/images/decision_tree/2_thumb.jpg",
         "alt": "About Puberty",
-        "comments": "<p>The image is a &quot;(bar) graph&quot; and requires a text description or tactile graphic.</p><p>The text surrounding the image provides a high-level description, but lacks details only available in the image. The image can be made fully accessible via a detailed text description and accompanying data table. Alternatively, a tactile graphic also produces the same results while catering to different learner types and braille readers.</p><p><strong>Reminder:</strong> The image contains embedded text and a legend that also need to be made accessible.</p>"
+        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image adds value by presenting a courtroom example affirming the impact of prior research. Details are already available in the caption immediately right of the image, so providing another description would be redundant.</p><p><strong>Note:</strong> If the caption was also interpreted as an inaccessible image, then a textual transcription would be required.</p>"
       },
       {
         "image_id":"3",
