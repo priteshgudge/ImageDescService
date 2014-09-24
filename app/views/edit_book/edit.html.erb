@@ -3,7 +3,34 @@
 	book = Book.find session[:book_id] rescue nil
 %>
 <div id="left">
-	<%= render partial: 'side_bar', locals: {book: book} %>
+	<!-- Left column nav. -->
 </div>
 <div id="right">
+	<!-- Edit book -->
+
 </div>
+
+<!-- Templates -->
+<script type="text/template" id="question-template">
+	<div class="question">
+		<fieldset>
+			<legend><strong>{{= text }}</strong></legend>
+			{{ if (typeof(answers) !== "undefined") { }}
+				{{ _.each(answers, function(answer) { }}
+					<div id="answers">
+						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
+						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
+						{{ if (answer['value'] == "-oth") { }}
+							<input type="text" name="answer_other" id="other" />
+							<label for="other" class="invisible1">Other</label>
+						{{ } }}
+					</div>
+				{{ 	}); }}
+			{{ } else { }}
+					<div>
+						<textarea id="free" name="free"></textarea>
+					</div>
+			{{	} }}
+		</fieldset>
+	</div>
+</script>
