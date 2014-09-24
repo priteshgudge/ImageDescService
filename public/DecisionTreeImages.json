@@ -24,7 +24,7 @@
         "context_image_path": "/images/decision_tree/2_context.jpg",
         "thumb_image_path": "/images/decision_tree/2_thumb.jpg",
         "alt": "About Puberty",
-        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image adds value by presenting a courtroom example affirming the impact of prior research. Details are already available in the caption immediately right of the image, so providing another description would be redundant.</p><p><strong>Note:</strong> If the caption was also interpreted as an inaccessible image, then a textual transcription would be required.</p>"
+        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image is a decorative series of photographs that does not provide additional information critical for understanding the content. The photographs serve a presentational role (&quot;eye-candy&quot;) and do not need to be made accessible.</p>"
       },
       {
         "image_id":"3",
