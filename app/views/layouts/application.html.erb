@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Poet Image Description</title>
+  <title><%= @title ? @title + " - " : "" %>Poet Image Description Tool</title>
   <%= stylesheet_link_tag :all %>
   <%= javascript_include_tag :defaults %>
+  <link rel="stylesheet" type="text/css" href="/javascripts/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+  <script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+  <script type="text/javascript" src="/javascripts/zoomer/assets/prettyLoader/js/jquery.prettyLoader.js"></script>
+  <script type="text/javascript" src="/javascripts/zoomer/assets/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+  <script type="text/javascript" src="/javascripts/zoomer/assets/jquery.zoomer.js"></script>
+    
+  <!-- CSS -->
+  <link rel="stylesheet" href="/javascripts/zoomer/assets/prettyLoader/css/prettyLoader.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/javascripts/zoomer/assets/prettyPhoto/css/prettyPhoto.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/javascripts/zoomer/css/styles.css" type="text/css" media="all">
 
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   <%= csrf_meta_tag %>
   <% if ENV['POET_HOST'] == 'diagram-center.herokuapp.com' %>
     <%= raw render_ga('UA-36104449-1') %>
@@ -33,7 +45,7 @@
           <% else %>
              <%#= link_to "Books", book_list_path %> &nbsp;
           <% end %>
-          <li><%= link_to "Guidelines", edit_book_description_guidance_path %> </li>
+          <li><%= link_to "Training", training_index_path %> </li>
           <li><%= link_to "Help", edit_book_help_path %> </li>
           <% if current_user %>
              <li><%= link_to 'User Profile', edit_user_path(current_user) %> </li>
@@ -53,10 +65,10 @@
          </ul>
        </div>
      </div>
-
+     <div id="main_content">
        <%= render "shared/error_display" %>
        <%= yield %>
-
+     </div>
    <div id="poet_footer" class="poet_footer"> <!-- TODO -- footer font smaller !-->
     <p><p>
     <p><br><strong>Legal Disclaimer</strong>: The Poet tool is intended to assist in the creation of accessible content. Use of the Poet tool is limited to activities for creating content that comply with applicable copyright law and contractual agreements. By using this tool, you accept all provisions contained in the <%= link_to('Terms of Use', user_terms_of_service_path, :target => '_blank' ) %>. If you do not wish to be bound by the provisions contained in the Terms of Use, do not use the Poet tool.</p>

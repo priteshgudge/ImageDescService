@@ -1,3 +1,4 @@
+%h1 #{@title="Update Book Image Descriptions"}
 %div{:class => "download_link", :style => "margin: auto; padding: 40px;"}
 
   %h3
@@ -16,18 +17,12 @@
 :javascript
   function doPoll(){
     $.get('#{poll_file_with_descriptions_path(:job_id => @job.id)}', function(data) {
-      console.log("Have results");
-      console.log(data);
-      console.log("Not Complete:");
-      console.log(data == 'Not Complete');
-      console.log("Complete:");
-      console.log(data == 'Complete');
-      if(data == 'Complete') {
+    console.log(data.job);
+      if(data.job.state == 'complete') {
         $('.download_link').html("<h3>Download your book</h3><p>Click the provided link to download your updated book.</p><p><a href='#{download_with_descriptions_path(:job_id => @job.id, :file_type => @file_type)}'><strong>#{@book_title}</strong></a>");
       }
-      else if(data == 'Error') {
-        // TODO ESH: add an error message back to the user 
-        console.log("Error")
+      else if(data.job.state == 'error') {
+        $('.download_link').html("<h3>Sorry!</h3><p>" + data.job.error_explanation);
       }
       else {
         setTimeout(doPoll, 500);

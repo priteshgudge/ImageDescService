@@ -44,7 +44,7 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
   
   def create_images_in_database(book, fragment, book_directory, doc)
      each_image(doc) do | image_node |
-      image_location = image_node['src']
+      image_location = sanitize_image_location(image_node['src'])
       xml_id = image_node['id']
 
       # if src exists
@@ -111,14 +111,6 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
     return width, height
   end
 
-  def each_image (doc)
-    images = doc.xpath( doc, "//xmlns:img")
-    images.each do | image_node |
-      yield(image_node)
-    end
-  end
-
-
   def before(job)
     puts 'before'
   end
@@ -144,6 +136,11 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
   def unzip
     #another way to trigger a delayed job
   end
+
+  def sanitize_image_location(image_location)
+    image_location.gsub("../", "")
+  end
+    
   handle_asynchronously :unzip
 
 end

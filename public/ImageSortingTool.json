@@ -1,0 +1,252 @@
+{
+  "questionnaire": {
+    "title": "IMAGE SORTING TOOL",
+    "questions": [
+      {
+        "question_id":"1",
+        "text": "Which of the following best describes this type of image?",
+        "answers": [
+          {
+            "answer_id": "1",
+            "label": "photo",
+            "value": "A1",
+            "next": "2"
+          },
+          {
+            "answer_id": "2",
+            "label": "drawing",
+            "value": "A2",
+            "next": "2"
+          },
+          {
+            "answer_id": "3",
+            "label": "cartoon",
+            "value": "A3",
+            "next": "2"
+          },
+          {
+            "answer_id": "4",
+            "label": "illustration of a process",
+            "value": "A4",
+            "next": "2"
+          },
+          {
+            "answer_id": "5",
+            "label": "flowchart",
+            "value": "A5",
+            "next": "2"
+          },
+          {
+            "answer_id": "6",
+            "label": "table (data display)",
+            "value": "A6",
+            "next": "2"
+          },
+          {
+            "answer_id": "7",
+            "label": "graphic organizer",
+            "value": "A7",
+            "next": "2"
+          },
+          {
+            "answer_id": "8",
+            "label": "map",
+            "value": "A8",
+            "next": "2"
+          },
+          {
+            "answer_id": "9",
+            "label": "timeline",
+            "value": "A9",
+            "next": "2"
+          },
+          {
+            "answer_id": "10",
+            "label": "graph (e.g. bar, circle, pie, line)",
+            "value": "A10",
+            "next": "2"
+          },
+          {
+            "answer_id": "11",
+            "label": "displays text only, with no accompanying picture",
+            "value": "A11",
+            "next": "2"
+          },
+          {
+            "answer_id": "12",
+            "label": "displays an equation only, with no accompanying picture",
+            "value": "A12",
+            "next": "2"
+          },
+          {
+            "answer_id": "13",
+            "label": "Other",
+            "value": "-oth",
+            "next": "2",
+            "contingentQuestion": {
+              "text": "Other",
+              "length": "24"
+            }
+          }
+        ]
+      },
+      {
+        "question_id":"2",
+        "text": "What is the purpose of this image?",
+        "answers": [
+          {
+            "answer_id": "14",
+            "label": "None. it is not needed for understanding subject matter (the image provides visual interest only)",
+            "value": "6",
+            "describe":"no"
+          },
+          {
+            "answer_id": "15",
+            "label": "It is a graphical or activity icon.",
+            "value": "A2",
+            "next": "3"
+          },
+          {
+            "answer_id": "16",
+            "label": "It provides information needed for understanding subject matter",
+            "value": "A1",
+            "next":"4"
+          },
+          {
+            "answer_id": "17",
+            "label": "Other",
+            "value": "-oth",
+            "describe":"no",
+            "contingentQuestion": {
+              "text": "Other",
+              "length": "24"
+            }
+          }
+        ]
+      },
+      {
+        "question_id":"3",
+        "text": "Does this icon prepare the student for an activity, or represent a concept necessary to understanding the subject?",
+        "answers": [
+          {
+            "answer_id": "18",
+            "label": "Yes",
+            "value": "4",
+            "describe": "yes",
+            "more_info": "NEEDS VERBAL DESCRIPTION OF FUNCTIONAL ROLE"
+          },
+          {
+            "answer_id": "19",
+            "label": "No",
+            "value": "6",
+            "describe": "no"
+          }
+        ]
+      },
+      {
+        "question_id": "4",
+        "text": "Does the image provide additional information essential to understanding that the student would not otherwise read in the surrounding chapter on the page?",
+        "answers": [
+          {
+            "answer_id": "20",
+            "label": "Yes",
+            "value": "7",
+            "next": "5"
+          },
+          {
+            "answer_id": "21",
+            "label": "No",
+            "value": "A1",
+            "describe": "no"
+          }
+        ]
+      },
+      {
+        "question_id": "5",
+        "text": "Will a transcription of the imbedded text fully convey the essential content provided by the image?",
+        "answers": [
+          {
+            "answer_id": "22",
+            "label": "Yes",
+            "value": "5",
+            "describe": "yes",
+            "more_info": "TRANSCRIBE IMBEDDED TEXT"
+          },
+          {
+            "answer_id": "23",
+            "label": "No",
+            "value": "A1",
+            "next": "6"
+          }
+        ]
+      },
+      {
+        "question_id": "6",
+        "text": "Would a brief verbal description adequately convey the main idea of the image?",
+        "answers": [
+          {
+            "answer_id": "24",
+            "label": "Yes",
+            "value": "4",
+            "describe": "yes",
+            "more_info": "NEEDS VERBAL DESCRIPTION"
+          },
+          {
+            "answer_id": "25",
+            "label": "No",
+            "value": "A1",
+            "next": "7"
+          }
+        ]
+      },
+      {
+        "question_id": "7",
+        "text": "Is there spatial information that can only be conveyed through a tactile graphic?",
+        "directive": {
+          "position": "during",
+          "text": "(i.e. does not require further interpretation)",
+          "administration": "self"
+        },
+        "answers": [
+          {
+            "answer_id": "26",
+            "label": "Yes",
+            "value": "5",
+            "describe": "yes",
+            "more_info": "NEEDS TACTILE GRAPHIC"
+          },
+          {
+            "answer_id": "27",
+            "label": "No",
+            "value": "A1",
+            "next": "8"
+          }
+        ]
+      },
+      {
+        "question_id": "8",
+        "text": "Does the image require a lengthy description that would take a long time to describe? ",
+        "directive": {
+          "position": "during",
+          "text": "There is spatial information that can only be conveyed through a tactile graphic.",
+          "administration": "self"
+        },
+        "answers": [
+          {
+            "answer_id": "28",
+            "label": "Yes",
+            "value": "A1",
+            "describe": "yes",
+            "more_info": "CONSIDER PROVIDING A TACTILE GRAPHIC"
+          },
+          {
+            "answer_id": "29",
+            "label": "No",
+            "value": "A2",
+            "describe": "yes"
+          }
+        ]
+      }
+    ]
+  }
+}

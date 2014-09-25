@@ -21,19 +21,19 @@ module EpubUtils
   end
   
   def self.get_epub_file_main_directory(book_directory)
-       opf_file = "**/package.opf" 
+       opf_file = "**/*.opf" 
        opf_dir = Dir.glob("#{book_directory}/#{opf_file}").first
        File.dirname opf_dir
   end     
   
   def self.get_contents_xml_name(book_directory)
       book_dir = get_epub_file_main_directory book_directory
-      return Dir.glob(File.join(book_dir, 'package.opf'))[0]
+      return Dir.glob(File.join(book_dir, '*.opf'))[0]
   end
   
   def self.get_epub_book_xml_file_names(book_directory)
      # Get opf
-     doc = Nokogiri::XML get_xml_from_dir(book_directory, "Epub")
+     doc = Nokogiri::XML UnzipUtils.get_xml_from_dir(book_directory, "Epub")
      
      # get main directory
      mainDirectory = EpubUtils.get_epub_file_main_directory(book_directory)
@@ -75,7 +75,8 @@ module EpubUtils
      @described_by_hash = Hash.new()
      @described_at_hash = Hash.new()
      @alt_text_hash = Hash.new()
-     #@captions_hash = Hash.new()
+     @longdesc_hash = Hash.new()
+     @figcaption_hash = Hash.new()
      limit = 249
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
@@ -86,6 +87,7 @@ module EpubUtils
       acc = "#{acc} #{cur_doc.css('body').children.to_s}"
       acc
      end
+     mainDirectory = EpubUtils.get_epub_file_main_directory(book_directory)
 
      file_contents = "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'><link rel='stylesheet' type='text/css' href='//s3.amazonaws.com/org-benetech-poet/html.css'/><body>#{file_contents}</body></html>"
      doc = Nokogiri::XML file_contents
@@ -102,12 +104,28 @@ module EpubUtils
            describer = doc.css('#' + img_node['aria-describedby'])[0]
            @described_by_hash[image_name] = describer.text
          end
+         #See if the image is wrapped in a figure element.
+         img_parent = img_node.parent()
+         unless img_parent.nil? and img_parent.name() != "figure"
+           #get described by from figure parent aria-describedby attribute.
+           unless img_parent['aria-describedby'].blank?
+            describer = doc.css('#' + img_parent['aria-describedby'])[0]
+            @described_by_hash[image_name] = describer.text
+           end
+           #see if the figure has a figcaption.
+           figcaption = img_parent.css("figcaption").first
+           unless figcaption.nil?
+            @figcaption_hash[image_name] = figcaption.text
+           end
+         end
          unless img_node['aria-describedat'].blank?
            @described_at_hash[image_name] = img_node['aria-describedat']
          end
+         unless img_node['longdesc'].blank?
+           @longdesc_hash[image_name] = img_node['longdesc']
+         end         
        end
      end
-     
   end
  
   #  def caller_info

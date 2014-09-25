@@ -1,4 +1,11 @@
 DiagramRailsApp::Application.routes.draw do
+  get "training/index"
+  get "training/how_to_describe"
+  get "training/when_to_describe"
+  get "training/questionnaire"
+  get "training/decision_tree_images"
+  match "training", :controller => 'training', :action => 'index'
+
   root :to => "home#index"
   get "admin", :to => "admin/books#index"
 

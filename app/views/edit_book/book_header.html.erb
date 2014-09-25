@@ -8,7 +8,7 @@
         <% else %>
           <%#=  link_to "Books", book_list_path %> &nbsp;
         <% end %>
-        <%= link_to "Guidelines", edit_book_description_guidance_path %> &nbsp;
+        <%= link_to "Training", training_index_path %> &nbsp;
         <%= link_to "Help", edit_book_help_path %> &nbsp;
         <% if current_user %>
           <%= link_to 'User Profile', edit_user_path(current_user) %> &nbsp;

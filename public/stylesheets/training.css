@@ -1,0 +1,120 @@
+/* Two column for training module. */
+body.active_admin .left-col {
+  width: 20%;
+  float: left;
+  padding: 15px 10px;
+  margin-right: 15px;
+  margin-left: 15px;
+}
+
+body.active_admin #questionnaire {
+  height: 100%;
+}
+
+body.active_admin #questionnaire .left-col {
+  min-width: 410px;
+}
+
+body.active_admin .left-col-nav {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-font-smoothing: antialiased;
+  border: 1px dashed #DADADA;
+}
+
+body.active_admin .right-col {
+  margin-left: 25%; 
+  padding-right: 2em;
+}
+
+.clear {
+  clear: both;
+}
+
+#yes {
+  color: green;
+}
+
+#no {
+  color: red;
+}
+
+#question legend {
+  padding: 15px 0px;
+}
+
+#buttons {
+  padding: 15px 0px;
+}
+
+body ul.inline {
+    padding: 15px; 
+}
+
+body ul.inline > li {
+    display: inline-block;
+    zoom:1;
+    *display:inline;
+}
+
+#when-to-describe {
+	max-width: 1000px;
+}
+
+#when-to-describe img {
+  padding-left: 20px;
+}
+
+
+
+.hidden-image {
+    display: none;
+}
+
+#imageGallery img {
+	width: 90%;
+}
+
+.shadow {
+	box-shadow: 2px 2px 3px #666;
+}
+
+body.active_admin .invisible1 {
+  display: none;
+}
+
+body.active_admin .holder {
+  text-align: center;
+} 
+
+/* Start of Column CSS */
+#container2 {
+  clear:left;
+  float:left;
+  width:100%;
+  overflow:hidden;
+}
+#container1 {
+  float:left;
+  width:100%;
+  position:relative;
+  right:50%;
+}
+#col1 {
+  float:left;
+  width:46%;
+  position:relative;
+  left:52%;
+  overflow:hidden;
+}
+#col2 {
+  float:left;
+  width:46%;
+  position:relative;
+  left:56%;
+  overflow:hidden;
+}
+
+
+

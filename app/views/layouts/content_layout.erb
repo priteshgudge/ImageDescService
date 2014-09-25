@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <title>Poet Image Description</title>
   <%= javascript_include_tag :defaults %>
@@ -8,7 +8,7 @@
   <%= javascript_include_tag 'ckeditor/ckeditor' %>
   <%= javascript_include_tag 'ckeditor/adapters/jquery' %>
   <%= stylesheet_link_tag 'poet' %>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/excite-bike/jquery-ui.css">
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
   <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         jax: ["input/AsciiMath", "input/MathML", "input/TeX", "output/SVG", "output/NativeMML"],
@@ -191,11 +191,11 @@
                     //insert altimg and alttext attributes
                     xmlDoc=loadXMLString(mml);
                     newatt=xmlDoc.createAttribute("altimg");
-                    newatt.nodeValue="";
+                    newatt.value="";
                     x=xmlDoc.getElementsByTagName("math");
                     x[0].setAttributeNode(newatt);
                     newatt=xmlDoc.createAttribute("alttext");
-                    newatt.nodeValue= altText;
+                    newatt.value= altText;
                     x[0].setAttributeNode(newatt);
                     var output = xmlToString(xmlDoc);
                     contents = my_editor.getData();
@@ -459,7 +459,7 @@
     threshold : 100
   });
 
-  $.getScript("https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
+  $.getScript("https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
 
     //  When user clicks on tab, this code will be executed
     $(".tabs li").each(function() { $(this).click(function() {

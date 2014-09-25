@@ -1,0 +1,37 @@
+﻿
+/* ---------- Zoomer ---------- */
+.zoomer .holder {
+	border: 1px solid #e6e6e6;
+	background: #ffffff;
+	min-width: 250px;
+}
+.zoomer .holder .image {
+	overflow: hidden;
+}
+
+/* console */
+body.active_admin .console {
+	height: 35px;
+	padding-top: 7px;
+	min-width: 250px;
+	background-color:#ffffff;
+}
+.zoomer .console .left {
+	margin: 0;
+	float: left;
+	padding-left: 6px;
+}
+.zoomer .console .right {
+	margin: 0;
+	float: right;
+	padding-right: 2px;
+}
+.zoomer .console li {
+	list-style-type: none;
+	float: left;
+	margin-right: 6px;
+}
+.zoomer .console li a {
+	float: left;
+	cursor: pointer;
+}

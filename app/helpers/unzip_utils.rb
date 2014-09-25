@@ -6,6 +6,10 @@ module UnzipUtils
   def unzip_to_temp(zipped_file)
     UnzipUtils.unzip_to_temp(zipped_file)
   end
+
+  def get_xml_from_dir book_directory = nil, file_type = nil
+    UnzipUtils.get_xml_from_dir(book_directory, file_type)
+  end
   
   
   def self.accept_and_copy_book(book_path, file_type)
@@ -70,7 +74,7 @@ module UnzipUtils
   end
   
   
-  def get_xml_from_dir book_directory = nil, file_type = nil
+  def self.get_xml_from_dir book_directory = nil, file_type = nil
     if file_type == "Epub"
        contents_filename = EpubUtils.get_contents_xml_name(book_directory) 
     else

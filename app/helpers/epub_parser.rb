@@ -42,7 +42,7 @@ class EpubParser <  S3UnzippingJob
             create_images_in_database(book, book_fragment, book_directory, doc)
             doc.css('img').each do |img_node| 
               unless (img_node['src']).blank?
-                db_image = DynamicImage.where(:book_id => book.id, :image_location => img_node['src']).first
+                db_image = DynamicImage.where(:book_id => book.id, :image_location => sanitize_image_location(img_node['src'])).first
                 if db_image
                   img_node['img-id'] = db_image.id.to_s
                   img_node['original'] = image_srces.include?(img_node['src']) ? '0' : '1' 
@@ -101,8 +101,14 @@ class EpubParser <  S3UnzippingJob
       node.text
     end
   
-    def get_image_path(book_directory, image_location)
-        get_epub_file_main_directory(book_directory) + "/" + image_location
+    def each_image (doc)
+      doc.css('img').each do | image_node |
+        yield(image_node)
+      end
     end
-  
+
+    def get_image_path(book_directory, image_location)
+        get_epub_file_main_directory(book_directory) + "/" + sanitize_image_location(image_location)
+    end
+
 end

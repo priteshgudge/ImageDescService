@@ -1,0 +1,154 @@
+<% @title="When to Describe?" %>
+<div id= "container">
+	<div class="left-col left-col-nav">
+		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
+	</div>
+	<div class="right-col">  
+		<div id="when-to-describe">
+			<p>
+				<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="right" /></a>
+				<h1>When to describe?</h1>
+				Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
+				
+			</p>
+		</div>
+		<div class="clear"></div>
+		<h2>Now, pick an image and start making decisions!</h2>
+		<div id="imageGallery">
+			
+		</div>
+	</div>
+</div>
+<div class="clear"></div>
+<div id="questionnaire"  title="Decision Tree" style="display: none;">
+	<div id="container2">
+		<div id="container1">
+			<div id="col1">
+				<!-- IMAGE -->
+				<div id="zoomer" class="zoomer-container">
+					<!-- ZOOMER CONTENTS -->
+					<div class="zoomer">
+						<!-- HOLDER -->
+						<div class="holder image-resize" id="holder">
+							<!-- IMAGE -->
+							<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="target" class="target image-resize" alt="Image for Questionnaire" /></div>
+						</div>	<!-- end holder -->
+						<div class="console">
+							<ul class="left">	
+								<li>
+									<a id="zoomerIn" href="#"></a>
+									<a id="zoomerOut" href="#"></a>
+								</li>				
+								<li>
+									<a id="zoomerUp" href="#"></a>
+									<a id="zoomerDown" href="#"></a>
+									<a id="zoomerLeft" href="#"></a>
+									<a id="zoomerRight" href="#"></a>		
+								</li>
+							</ul>
+							<ul class="right">
+								<li>
+									<a id="zoomerReset" href="#"></a>
+								</li>
+							</ul>
+						</div>	<!-- end console -->
+						<br clear="all" />
+						<div class="viewOriginalImage">
+							<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
+							<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+						</div>
+					</div>	<!-- end zoomer -->
+				</div>	<!-- end container -->
+				<div class="clear"></div>
+			</div>
+			<div id="col2">
+				<div id="question"></div>
+				<div id="summary"></div>
+				<div id="describe"></div>
+				<div id="buttons">
+					<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<!-- Templates -->
+<script type="text/template" id="question-template">
+	<div class="question">
+		<fieldset>
+			<legend><strong>{{= text }}</strong></legend>
+			{{ if (typeof(answers) !== "undefined") { }}
+				{{ _.each(answers, function(answer) { }}
+					<div id="answers">
+						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
+						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
+						{{ if (answer['value'] == "-oth") { }}
+							<input type="text" name="answer_other" id="other" />
+							<label for="other" class="invisible1">Other</label>
+						{{ } }}
+					</div>
+				{{ 	}); }}
+			{{ } else { }}
+					<div>
+						<textarea id="free" name="free"></textarea>
+					</div>
+			{{	} }}
+		</fieldset>
+	</div>
+</script>
+
+<script type="text/template" id="describe-template">
+	<div>
+		<p>
+			<h3>Based on your answers, the recommended action is to:</h3> 
+			{{ if (describe == "no") { }}
+				<span id="no">Do not describe this image.</span>
+			{{ } else { }}
+				<span id="yes">Describe the image.</span>
+			{{ } }}
+		</p>
+		<div id="comments"></div>
+		<p id="play_again"><input type="button" id="play_again_button" value="Choose a New Image" /></p>
+	</div>
+</script>
+
+<script type="text/template" id="questionnaire-summary-template">
+	<div>
+		<p>
+			<h3>Your Answers:</h3> 
+			<ol>
+				{{ _.each(questions, function(question) { }}
+					{{ if (typeof(question["answer_id"]) !== "undefined") { }}	
+						<li>
+							<strong>{{= question["text"] }}</strong>
+							{{ _.each(question["answers"], function(answer) { }}
+								{{ if (answer["answer_id"] == question["answer_id"]) { }}
+									<p>{{= answer["label"]}}</p>
+								{{ } }}
+							{{ }); }}
+						</li>
+					{{ } }}
+				{{ }); }}
+			</ol>
+		</p>
+	</div>
+</script>
+
+<script type="text/template" id="image-gallery-template">
+	<ul class="inline">
+		{{ _.each(images, function(image) { }}
+			<li>
+				<a href="{{= image["path"] }}" class="toDescribe" data-image-id="{{= image["image_id"] }}"><img src="{{= image["thumb_image_path"] }}" alt="{{= image["alt"] }}" class="shadow" /></a>
+			</li>
+		{{ }); }}
+	</ul>
+</script>
+
+<script src="/javascripts/underscore-min.js" type="text/javascript"></script>
+<script src="/javascripts/backbone-min.js" type="text/javascript"></script>
+<script src="/javascripts/training.js" type="text/javascript"></script>
+
+
+

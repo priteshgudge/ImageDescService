@@ -161,6 +161,13 @@ class DaisyParser <  S3UnzippingJob
        node.attributes['content'].content
     end
 
+    def each_image (doc)
+      images = doc.xpath( doc, "//xmlns:img")
+      images.each do | image_node |
+        yield(image_node)
+      end
+    end
+
     def get_image_path(book_directory, image_location)
        File.join(book_directory, image_location)
     end
