@@ -1,12 +1,13 @@
+
 <% @title="When to Describe?" %>
-<div id= "container">
-	<div class="left-col left-col-nav">
+<div class= "row">
+	<div class="col-md-3">
 		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 	</div>
-	<div class="right-col">  
+	<div class="col-md-9"> 
 		<div id="when-to-describe">
 			<p>
-				<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="right" /></a>
+				<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="pull-right" /></a>
 				<h1>When to describe?</h1>
 				Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
 				
@@ -21,53 +22,51 @@
 </div>
 <div class="clear"></div>
 <div id="questionnaire"  title="Decision Tree" style="display: none;">
-	<div id="container2">
-		<div id="container1">
-			<div id="col1">
-				<!-- IMAGE -->
-				<div id="zoomer" class="zoomer-container">
-					<!-- ZOOMER CONTENTS -->
-					<div class="zoomer">
-						<!-- HOLDER -->
-						<div class="holder image-resize" id="holder">
-							<!-- IMAGE -->
-							<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="target" class="target image-resize" alt="Image for Questionnaire" /></div>
-						</div>	<!-- end holder -->
-						<div class="console">
-							<ul class="left">	
-								<li>
-									<a id="zoomerIn" href="#"></a>
-									<a id="zoomerOut" href="#"></a>
-								</li>				
-								<li>
-									<a id="zoomerUp" href="#"></a>
-									<a id="zoomerDown" href="#"></a>
-									<a id="zoomerLeft" href="#"></a>
-									<a id="zoomerRight" href="#"></a>		
-								</li>
-							</ul>
-							<ul class="right">
-								<li>
-									<a id="zoomerReset" href="#"></a>
-								</li>
-							</ul>
-						</div>	<!-- end console -->
-						<br clear="all" />
-						<div class="viewOriginalImage">
-							<a id="lightboxTrigger" class="fancybox left" href="/images/decision_tree/0.jpg">View Larger</a>
-							<a id="contextToggle" class="right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
-						</div>
-					</div>	<!-- end zoomer -->
-				</div>	<!-- end container -->
-				<div class="clear"></div>
-			</div>
-			<div id="col2">
-				<div id="question"></div>
-				<div id="summary"></div>
-				<div id="describe"></div>
-				<div id="buttons">
-					<input type="button" id="prev" value="Back" /><input type="button" id="next" value="Next" />
-				</div>
+	<div class="container-fluid">
+		<div class="col-md-6">
+			<!-- IMAGE -->
+			<div id="zoomer" class="zoomer-container">
+				<!-- ZOOMER CONTENTS -->
+				<div class="zoomer">
+					<!-- HOLDER -->
+					<div class="holder image-resize" id="holder">
+						<!-- IMAGE -->
+						<div class="image image-resize" id="image"><img src="/images/decision_tree/0.jpg" id="target" class="target image-resize" alt="Image for Questionnaire" /></div>
+					</div>	<!-- end holder -->
+					<div class="console">
+						<ul class="left">	
+							<li>
+								<a id="zoomerIn" href="#"></a>
+								<a id="zoomerOut" href="#"></a>
+							</li>				
+							<li>
+								<a id="zoomerUp" href="#"></a>
+								<a id="zoomerDown" href="#"></a>
+								<a id="zoomerLeft" href="#"></a>
+								<a id="zoomerRight" href="#"></a>		
+							</li>
+						</ul>
+						<ul class="pull-right">
+							<li>
+								<a id="zoomerReset" href="#"></a>
+							</li>
+						</ul>
+					</div>	<!-- end console -->
+					<br clear="all" />
+					<div class="viewOriginalImage">
+						<a id="lightboxTrigger" class="fancybox pull-left" href="/images/decision_tree/0.jpg">View Larger</a>
+						<a id="contextToggle" class="pull-right toggle" href="/images/decision_tree/0_context.jpg">View Image In Context</a>
+					</div>
+				</div>	<!-- end zoomer -->
+			</div>	<!-- end container -->
+			<div class="clear"></div>
+		</div>
+		<div class="col-md-6">
+			<div id="question"></div>
+			<div id="summary"></div>
+			<div id="describe"></div>
+			<div id="buttons">
+				<input type="button" id="prev" value="Back" class="btn btn-default" /><input type="button" id="next" value="Next" class="btn btn-primary" />
 			</div>
 		</div>
 	</div>
@@ -76,20 +75,25 @@
 
 <!-- Templates -->
 <script type="text/template" id="question-template">
+	<form class="form-horizontal">
 	<div class="question">
 		<fieldset>
 			<legend><strong>{{= text }}</strong></legend>
 			{{ if (typeof(answers) !== "undefined") { }}
+				<div id="answers">
 				{{ _.each(answers, function(answer) { }}
-					<div id="answers">
-						<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
-						<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
+					<div class="radio">
+						<label for="{{= answer['answer_id'] }}">
+							<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
+							{{= answer['label'] }}
+						</label>
 						{{ if (answer['value'] == "-oth") { }}
-							<input type="text" name="answer_other" id="other" />
-							<label for="other" class="invisible1">Other</label>
+							<input type="text" name="answer_other" id="other" placeholder="Other"/>
+							<label for="other" class="sr-only">Other</label>
 						{{ } }}
 					</div>
 				{{ 	}); }}
+				</div>
 			{{ } else { }}
 					<div>
 						<textarea id="free" name="free"></textarea>
@@ -97,6 +101,7 @@
 			{{	} }}
 		</fieldset>
 	</div>
+	</form>
 </script>
 
 <script type="text/template" id="describe-template">
@@ -110,7 +115,7 @@
 			{{ } }}
 		</p>
 		<div id="comments"></div>
-		<p id="play_again"><input type="button" id="play_again_button" value="Choose a New Image" /></p>
+		<p id="play_again"><input type="button" class="btn btn-primary" id="play_again_button" value="Choose a New Image" /></p>
 	</div>
 </script>
 
@@ -137,17 +142,21 @@
 </script>
 
 <script type="text/template" id="image-gallery-template">
-	<ul class="inline">
-		{{ _.each(images, function(image) { }}
-			<li>
-				<a href="{{= image["path"] }}" class="toDescribe" data-image-id="{{= image["image_id"] }}"><img src="{{= image["thumb_image_path"] }}" alt="{{= image["alt"] }}" class="shadow" /></a>
-			</li>
+	<div class="row">
+  		{{ _.each(images, function(image) { }}
+			<div class="col-xs-6 col-md-3">
+				<a href="{{= image["path"] }}" class="toDescribe thumbnail" data-image-id="{{= image["image_id"] }}"><img src="{{= image["thumb_image_path"] }}" alt="{{= image["alt"] }}" /></a>
+			</div>
 		{{ }); }}
-	</ul>
+	</div>
 </script>
 
-<script src="/javascripts/underscore-min.js" type="text/javascript"></script>
-<script src="/javascripts/backbone-min.js" type="text/javascript"></script>
+<script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+<script type="text/javascript" src="/javascripts/zoomer/assets/prettyLoader/js/jquery.prettyLoader.js"></script>
+<script type="text/javascript" src="/javascripts/zoomer/assets/prettyPhoto/js/jquery.prettyPhoto.js"></script>
+<script type="text/javascript" src="/javascripts/zoomer/assets/jquery.zoomer.js"></script>
+<script src="/javascripts/libs/underscore-min.js" type="text/javascript"></script>
+<script src="/javascripts/libs/backbone-min.js" type="text/javascript"></script>
 <script src="/javascripts/training.js" type="text/javascript"></script>
 
 

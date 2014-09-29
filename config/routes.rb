@@ -46,7 +46,8 @@ DiagramRailsApp::Application.routes.draw do
   get "edit_book/edit_side_bar_only"
   get "edit_book/edit_content_only"
 
-  get "edit_book/side_bar"
+  get "edit_book/book_images"
+  get "edit_book/book_fragments"
   get "edit_book/book_header"
 
   get "books/get_books_with_images"

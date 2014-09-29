@@ -13,6 +13,12 @@ class DynamicImage < ActiveRecord::Base
   has_one :dynamic_description
   has_one :image_category
 
+  def as_json(options = {})
+    json = super(options)
+    json['thumb_source'] = thumb_source(options[:host])
+    json['image_source'] = image_source(options[:host])
+    json
+  end
 
   def image_source(host)
     return "#{host}/#{book.uid}/original/#{image_location}"

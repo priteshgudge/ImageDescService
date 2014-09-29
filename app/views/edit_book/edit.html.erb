@@ -1,34 +1,42 @@
 <% book_fragment_id=@book.book_fragments.first.id %>
 <%
 	book = Book.find session[:book_id] rescue nil
+	book_fragment_id = book.book_fragments.first.id
 %>
-<div id="left">
-	<!-- Left column nav. -->
-</div>
-<div id="right">
-	<!-- Edit book -->
+<div class="container-fixed">
+	<div class="col-md-3" id="left">
+		<div id="toggle" class="pull-right">
+			<img src="/images/close-icon.png" id="close-nav" alt="close nav" />
+			<img src="/images/expand.jpg" alt="open nav" id="expand" style="display: none;" />
+		</div>
+		<div id="tool_bar" class="offcanvas">
+			<label for="filter">Show</label>
+			<%= select_tag(:filter, options_for_select([[t(:filter_all), EditBookController::FILTER_ALL], [t(:filter_essential), EditBookController::FILTER_ESSENTIAL], [t(:filter_non_essential), EditBookController::FILTER_NON_ESSENTIAL], [t(:filter_description_needed), EditBookController::FILTER_DESCRIPTION_NEEDED], [t(:filter_unspecified), EditBookController::FILTER_UNSPECIFIED]], @filter),{ :onchange => "handleFilterChange()"})%>
+			<span id="num_images"></span>
+			<div class="input-group">
+				<label for="image_number" class="sr-only">Go to Image #</label>
+				<%= text_field_tag :image_number, nil, :class=>"form-control", :placeholder=>"Go to Image #" %>
+	      		<span class="input-group-btn">
+	        		<button class="btn btn-default" type="button">Go!</button>
+	      		</span>
+	    	</div>
+		</div>
+		<div id="side_bar" class="offcanvas">
+		</div>
+	</div>   
 
+
+	<div class="col-md-9" id="right">
+		<div id="book_title"></div>
+		<div id="book_content">Please wait while we load book content...</div>
+	</div>
 </div>
 
-<!-- Templates -->
-<script type="text/template" id="sidebar-template">
-	<fieldset>
-		<legend><strong>{{= text }}</strong></legend>
-		{{ if (typeof(answers) !== "undefined") { }}
-			{{ _.each(answers, function(answer) { }}
-				<div id="answers">
-					<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
-					<label for="{{= answer['answer_id'] }}">{{= answer['label'] }}</label>
-					{{ if (answer['value'] == "-oth") { }}
-						<input type="text" name="answer_other" id="other" />
-						<label for="other" class="invisible1">Other</label>
-					{{ } }}
-				</div>
-			{{ 	}); }}
-		{{ } else { }}
-				<div>
-					<textarea id="free" name="free"></textarea>
-				</div>
-		{{	} }}
-	</fieldset>
-</script>
+<input id="book_id" value="<%= book.id %>" type="hidden" />
+<input id="book_fragment_id" value="<%= book_fragment_id %>" type="hidden" />
+
+<!-- Load the script "js/main.js" as our entry point -->
+<script data-main="/javascripts/edit_book/main" src="/javascripts/libs/require.js"></script>
+
+
+

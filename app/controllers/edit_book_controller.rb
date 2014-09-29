@@ -68,7 +68,6 @@ class EditBookController < ApplicationController
       render :template => error_redirect
       return
     end
-    render :layout => 'frames'
   end
   
   def book_header
@@ -81,17 +80,17 @@ class EditBookController < ApplicationController
     @book, @book_fragment = load_fragment
     if @book
       file_name = "#{@book.uid}_#{@book_fragment.sequence_number}.html"
-      @book_url = if @repository <= S3Repository
+      if @repository <= S3Repository
         @repository.generate_file_path(@book.uid, file_name)
-        edit_book_s3_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        #edit_book_s3_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        return s3_file
       else
         edit_book_local_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        return local_file
       end
     end
 
-    if (@book_fragment && @book_url)
-      render :layout => 'content_layout', :text => ' ', :content_type => 'text/html'
-    else
+    if (!@book_fragment || ! @book_url)
       logger.warn "could not find cached html for book id, #{book_id}"
       render :status => 404
     end
@@ -124,7 +123,13 @@ class EditBookController < ApplicationController
     end
   end
   
-  def side_bar
+  def book_fragments
+    @book = Book.where(:id => params[:book_id], :library_id => current_library.id, :deleted_at => nil).first
+    ActiveRecord::Base.include_root_in_json = false
+    render :json => JSON.parse(@book.book_fragments.to_json)
+  end
+  
+  def book_images
     @book, @book_fragment = load_fragment
     book_id = @book.id
     session[:book_id] = book_id
@@ -157,7 +162,9 @@ class EditBookController < ApplicationController
         end
       end
     end
-    render :layout => 'nav_bar'
+    ActiveRecord::Base.include_root_in_json = false
+    @host = @repository.get_host(request)
+    render :json => JSON.parse(@images.to_json(:host => @host))
   end
 
   def top_bar

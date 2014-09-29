@@ -10,7 +10,7 @@
 }
 
 /* console */
-body.active_admin .console {
+.console {
 	height: 35px;
 	padding-top: 7px;
 	min-width: 250px;
