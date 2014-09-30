@@ -35,7 +35,13 @@ define([
     },
 
     render: function() {
-      var compiledTemplate = _.template( editImageTemplate, { image: this.model, image_categories: this.imageCategories.models} );
+      var compiledTemplate = _.template( editImageTemplate, 
+        { 
+          image: this.model, 
+          image_categories: this.imageCategories.models, 
+          previousImage: this.previousImage,
+          nextImage: this.nextImage
+        });
       this.$el.html(compiledTemplate);
       return this;
     },

@@ -27,10 +27,13 @@ define([
 
     renderImages: function() {
       var contentView = this;
-      _.each(contentView.collection.models, function(image) {
+      _.each(contentView.collection.models, function(image, i) {
         var editImage = new EditImageView();
         editImage.imageCategories = contentView.imageCategories;
         editImage.model = image;
+        editImage.previousImage = contentView.collection.models[i-1];
+        editImage.nextImage = contentView.collection.models[i+1];
+
         var domImage = $("img[img-id='" + image.get("id") + "']");
         domImage.attr("src", image.get("image_source"));
         var newImage = domImage.clone();

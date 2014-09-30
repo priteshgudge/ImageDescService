@@ -1,3 +1,8 @@
+<% if (typeof(previousImage) !== "undefined") { %>
+	<div class="fluid-container upArrow">
+		<a href="#edit-image-<%= previousImage.get("id") %>"><img src="/images/up.jpg" alt="Go To Previous Image" /></a>
+	</div>
+<% } %>
 <div class="panel panel-default" id="edit-image-<%= image.get("id") %>">
 	<div class="panel-body">
 		<div class="container-fluid">
@@ -56,3 +61,8 @@
 		</div>
 	</div>
 </div>
+<% if (typeof(nextImage) !== "undefined") { %>
+	<div class="fluid-container">
+		<a href="#edit-image-<%= nextImage.get("id") %>"><img src="/images/down.jpg" alt="Go To Next Image" /></a>
+	</div>
+<% } %>
