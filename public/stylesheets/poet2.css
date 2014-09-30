@@ -90,6 +90,11 @@ html, body {
 
 .side-nav-image {
   padding-top: 10px;
+  padding-left: 5px;
+}
+
+.side-nav-image img {
+  width: 65%;
 }
 
 #close-nav {
@@ -101,7 +106,8 @@ html, body {
   transform-origin: left top 0;
 }
 
-#expand {
+#expand img {
   margin-right: 7px;
+  margin-left: 5px;
 }
 

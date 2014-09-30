@@ -3,17 +3,23 @@
 	book = Book.find session[:book_id] rescue nil
 	book_fragment_id = book.book_fragments.first.id
 %>
-<div class="container-fixed">
+<div class="container-fixed" id="edit_book">
 	<div class="col-md-3" id="left">
 		<div id="toggle" class="pull-right">
 			<img src="/images/close-icon.png" id="close-nav" alt="close nav" />
 			<img src="/images/expand.jpg" alt="open nav" id="expand" style="display: none;" />
 		</div>
 		<div id="tool_bar" class="offcanvas">
-			<form class="form-horizontal" role="form">
+			<form class="form-horizontal" role="form" id="filterForm">
 				<div class="form-group fluid-container">
-					<label for="filter" class="col-sm-2 control-label">Show</label>
-					<div class="col-sm-8">
+					<label for="fragment" class="col-sm-3 control-label">Book Part</label>
+					<div class="col-sm-7">
+					<%= select_tag(:fragment, options_for_select(book.book_fragments.map{|book| [" #{book.sequence_number}", book.id]}, (params[:book_fragment_id] || 0).to_i),{ :class=>"form-control"}) if book%>
+					</div>
+				</div>
+				<div class="form-group fluid-container">
+					<label for="filter" class="col-sm-3 control-label">Show</label>
+					<div class="col-sm-7">
 						<%= select_tag(:filter, options_for_select([[t(:filter_all), EditBookController::FILTER_ALL], [t(:filter_essential), EditBookController::FILTER_ESSENTIAL], [t(:filter_non_essential), EditBookController::FILTER_NON_ESSENTIAL], [t(:filter_description_needed), EditBookController::FILTER_DESCRIPTION_NEEDED], [t(:filter_unspecified), EditBookController::FILTER_UNSPECIFIED]], @filter),{ :class=> "form-control"})%>
 					</div>
 					<div class="col-sm-2"><span id="num_images"></span></div>
@@ -24,7 +30,7 @@
 							<label for="image_number" class="sr-only">Go to Image #</label>
 							<%= text_field_tag :image_number, nil, :class=>"form-control", :placeholder=>"Go to Image #" %>
 				      		<span class="input-group-btn">
-				        		<button class="btn btn-default" type="button">Go!</button>
+				        		<button class="btn btn-default" type="button" id="goToImage">Go!</button>
 				      		</span>
 				    	</div>
 				    </div>
@@ -39,7 +45,7 @@
 
 	<div class="col-md-9" id="right">
 		<div id="book_title"></div>
-		<div id="book_content">Please wait while we load book content...</div>
+		<div id="book_content">Please wait while book content loads...</div>
 	</div>
 </div>
 

@@ -27,6 +27,5 @@ require([
   'edit_book/app',
 ], function(App){
   console.log(requirejs.s.contexts._.config);
-  // The "app" dependency is passed in as "App"
   App.initialize();
 });

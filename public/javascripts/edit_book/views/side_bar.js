@@ -4,20 +4,37 @@ define([
   'underscore',
   'backbone',
   '/javascripts/edit_book/collections/dynamic_image_collection.js',
-  'text!/javascripts/edit_book/templates/side_bar.html'
-], function($, _, Backbone, DynamicImageCollection, sideBarTemplate){
+  'text!/javascripts/edit_book/templates/side_bar.html',
+  '/javascripts/edit_book/views/edit_book.js'
+], function($, _, Backbone, DynamicImageCollection, sideBarTemplate, EditBookView){
   var SideBarView = Backbone.View.extend({
     el: $('#left'),
 
     events: {
       "click #close-nav": "closeNav",
-      "click #expand": "openNav"
+      "click #expand": "openNav",
+      "change #fragment": "loadFragment",
+      "change #filter": "filterNavImages",
+      "click navLink": "setFocusOnImage",
+      "click #goToImage": "goToImage",
+      "submit #filterForm": "goToImage"
     },
 
     render: function() {
       var compiledTemplate = _.template( sideBarTemplate, { images: this.collection.models } );
-      $("#side_bar").append(compiledTemplate);
+      $("#side_bar").html(compiledTemplate);
       $("#num_images").html("(" + this.collection.models.length + ")");
+    },
+
+    goToImage: function(e) {
+      e.preventDefault();
+      var navLink = $("#go_to_" + $("#image_number").val());
+      console.log("go_to_" + $("#image_number").val());
+      if (navLink.length > 0) {
+        window.location.href = navLink.attr('href');
+      } else {
+        alert("That image is not in this section of the book");
+      }
     },
 
     closeNav: function() {
@@ -38,6 +55,24 @@ define([
       $("#expand").hide();
       $("#close-nav").show();
       $("#left").css("background-color", "#FFFFFF");
+    },
+
+    loadFragment: function(e) {
+      $("#book_fragment_id").val($("#fragment").val());
+      $("#side_bar").html("");
+      $("#book_content").html("<p>Please wait while book content loads...");
+      App.editBook.render();
+    },
+
+    filterNavImages: function(e) {
+      var sideBar = this;
+      var images = new DynamicImageCollection();
+      var q = images.fetch({ data: $.param({ book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val(), filter: $("#filter").val()}) });
+      q.done(function() {
+        //Refresh.
+        sideBar.collection = images;
+        sideBar.render();
+      });
     }
 
   });
