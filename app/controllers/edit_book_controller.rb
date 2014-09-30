@@ -180,6 +180,10 @@ class EditBookController < ApplicationController
    render :layout =>'guidelines_layout'
  end
 
+ def image_categories
+  render :json => JSON.parse(ImageCategory.order(:order_to_display).all.to_json);
+ end 
+
  protected
  def load_fragment
    book = book_fragment = nil

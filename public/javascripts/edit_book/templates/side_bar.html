@@ -1,0 +1,9 @@
+<% _.each(images, function(image) { %>
+	<div class="side-nav-image">
+		<a id="go_to_<%= image.get("xml_id") %>" href="#edit-image-<%= image.get("id") %>">
+			<img class="lazyload" alt="Image <%= image.get("id") %>. Clicking will cause the frame to the right to scroll to this image within the book." src="<%= image.get("thumb_source") %>"/>
+		</a><br />
+		Image: <%= image.get("id") %>
+		<hr />
+	</div>
+<% }) %>

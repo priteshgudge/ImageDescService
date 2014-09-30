@@ -1,0 +1,58 @@
+<div class="panel panel-default" id="edit-image-<%= image.get("id") %>">
+	<div class="panel-body">
+		<div class="container-fluid">
+			<div class="col-md-4 domImage thumbnail" id="image<%= image.get("id") %>_zoomer">
+				
+			</div>
+			<div class="col-md-8" id="image<%= image.get("id") %>_editor">
+				<h3>Image Description Details</h3>
+				<form class="form-horizontal" role="form" action="#">
+					<div class="row">
+						<div class="form-group">
+			    			<label class="col-sm-3 control-label">Poet Image ID</label>
+			    			<div class="col-sm-9">
+			      				<p class="form-control-static"> <%= image.get("id") %></p>
+			    			</div>
+			  			</div>
+			  			<div class="form-group">
+			    			<label class="col-sm-3 control-label">Alt Text</label>
+			    			<div class="col-sm-9">
+			      				<p class="form-control-static altText"></p>
+			    			</div>
+			  			</div>
+			  			<div class="form-group">
+			  				<label class="col-sm-3 control-label" for="needs">Needs Description?</label>
+			  				<div class="col-sm-9">
+			  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control">
+			  						<option value="">Unspecified</option>
+									<option value="true">Yes</option>
+									<option value="false">No</option>
+								</select>
+			  				</div>
+			  			</div>
+			  			<div class="long-description container-fluid" style="display: none;">
+				  			<div class="form-group">
+				  				<label class="col-sm-3 control-label" for="needs">Image Type*</label>
+				  				<div class="col-sm-9">
+				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control">
+				  						<% _.each(image_categories, function(category) { %>
+				  							<option value="<%= category.get("id") %>"><%= category.get("name") %></option>
+				  						<% }); %>
+									</select>
+				  				</div>
+				  			</div>
+				  			<div class="form-group">
+				  				<label for="needs">Long Description*</label>
+				  				<div class="clearfix"></div>
+				  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>"></textarea>
+				  				<button class="btn btn-primary pull-right save">Save</button>
+				  				<button class="btn btn-default cancel">Cancel</button>
+				  				<button class="btn btn-default">Preview</button>
+				  			</div>
+				  		</div>
+			  		</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+}
+html, body {
+  height: 100%;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	/* Negative indent footer by it's height */
+	margin: 0 auto -60px;
+}
+/* Set the fixed height of the footer here */
+#push, #footer {
+	height: 60px;
+}
+      
+#footer {
+	background-color: #f5f5f5;
+	font-size: 75%;
+}
+
+/* Lastly, apply responsive CSS fixes as necessary */
+@media (max-width: 767px) {
+	#footer {
+	  margin-left: -20px;
+	  margin-right: -20px;
+	  padding-left: 20px;
+	  padding-right: 20px;
+	}
+}
+
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+
+#header {
+  background: #6a7176;
+  background: -webkit-linear-gradient(-90deg, #6a7176, #4d5256);
+  background: -moz-linear-gradient(-90deg, #6a7176, #4d5256);
+  background: linear, -90deg, #6a7176, #4d5256;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6A7176', endColorstr='#FF4D5256');
+  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6A7176', endColorstr='#FF4D5256');
+  border-bottom: 1px solid #44484b;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+  text-shadow: black 0 1px 0;
+}
+
+#tool_bar {
+  background-color: #FFFF99;
+  padding: 15px;
+  display: block;
+  width: 100%;
+}
+
+#side_bar {
+  padding-left: 15px;
+  background-color: white;
+}
+
+#left {
+  position: absolute;
+  top: 41px;
+  bottom: 60px;
+  left: 0;
+  overflow-y: scroll; 
+  padding: 0;
+  border-right: 4px solid #D4D4D4;
+  z-index: 1000;
+}
+
+#right {
+  position: absolute;
+  top: 41px;
+  bottom: 60px;
+  right: 0;
+  overflow-y: scroll;
+  padding-left: 30px;
+}
+
+.domImage img {
+  max-width: 400px;
+  width: 100%;
+}
+
+.side-nav-image {
+  padding-top: 10px;
+}
+
+#close-nav {
+  margin-right: 15px;
+}
+
+.vertical-text {
+  transform: rotate(90deg);
+  transform-origin: left top 0;
+}
+
+#expand {
+  margin-right: 7px;
+}
+

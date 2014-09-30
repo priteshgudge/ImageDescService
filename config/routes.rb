@@ -41,6 +41,7 @@ DiagramRailsApp::Application.routes.draw do
   get "edit_book/s3_file"
   get "edit_book/describe"
   get "edit_book/edit"
+  get "edit_book/image_categories"
 
   # just to help determine page size limits
   get "edit_book/edit_side_bar_only"
