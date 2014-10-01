@@ -84,8 +84,7 @@ html, body {
 }
 
 .domImage img {
-  max-width: 400px;
-  width: 100%;
+  max-width: 100%;
 }
 
 .side-nav-image {

@@ -1,3 +1,4 @@
+
 <% if (typeof(previousImage) !== "undefined") { %>
 	<div class="fluid-container upArrow">
 		<a href="#edit-image-<%= previousImage.get("id") %>"><img src="/images/up.jpg" alt="Go To Previous Image" /></a>
@@ -26,33 +27,50 @@
 			    			</div>
 			  			</div>
 			  			<div class="form-group">
-			  				<label class="col-sm-3 control-label" for="needs">Needs Description?</label>
+			  				<label class="col-sm-3 control-label" for="dynamic_image_should_be_described_<%= image.get("id") %>">Needs Description?</label>
 			  				<div class="col-sm-9">
-			  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control">
+			  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control should_be_described">
 			  						<option value="">Unspecified</option>
-									<option value="true">Yes</option>
-									<option value="false">No</option>
+									<option value="true" <%= image.get("should_be_described") == true ? "selected" : "" %>>Yes</option>
+									<option value="false" <%= image.get("should_be_described") == false ? "selected" : "" %>>No</option>
 								</select>
 			  				</div>
 			  			</div>
-			  			<div class="long-description container-fluid" style="display: none;">
+			  			<div class="long-description container-fluid" <%= typeof(image.get("dynamic_description")) == "undefined" ? "style=\"display: none;\"" : "" %>>
 				  			<div class="form-group">
-				  				<label class="col-sm-3 control-label" for="needs">Image Type*</label>
+				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
 				  				<div class="col-sm-9">
-				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control">
+				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
 				  						<% _.each(image_categories, function(category) { %>
-				  							<option value="<%= category.get("id") %>"><%= category.get("name") %></option>
+				  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
 				  						<% }); %>
 									</select>
 				  				</div>
 				  			</div>
 				  			<div class="form-group">
 				  				<label for="needs">Long Description*</label>
-				  				<div class="clearfix"></div>
-				  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>"></textarea>
-				  				<button class="btn btn-primary pull-right save">Save</button>
-				  				<button class="btn btn-default cancel">Cancel</button>
-				  				<button class="btn btn-default">Preview</button>
+				  				<ul class="nav nav-tabs" role="tablist">
+  									<li><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>">Edit</a></li>
+  									<li class="active"><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab">Preview</a></li>
+								</ul>
+								<div class="tab-content">
+								  <div class="tab-pane" id="edit-<%=image.get("id") %>">
+								  	<div class="clearfix"></div>
+					  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
+					  				<button class="btn btn-primary pull-right save">Save</button>
+					  				<p class="text-success pull-right"></p>
+					  				<p class="text-danger pull-right"></p>
+					  				<button class="btn btn-default cancel">Cancel</button>
+								  </div>
+								  <div class="tab-pane active" id="preview-<%=image.get("id") %>">
+								  	<div class="panel panel-default">
+										<div class="panel-body">
+											<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
+										</div>
+									</div>
+								  </div>
+								</div>
+				  				
 				  			</div>
 				  		</div>
 			  		</div>

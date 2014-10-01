@@ -164,7 +164,7 @@ class EditBookController < ApplicationController
     end
     ActiveRecord::Base.include_root_in_json = false
     @host = @repository.get_host(request)
-    render :json => JSON.parse(@images.to_json(:host => @host))
+    render :json => JSON.parse(@images.to_json(:host => @host, :include => :dynamic_description))
   end
 
   def top_bar

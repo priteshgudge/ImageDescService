@@ -7,10 +7,10 @@ define([
 ], function(_, Backbone, DynamicImage){
   var DynamicImageCollection = Backbone.Collection.extend({
     // Reference to this collection's model.
-	model: DynamicImage,
+	  model: DynamicImage,
 
-	// load the images.
-	url: '/edit_book/book_images'
+	  // load the images.
+	  url: '/edit_book/book_images'
   });
   return DynamicImageCollection;
 });

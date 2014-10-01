@@ -16,15 +16,20 @@ require.config({
     ckeditor: {
       deps: ["jquery", "ckeditor_core"],
       exports: "ckeditor"
+    },
+    bootstrap: {
+      deps: ["jquery"],
+      exports: "bootstrap"
     }
   },
   paths: {
-    'jquery': 'libs/jquery.min',
+    'jquery': 'jquery.min',
     'underscore': 'libs/underscore-min',
     'backbone': 'libs/backbone-min',
     'text': 'libs/text',
     'ckeditor_core': 'libs/ckeditor/ckeditor',
-    'ckeditor': 'libs/ckeditor/adapters/jquery'
+    'ckeditor': 'libs/ckeditor/adapters/jquery',
+    'bootstrap': 'libs/bootstrap.min'
   },
   urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/main.js'
