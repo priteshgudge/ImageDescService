@@ -3,7 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '/javascripts/edit_book/views/edit_book.js'
+  '/javascripts/views/edit_book.js'
 ], function($, _, Backbone, EditBookView) {
 
   var editBook;
@@ -13,8 +13,7 @@ define([
     this.editBook = new EditBookView();
     this.editBook.render();
   }
-
-
+  
   return App = {
     initialize: initialize,
     editBook: editBook

@@ -3,7 +3,7 @@
 define([
   'underscore',
   'backbone',
-  '/javascripts/edit_book/models/dynamic_image.js'
+  '/javascripts/models/dynamic_image.js'
 ], function(_, Backbone, DynamicImage){
   var DynamicImageCollection = Backbone.Collection.extend({
     // Reference to this collection's model.

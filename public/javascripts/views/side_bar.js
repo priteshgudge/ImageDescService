@@ -3,9 +3,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '/javascripts/edit_book/collections/dynamic_image_collection.js',
-  'text!/javascripts/edit_book/templates/side_bar.html',
-  '/javascripts/edit_book/views/edit_book.js'
+  '/javascripts/collections/dynamic_image_collection.js',
+  'text!/javascripts/templates/side_bar.html',
+  '/javascripts/views/edit_book.js'
 ], function($, _, Backbone, DynamicImageCollection, sideBarTemplate, EditBookView){
   var SideBarView = Backbone.View.extend({
     el: $('#left'),

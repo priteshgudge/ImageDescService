@@ -3,10 +3,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '/javascripts/edit_book/views/side_bar.js',
-  '/javascripts/edit_book/views/book_content.js',
-  '/javascripts/edit_book/collections/dynamic_image_collection.js',
-  '/javascripts/edit_book/collections/image_category_collection.js'
+  '/javascripts/views/side_bar.js',
+  '/javascripts/views/book_content.js',
+  '/javascripts/collections/dynamic_image_collection.js',
+  '/javascripts/collections/image_category_collection.js'
 ], function($, _, Backbone, SideBarView, BookContentView, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     

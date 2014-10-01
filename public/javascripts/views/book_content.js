@@ -3,10 +3,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'lazyload',
-  '/javascripts/libs/ckeditor/ckeditor.js',
-  '/javascripts/edit_book/views/edit_image.js'
-], function($, _, Backbone, lazyload, ckeditor, EditImageView){
+  '/javascripts/views/edit_image.js'
+], function($, _, Backbone, EditImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
 

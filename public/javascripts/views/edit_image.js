@@ -3,11 +3,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  '/javascripts/libs/ckeditor/ckeditor.js',
-  '/javascripts/libs/ckeditor/adapters/jquery.js',
-  '/javascripts/edit_book/models/dynamic_image.js',
-  'text!/javascripts/edit_book/templates/edit_image.html'
-], function($, _, Backbone, ckeditorCore, ckeditorJquery, DynamicImage, editImageTemplate){
+  'ckeditor',
+  '/javascripts/models/dynamic_image.js',
+  'text!/javascripts/templates/edit_image.html'
+], function($, _, Backbone, ckeditor, DynamicImage, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
