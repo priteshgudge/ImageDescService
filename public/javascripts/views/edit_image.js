@@ -20,7 +20,8 @@ define([
       "click .cancel": "cancelEditor",
       "click .save": "saveDescription",
       "click .edit": "showDynamicDescriptionForm",
-      "click .preview": "showPreview"
+      "click .preview": "showPreview",
+      "click .view_sample": "showSample"
     },
 
     ckeditorConfig: {
@@ -46,6 +47,11 @@ define([
           previousImage: this.previousImage,
           nextImage: this.nextImage
         });
+      if (this.model.has("image_category_id") && $("#example-" + this.model.get("image_category_id")).html().length > 0) {
+        this.$(".view_sample").show();
+      } else {
+        this.$(".view_sample").hide();
+      }
       this.$el.html(compiledTemplate);
       return this;
     },
@@ -54,6 +60,11 @@ define([
       var imageCategory = $(e.currentTarget).val();
       //Save.
       this.model.save({"image_category_id": imageCategory});
+      if (!$("#example-" + imageCategory).html().length > 0) {
+        this.$(".view_sample").hide();
+      } else {
+        this.$(".view_sample").show();
+      }
     },
 
     saveNeedsDescription: function(e) {
@@ -67,6 +78,7 @@ define([
 
     showDynamicDescriptionForm: function() {
       var editView = this;
+      editView.$(".update-message").html("");
       var longDescription = editView.$(".long-description");
       var textarea = $("textarea", $(longDescription));
       textarea.ckeditor(editView.ckeditorConfig);
@@ -83,8 +95,6 @@ define([
           $("#edit-tab-" + editView.model["id"]).tab('show');
         }    
       });
-      
-      
     },
 
     cancelEditor: function(e) {
@@ -128,6 +138,22 @@ define([
           }
         );
       });
+    },
+
+    showSample: function(e) {
+      var editImage = this;
+      $(e.currentTarget).popover({
+        html : true, 
+        content: function() {
+          var content = $('#example-' + editImage.$(".image_category").val()).clone();
+          content.css("display", "block");
+          return content;
+        },
+        title: function() {
+          return "Guidelines";
+        }
+      });
+      $(e.currentTarget).popover('show');
     }
 
 

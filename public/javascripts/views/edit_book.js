@@ -15,18 +15,41 @@ define([
     render: function() {
       var images = new DynamicImageCollection();
       var q = images.fetch({ data: $.param({ book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val()}) });
+      var editBook = this;
       q.done(function() {
-        var sideBarView = new SideBarView();
-        sideBarView.collection = images;
-        sideBarView.render();
+        editBook.renderSideBar(images);
         //Load up the image_categories.
         var imageCategories = new ImageCategoryCollection();
         imageCategories.fetch().done(function() {
-          var bookContentView = new BookContentView();
-          bookContentView.collection = images;
-          bookContentView.imageCategories = imageCategories;
-          bookContentView.render();
+          editBook.renderBookContent(images, imageCategories);
+
+          //Load up examples for each category.
+          editBook.loadExamples(imageCategories);
         });
+      });
+    },
+
+    renderSideBar: function(images) {
+      var sideBarView = new SideBarView();
+      sideBarView.collection = images;
+      sideBarView.render();
+    },
+    
+    renderBookContent: function(images, imageCategories) {
+      var bookContentView = new BookContentView();
+      bookContentView.collection = images;
+      bookContentView.imageCategories = imageCategories;
+      bookContentView.render();
+    },
+
+    loadExamples: function(imageCategories) {
+      console.log(imageCategories);
+      _.each(imageCategories.models, function(category) {
+        console.log(category);
+        var categoryDiv = $("<div id='example-" + category.get("id") + "'></div>");
+        categoryDiv.load("/dynamic_images_sample_html/" + category.get("id"));
+        $("#examples").append(categoryDiv);
+
       });
     }
   });
