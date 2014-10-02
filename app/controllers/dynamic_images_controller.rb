@@ -3,7 +3,7 @@ class DynamicImagesController < ApplicationController
   # GET /dynamic_images/1
   # GET /dynamic_images/1.xml
   # GET /dynamic_images/1.json
-  def show
+  def edit
     book = load_book
     if params[:image_location] && book
       @dynamic_image = DynamicImage.where(:book_id => book.id, :image_location => params[:image_location]).first
@@ -54,8 +54,8 @@ class DynamicImagesController < ApplicationController
   end
 
   # GET /dynamic_images/1/edit
-  def edit
-    @dynamic_image = DynamicImage.find(params[:id])
+  def show
+    render :json => JSON.parse(DynamicImage.find(params[:id]).to_json(:host => @host, :include => :dynamic_description))
   end
 
   # POST /dynamic_images
