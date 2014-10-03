@@ -35,7 +35,7 @@
 		
 		/* SET THEME FOR CONSOLE IMAGES */
 		$.zoomer.setImageTheme = function(value) {
-			return '<img src="/javascripts/zoomer/images/console_' + $.zoomer.settings.zoomerTheme + '/' + value + '.png" alt="' + value + '">';
+			return '<img src="/javascripts/libs/zoomer/images/console_' + $.zoomer.settings.zoomerTheme + '/' + value + '.png" alt="' + value + '">';
 		};
 
 		/* MOVE FUNCTION */

@@ -15,13 +15,13 @@
 				<form class="form-horizontal" role="form" action="#">
 					<div class="row">
 						<div class="form-group">
-			    			<label class="col-sm-3 control-label">Poet Image ID</label>
+			    			<span class="col-sm-3 control-label">Poet Image ID</span>
 			    			<div class="col-sm-9">
 			      				<p class="form-control-static"> <%= image.get("id") %></p>
 			    			</div>
 			  			</div>
 			  			<div class="form-group">
-			    			<label class="col-sm-3 control-label">Alt Text</label>
+			    			<span class="col-sm-3 control-label">Alt Text</span>
 			    			<div class="col-sm-9">
 			      				<p class="form-control-static altText"></p>
 			    			</div>
@@ -51,7 +51,7 @@
 				  				</div>
 				  			</div>
 				  			<div class="form-group container-fluid">
-				  				<label for="needs">Long Description*</label>
+				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
   									<li><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit">Edit</a></li>
   									<li class="active"><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
