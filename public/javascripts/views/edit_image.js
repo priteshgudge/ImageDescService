@@ -7,8 +7,9 @@ define([
   'bootstrap',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
-  'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, bootstrap, DynamicImage, DynamicDescription, editImageTemplate){
+  'text!/javascripts/templates/edit_image.html',
+  'text!/javascripts/templates/history_modal.html'
+], function($, _, Backbone, ckeditor, bootstrap, DynamicImage, DynamicDescription, editImageTemplate, historyModalTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -21,7 +22,8 @@ define([
       "click .save": "saveDescription",
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
-      "click .view_sample": "showSample"
+      "click .view_sample": "showSample",
+      "click .history_link": "showDescriptionHistory"
     },
 
     ckeditorConfig: {
@@ -154,6 +156,26 @@ define([
         }
       });
       $(e.currentTarget).popover('show');
+    },
+
+    showDescriptionHistory: function(e) {
+      e.preventDefault();
+      var historyLink = $(e.currentTarget);
+      var content = $.get(historyLink.attr("href"), function(d) {
+        historyLink.popover({
+          html : true, 
+          content: function() {
+            console.log($("#descriptionHistory", d));
+            var content = $("#descriptionHistory", d);
+            content.css("display", "block");
+            return content;
+          },
+          title: function() {
+            return "Description History";
+          }
+        });
+        historyLink.popover('show');
+      });
     }
 
 
