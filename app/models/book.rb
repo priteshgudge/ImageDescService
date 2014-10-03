@@ -78,4 +78,5 @@ class Book < ActiveRecord::Base
         'Processing'
     end
   end
+
 end

@@ -2,6 +2,11 @@
 <%
 	book = Book.find session[:book_id] rescue nil
 	book_fragment_id = book.book_fragments.first.id
+	if f = book.book_fragments.find { |f| f['book_fragment_id'] == book_fragment_id }
+  		part = f['book_sequence_number']
+	else
+ 	 	part = 1
+	end
 %>
 <div class="container-fixed" id="edit_book">
 	<div class="col-md-3" id="left">
@@ -44,7 +49,7 @@
 
 
 	<div class="col-md-9" id="right">
-		<div id="book_title"></div>
+		<div id="book_title"><h1><%= book.title %> (Part <span id="part"><%= part %></span> of <%= book.book_fragments.length %>)</h1></div>
 		<div id="book_content">Please wait while book content loads...</div>
 	</div>
 </div>

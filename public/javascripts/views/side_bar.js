@@ -59,6 +59,7 @@ define([
 
     loadFragment: function(e) {
       $("#book_fragment_id").val($("#fragment").val());
+      $("#part").html($("#fragment option:selected").text());
       $("#side_bar").html("");
       $("#book_content").html("<p>Please wait while book content loads...");
       App.editBook.render();

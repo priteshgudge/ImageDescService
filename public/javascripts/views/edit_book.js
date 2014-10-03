@@ -43,9 +43,7 @@ define([
     },
 
     loadExamples: function(imageCategories) {
-      console.log(imageCategories);
       _.each(imageCategories.models, function(category) {
-        console.log(category);
         var categoryDiv = $("<div id='example-" + category.get("id") + "'></div>");
         categoryDiv.load("/dynamic_images_sample_html/" + category.get("id"));
         $("#examples").append(categoryDiv);
