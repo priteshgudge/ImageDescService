@@ -3,9 +3,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'fancybox',
   '/javascripts/views/edit_image.js',
   '/javascripts/views/duplicate_image.js'
-], function($, _, Backbone, EditImageView, DuplicateImageView){
+], function($, _, Backbone, fancybox, EditImageView, DuplicateImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
 
@@ -33,6 +34,11 @@ define([
 
         //handle all duplicates.
         contentView.renderDuplicates(image);
+      });
+      $('.fancybox').fancybox({ 
+        'scrolling'     : 'no',
+        'overlayOpacity': 0.1,
+        'showCloseButton'   : true
       });
     },
 

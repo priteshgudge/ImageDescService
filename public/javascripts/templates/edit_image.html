@@ -7,8 +7,10 @@
 <div class="panel panel-default" id="edit-image-<%= image.get("id") %>">
 	<div class="panel-body">
 		<div class="container-fluid">
-			<div class="col-md-4 domImage thumbnail" id="image<%= image.get("id") %>_zoomer">
-				
+			<div class="col-md-4">
+				<div class="domImage thumbnail" id="image<%= image.get("id") %>_zoomer">
+				</div>
+				<a id="lightboxTrigger" class="fancybox pull-right" href="<%= image.get("image_source") %>">View Larger</a>
 			</div>
 			<div class="col-md-8" id="image<%= image.get("id") %>_editor">
 				<h3>Image Description Details</h3>
