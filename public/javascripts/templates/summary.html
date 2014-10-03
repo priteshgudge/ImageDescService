@@ -1,0 +1,19 @@
+<div>
+	<p>
+		<h3>Your Answers:</h3> 
+		<ol>
+			<% _.each(questions, function(question) { %>
+				<% if (question.has("answer")) { %>	
+					<li>
+						<strong><%= question.get("text") %></strong>
+						<% _.each(question.get("answers"), function(answer) { %>
+							<% if (answer["answer_id"] == question.get("answer")["answer_id"]) { %>
+								<p><%= answer["label"] %></p>
+							<% } %>
+						<% }); %>
+					</li>
+				<% } %>
+			<% }); %>
+		</ol>
+	</p>
+</div>

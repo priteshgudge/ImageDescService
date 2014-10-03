@@ -13,7 +13,7 @@
 				
 			</p>
 		</div>
-		<div class="clear"></div>
+		<div class="clearfix"></div>
 		<h2>Now, pick an image and start making decisions!</h2>
 		<div id="imageGallery">
 			
@@ -72,92 +72,8 @@
 	</div>
 </div>
 
-
-<!-- Templates -->
-<script type="text/template" id="question-template">
-	<form class="form-horizontal">
-	<div class="question">
-		<fieldset>
-			<legend><strong>{{= text }}</strong></legend>
-			{{ if (typeof(answers) !== "undefined") { }}
-				<div id="answers">
-				{{ _.each(answers, function(answer) { }}
-					<div class="radio">
-						<label for="{{= answer['answer_id'] }}">
-							<input type="radio" class="answer" value="{{= answer['answer_id'] }}" name="answer" id="{{= answer['answer_id'] }}" {{ if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { }} checked {{ } }}>
-							{{= answer['label'] }}
-						</label>
-						{{ if (answer['value'] == "-oth") { }}
-							<input type="text" name="answer_other" id="other" placeholder="Other"/>
-							<label for="other" class="sr-only">Other</label>
-						{{ } }}
-					</div>
-				{{ 	}); }}
-				</div>
-			{{ } else { }}
-					<div>
-						<textarea id="free" name="free"></textarea>
-					</div>
-			{{	} }}
-		</fieldset>
-	</div>
-	</form>
-</script>
-
-<script type="text/template" id="describe-template">
-	<div>
-		<p>
-			<h3>Based on your answers, the recommended action is to:</h3> 
-			{{ if (describe == "no") { }}
-				<span id="no">Do not describe this image.</span>
-			{{ } else { }}
-				<span id="yes">Describe the image.</span>
-			{{ } }}
-		</p>
-		<div id="comments"></div>
-		<p id="play_again"><input type="button" class="btn btn-primary" id="play_again_button" value="Choose a New Image" /></p>
-	</div>
-</script>
-
-<script type="text/template" id="questionnaire-summary-template">
-	<div>
-		<p>
-			<h3>Your Answers:</h3> 
-			<ol>
-				{{ _.each(questions, function(question) { }}
-					{{ if (typeof(question["answer_id"]) !== "undefined") { }}	
-						<li>
-							<strong>{{= question["text"] }}</strong>
-							{{ _.each(question["answers"], function(answer) { }}
-								{{ if (answer["answer_id"] == question["answer_id"]) { }}
-									<p>{{= answer["label"]}}</p>
-								{{ } }}
-							{{ }); }}
-						</li>
-					{{ } }}
-				{{ }); }}
-			</ol>
-		</p>
-	</div>
-</script>
-
-<script type="text/template" id="image-gallery-template">
-	<div class="row">
-  		{{ _.each(images, function(image) { }}
-			<div class="col-xs-6 col-md-3">
-				<a href="{{= image["path"] }}" class="toDescribe thumbnail" data-image-id="{{= image["image_id"] }}"><img src="{{= image["thumb_image_path"] }}" alt="{{= image["alt"] }}" /></a>
-			</div>
-		{{ }); }}
-	</div>
-</script>
-
-<script type="text/javascript" src="/javascripts/fancybox/jquery.fancybox.js?v=2.1.5"></script>
-<script type="text/javascript" src="/javascripts/libs/zoomer/assets/prettyLoader/js/jquery.prettyLoader.js"></script>
-<script type="text/javascript" src="/javascripts/libs/zoomer/assets/prettyPhoto/js/jquery.prettyPhoto.js"></script>
-<script type="text/javascript" src="/javascripts/libs/zoomer/assets/jquery.zoomer.js"></script>
-<script src="/javascripts/libs/underscore-min.js" type="text/javascript"></script>
-<script src="/javascripts/libs/backbone-min.js" type="text/javascript"></script>
-<script src="/javascripts/training.js" type="text/javascript"></script>
+<!-- Load the script "javascripts/training.js" as our entry point -->
+<script data-main="/javascripts/training" src="/javascripts/libs/require.js"></script>
 
 
 
