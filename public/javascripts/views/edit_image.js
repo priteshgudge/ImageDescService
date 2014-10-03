@@ -7,9 +7,8 @@ define([
   'bootstrap',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
-  'text!/javascripts/templates/edit_image.html',
-  'text!/javascripts/templates/history_modal.html'
-], function($, _, Backbone, ckeditor, bootstrap, DynamicImage, DynamicDescription, editImageTemplate, historyModalTemplate){
+  'text!/javascripts/templates/edit_image.html'
+], function($, _, Backbone, ckeditor, bootstrap, DynamicImage, DynamicDescription, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
