@@ -112,3 +112,17 @@ html, body {
   margin-left: 5px;
 }
 
+h2.math-preview, h2.math-edit {
+  color: #ffffff;
+  font-size: 100%;
+  padding: 4px;
+}
+
+h2.math-preview {
+  background-color: #ed6e41;
+}
+
+h2.math-edit {
+  background-color: #7f7f7f;
+}
+

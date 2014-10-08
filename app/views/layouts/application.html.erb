@@ -19,17 +19,6 @@
   <link rel="stylesheet" href="/javascripts/libs/zoomer/css/styles.css" type="text/css" media="all">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
 
-  <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        jax: ["input/AsciiMath", "input/MathML", "input/TeX", "output/SVG", "output/NativeMML"],
-        extensions: ["asciimath2jax.js", "tex2jax.js", "MathMenu.js", "MathZoom.js", "toMathML.js"],
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-          displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-          processEscapes: true
-        }
-      });
-  </script>
   <%= javascript_include_tag 'jquery.min.js' %>
 
   <%= csrf_meta_tag %>

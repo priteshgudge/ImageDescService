@@ -38,6 +38,13 @@
 								</select>
 			  				</div>
 			  			</div>
+			  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
+			  				<div class="form-group">
+			  					<div class="col-sm-6">
+			  						<button class="btn btn-primary open-edit-view">Add Image Description</button>
+			  					</div>
+			  				</div>
+			  			<% } %>
 			  			<div class="long-description" <%= !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
 				  			<div class="form-group">
 				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
@@ -55,23 +62,42 @@
 				  			<div class="form-group container-fluid">
 				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
-  									<li><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit">Edit</a></li>
+  									<li><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit">Text Editor</a></li>
   									<li class="active"><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
+  									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math">Math Editor</a></li>
 								</ul>
 								<div class="tab-content">
 								  <div class="tab-pane" id="edit-<%=image.get("id") %>">
 								  	<div class="clearfix"></div>
-					  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
-					  				<button class="btn btn-primary pull-right save">Save</button>
-					  				<p class="text-success pull-right update-message"></p>
-					  				<p class="text-danger pull-right update-message"></p>
-					  				<button class="btn btn-default cancel">Cancel</button>
+					  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
+					  				<div>
+					  					<button class="btn btn-primary pull-right save-text">Save</button>
+					  					<p class="text-success pull-right update-message"></p>
+					  					<p class="text-danger pull-right update-message"></p>
+					  					<button class="btn btn-default cancel">Cancel</button>
+					  				</div>
 								  </div>
 								  <div class="tab-pane active" id="preview-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
 										<div class="panel-body image_description">
 											<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
 											<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
+										</div>
+									</div>
+								  </div>
+								  <div class="tab-pane" id="math-<%=image.get("id") %>">
+								  	<div class="panel panel-default">
+										<div class="panel-body">
+											<h2 class="math-preview">MathML Preview</h2>
+											<div class="typeset-math"></div>
+											<h2 class="math-edit">MathML Editor</h2>
+											<a href="http://www1.chapman.edu/~jipsen/mathml/asciimath.html" target="_blank">ASCII Math Cheat Sheet</a><br />
+											<textarea class="math-editor" style="width: 100%;"></textarea>
+											<div>
+												<button class="btn btn-primary pull-right save-mathml">Save</button>
+					  							<p class="text-success pull-right update-message"></p>
+					  							<p class="text-danger pull-right update-message"></p>
+					  						</div>
 										</div>
 									</div>
 								  </div>
