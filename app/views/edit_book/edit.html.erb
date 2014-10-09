@@ -54,6 +54,7 @@
 
 <input id="book_id" value="<%= book.id %>" type="hidden" />
 <input id="book_fragment_id" value="<%= book_fragment_id %>" type="hidden" />
+<input id="show_additional_fields" value="<%= can? :view_admin, @all %>" type="hidden" />
 
 <div style="display: none" id="examples">
 </div>

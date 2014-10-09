@@ -19,13 +19,15 @@ define([
       "change .image_category": "saveImageCategory",
       "click .open-edit-view": "openEditor",
       "click .cancel": "cancelEditor",
-      "click .save-text": "saveDescription",
+      "click .save-text": "saveTextDescription",
       "click .save-mathml": "saveMathML",
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
+      "click .additional-fields": "showAdditionalFields",
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
-      "keyup .math-editor": "getMathML"
+      "keyup .math-editor": "getMathML",
+      "click .save-additional-fields": "saveAddtionalFields"
     },
 
     jax: {},
@@ -46,17 +48,18 @@ define([
     },
 
     render: function() {
+      var editImage = this;
       var compiledTemplate = _.template( editImageTemplate, 
         { 
-          image: this.model, 
-          image_categories: this.imageCategories.models, 
-          previousImage: this.previousImage,
-          nextImage: this.nextImage
+          image: editImage.model, 
+          image_categories: editImage.imageCategories.models, 
+          previousImage: editImage.previousImage,
+          nextImage: editImage.nextImage
         });
-      if (this.model.has("image_category_id") && $("#example-" + this.model.get("image_category_id")).html().length > 0) {
-        this.$(".view_sample").show();
+      if (editImage.model.has("image_category_id") && $("#example-" + editImage.model.get("image_category_id")).html().length > 0) {
+        editImage.$(".view_sample").show();
       } else {
-        this.$(".view_sample").hide();
+        editImage.$(".view_sample").hide();
       }
       this.$el.html(compiledTemplate);
       return this;
@@ -152,6 +155,9 @@ define([
           }
         }
       );
+      if ($("#show_additional_fields").val() == "true") {
+        editView.$(".additional-fields-tab").show();
+      }
     },
 
     saveTextDescription: function(e) {
@@ -221,6 +227,51 @@ define([
 
     sanitizeMathML: function(s) {
       return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    },
+
+    showAdditionalFields: function(e) {
+      //add wysisyg editors to summary and simplified language description.
+      var editView = this;
+      editView.$(".summary").ckeditor(editView.ckeditorConfig);
+      editView.$(".simplified-language-description").ckeditor(editView.ckeditorConfig);
+    },
+
+    saveAddtionalFields: function(e) {
+      e.preventDefault();
+      var editView = this;
+      var dynamicDescription = new DynamicDescription();
+      //Get summary and simplified language description values from ckeditor.
+      var summary, simplifiedLanguageDescription;
+      editView.$("textarea.summary").ckeditor(function(textarea){
+        summary = $(textarea).val();
+      });
+      editView.$("textarea.simplified-language-description").ckeditor(function(textarea){
+        simplifiedLanguageDescription = $(textarea).val();
+      });
+      dynamicDescription.save(
+        {
+          "book_id": $("#book_id").val(), 
+          "dynamic_image_id": editView.model.get("id"),
+          "summary": summary,
+          "annotation": editView.$(".annotation").val(),
+          "simplified_language_description": simplifiedLanguageDescription,
+          "target_age_start": editView.$(".from-age").val(),
+          "target_age_end": editView.$(".to-age").val(),
+          "target_grade_start": editView.$(".from-grade").val(),
+          "target_grade_end": editView.$(".to-grade").val(),
+          "tactile_src": editView.$(".tactile-source").val(),
+          "tactile_tour": editView.$(".tactile-tour").val(),
+          "dynamic_description": editView.model.get("dynamic_description")["body"]
+        }, 
+        {
+          success: function () {
+            editView.$(".text-success").html("The description has been saved.");
+          },
+          error: function (model, response) {
+            editView.$(".text-danger").html("There was an error saving this description.");
+          }
+        }
+      );
     }
 
 
