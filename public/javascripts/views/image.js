@@ -11,6 +11,7 @@ define([
     //div.
     tagName:  "div",
 
+    imagePadding: 4,
     itemWidth: -1,
     itemHeight: -1,
     widthValue: -1,
@@ -59,34 +60,42 @@ define([
       imageView.$(".console").hide();
       imageView.$(".target").load(function() {
         //Get initial image sizes.
-        imageView.$(".loader").show();
-        imageView.$(".console").hide();
-        var image = imageView.$(".target");
-        imageView.itemWidth = image.width();
-        imageView.itemHeight = image.height();
-        imageView.defaultWidthValue = imageView.itemWidth;
-        imageView.defaultHeightValue = imageView.itemHeight;
-        imageView.$(".thumbnail").css("overflow", "hidden");
-        imageView.$(".thumbnail").css("height", imageView.itemHeight + 8);
-        imageView.$(".thumbnail").css("width", imageView.itemWidth + 8);
-        imageView.$(".console").show();
-        imageView.$(".loader").hide();
+        imageView.initializeImageSizes();
       });
+    },
+
+    initializeImageSizes: function() {
+      var imageView = this;
+      imageView.$(".loader").show();
+      imageView.$(".console").hide();
+      var image = imageView.$(".target");
+      imageView.setXYAndDimensions();
+      imageView.defaultWidthValue = imageView.itemWidth;
+      imageView.defaultHeightValue = imageView.itemHeight;
+      imageView.$(".thumbnail").css("overflow", "hidden");
+      imageView.$(".thumbnail").css("height", imageView.itemHeight + imageView.imagePadding);
+      imageView.$(".thumbnail").css("width", imageView.itemWidth + imageView.imagePadding);
+      imageView.$(".console").show();
+      imageView.$(".loader").hide();
     },
 
     toggleImage: function(e) {
       var imageView = this;
       e.preventDefault();
+      imageView.reset();
       var isContext = imageView.isContext(imageView.$(".target").attr("src"));
       $(e.currentTarget).html(isContext ? "View Image In Context" : "View Image");
        var toggleImageSource = isContext ? imageView.model.get("path") : imageView.model.get("context_image_path");
       imageView.$(".target").attr("src", "");
-      imageView.$(".thumbnail").css("");
-      imageView.$(".target").css("");
-      imageView.$(".target").attr("src", toggleImageSource);
+      imageView.$(".thumbnail").attr("style", "");
+      imageView.$(".target").attr("style", "");
+      var image = new $("<img />");
+      image.attr("src", toggleImageSource);
+      image.on("load", function() {
+        imageView.$(".target").attr("src", toggleImageSource);
+        imageView.initializeImageSizes();
+      });
       imageView.$(".lightboxTrigger").attr("href", toggleImageSource);
-      imageView.initializeZoomer();
-      imageView.delegateEvents();
     },
 
     isContext: function(currentSrc) {
@@ -95,7 +104,7 @@ define([
 
     zoomIn: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var xValue, yValue;
       if (imageView.itemWidth < imageView.maxWidthValue) {
           imageView.widthValue = imageView.itemWidth * imageView.zoomValue;
@@ -131,7 +140,7 @@ define([
 
     zoomOut: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var xValue, yValue;
       if (imageView.itemWidth > imageView.defaultWidthValue) {
         imageView.widthValue = imageView.itemWidth / imageView.zoomValue;
@@ -199,7 +208,7 @@ define([
 
     moveUp: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var yValue;
       yValue = imageView.y + imageView.moveValue;
       if (yValue > 0) {
@@ -210,7 +219,7 @@ define([
 
     moveDown: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var yValue;
       yValue = imageView.y - imageView.moveValue;
       if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.itemHeight) {
@@ -221,7 +230,7 @@ define([
 
     moveLeft: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var xValue;
       xValue = imageView.x + imageView.moveValue;
       if (xValue > 0) {
@@ -232,19 +241,17 @@ define([
 
     moveRight: function() {
       var imageView = this;
-      imageView.setXYAndHeight();
+      imageView.setXYAndDimensions();
       var xValue;
       xValue = imageView.x - imageView.moveValue;
-      if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.itemWidth) {
-        xValue = imageView.defaultWidthValue - imageView.itemWidth;
-      }
       imageView.$(".target").stop(true, true).animate({left: xValue});
     },
 
-    setXYAndHeight: function() {
+    setXYAndDimensions: function() {
       this.y = this.$(".target").position().top;
       this.x = this.$(".target").position().left;
       this.itemHeight = this.$(".target").height();
+      this.itemWidth = this.$(".target").width();
     }
 
   });
