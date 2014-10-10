@@ -1,6 +1,5 @@
-<!-- IMAGE -->
-<div class="image thumbnail" id="image<%= image.get("cid") %>">
-	<img src="<%= image.get("path") %>" class="target" alt="Image for Questionnaire" />
+<div class="image thumbnail">
+	<img src="<%= image.get("path") %>" class="target" alt="<%= image.get("alt") %>" />
 </div>
 <div class="loader">Initializing Zoom...</div>
 <div class="console" style="display: none;">
@@ -25,5 +24,7 @@
 <br clear="all" />
 <div class="viewOriginalImage">
 	<a class="lightboxTrigger fancybox pull-left" href="<%= image.get("path") %>">View Larger</a>
-	<a class="contextToggle pull-right toggle" href="<%= image.get("context_image_path") %>">View Image In Context</a>
+	<% if (image.has("context_image_path")) { %>
+		<a class="contextToggle pull-right toggle" href="<%= image.get("context_image_path") %>">View Image In Context</a>
+	<% } %>
 </div>

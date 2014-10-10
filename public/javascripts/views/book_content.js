@@ -4,9 +4,11 @@ define([
   'underscore',
   'backbone',
   'fancybox',
+  '/javascripts/models/image.js',
   '/javascripts/views/edit_image.js',
-  '/javascripts/views/duplicate_image.js'
-], function($, _, Backbone, fancybox, EditImageView, DuplicateImageView){
+  '/javascripts/views/duplicate_image.js',
+  '/javascripts/views/image.js'
+], function($, _, Backbone, fancybox, ImageModel, EditImageView, DuplicateImageView, ImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
 
@@ -28,17 +30,11 @@ define([
     renderImages: function() {
       var contentView = this;
       _.each(contentView.collection.models, function(image, i) {
-
         //Output form for first instance of image.
         contentView.outputEditForm(image, i);
 
         //handle all duplicates.
         contentView.renderDuplicates(image);
-      });
-      $('.fancybox').fancybox({ 
-        'scrolling'     : 'no',
-        'overlayOpacity': 0.1,
-        'showCloseButton'   : true
       });
     },
 
@@ -52,12 +48,13 @@ define([
 
       //Handle the first one.
       var domImage = $("img[img-id='" + image.get("id") + "']:first");
-      domImage.attr("src", image.get("image_source"));
-      var newImage = domImage.clone();
       var editDiv = editImage.render();
-      $(".domImage", editDiv.el).append(newImage);
-      $(".altText", editDiv.el).html(newImage.attr("alt"));
+      var imageView = new ImageView();
+      imageView.model = new ImageModel({path: image.get("image_source"), alt: domImage.attr("alt")});
+      imageView.render();
+      $(".domImage", editDiv.el).html(imageView.el);
       domImage.replaceWith(editDiv.el);
+      imageView.initializeZoomer();
     },
 
     renderDuplicates: function(image) {

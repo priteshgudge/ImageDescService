@@ -74,6 +74,7 @@ define([
       var isContext = imageView.isContext(imageView.$(".target").attr("src"));
       $(e.currentTarget).html(isContext ? "View Image In Context" : "View Image");
       var toggleImageSource = isContext ? imageView.model.get("path") : imageView.model.get("context_image_path");
+      imageView.$(".target").attr("src", "/images/zoomer/ajax-loader.gif")
       imageView.$(".thumbnail").css("");
       imageView.$(".target").css("");
       imageView.$(".target").attr("src", toggleImageSource);
