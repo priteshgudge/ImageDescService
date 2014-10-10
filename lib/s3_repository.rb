@@ -145,7 +145,7 @@ class S3Repository
   end
 
   def self.get_host(request)
-    return "//s3.amazonaws.com/" + ENV['POET_ASSET_BUCKET']
+    return "//" + ENV['POET_ASSET_BUCKET'] + ".s3.amazonaws.com" 
   end
 
 private
