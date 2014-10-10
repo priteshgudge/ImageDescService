@@ -28,7 +28,6 @@ define([
     initialize: function() {
       this.collection = new QuestionCollection();
       this.question = new QuestionView();
-      this.image = new ImageView();
     },
 
     render: function() {
@@ -63,8 +62,9 @@ define([
 
     loadImage: function() {
       var decisionTree = this;
-      decisionTree.image.model = decisionTree.selectedImage;
-      $("#zoomerImage").html(decisionTree.image.render().el);
+      var imageView = new ImageView();
+      imageView.model = decisionTree.selectedImage;
+      $("#zoomerImage").html(imageView.render().el);
     },
 
     loadQuestion: function(question_id) {

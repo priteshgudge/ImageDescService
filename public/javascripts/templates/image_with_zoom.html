@@ -1,6 +1,8 @@
 <div class="image thumbnail">
-	<img src="<%= image.get("path") %>" class="target" alt="<%= image.get("alt") %>" />
+	<% var timestamp = new Date().getTime(); %>
+	<img src="<%= image.get("path") + "?" + timestamp%>" class="target" alt="<%= image.get("alt") %>" />
 </div>
+<div class="loader">Initializing Zoom...</div>
 <div class="console">
 	<ul class="left">	
 		<li>

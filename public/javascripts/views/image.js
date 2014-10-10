@@ -48,13 +48,17 @@ define([
         'overlayOpacity': 0.1,
         'showCloseButton'   : true
       });
+      this.initializeZoomer();
       return this;
     },
 
     initializeZoomer: function(zoomFunction) {
-      if (this.initialized == false) {
+      //Get initial image sizes.
+      var imageView = this;
+      imageView.$(".loader").show();
+      imageView.$(".console").hide();
+      imageView.$(".target").load(function() {
         //Get initial image sizes.
-        var imageView = this;
         imageView.$(".loader").show();
         imageView.$(".console").hide();
         var image = imageView.$(".target");
@@ -67,24 +71,22 @@ define([
         imageView.$(".thumbnail").css("width", imageView.itemWidth + 8);
         imageView.$(".console").show();
         imageView.$(".loader").hide();
-        this.initialized = true;
-      }
-      zoomFunction();
+      });
     },
 
     toggleImage: function(e) {
       var imageView = this;
       e.preventDefault();
-      imageView.reset();
       var isContext = imageView.isContext(imageView.$(".target").attr("src"));
       $(e.currentTarget).html(isContext ? "View Image In Context" : "View Image");
-      var toggleImageSource = isContext ? imageView.model.get("path") : imageView.model.get("context_image_path");
+       var toggleImageSource = isContext ? imageView.model.get("path") : imageView.model.get("context_image_path");
       imageView.$(".target").attr("src", "");
-      imageView.$(".thumbnail").attr("style", "");
-      imageView.$(".target").attr("style", "");
+      imageView.$(".thumbnail").css("");
+      imageView.$(".target").css("");
       imageView.$(".target").attr("src", toggleImageSource);
       imageView.$(".lightboxTrigger").attr("href", toggleImageSource);
-      imageView.initialized = false;
+      imageView.initializeZoomer();
+      imageView.delegateEvents();
     },
 
     isContext: function(currentSrc) {
@@ -93,170 +95,150 @@ define([
 
     zoomIn: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var xValue, yValue;
-        if (imageView.itemWidth < imageView.maxWidthValue) {
-            imageView.widthValue = imageView.itemWidth * imageView.zoomValue;
-            if (imageView.widthValue > imageView.maxWidthValue) {
-              imageView.widthValue = imageView.maxWidthValue;
-            }
-            xValue = imageView.x - ((imageView.widthValue - imageView.itemWidth) / 2);
-            if (xValue > 0) {
-              xValue = 0;
-            }
-            if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.widthValue) {
-              xValue = imageView.defaultWidthValue - imageView.widthValue;
-            }
-            imageView.heightValue = imageView.itemHeight * imageView.zoomValue;
-            if (imageView.heightValue > imageView.maxHeightValue) {
-              imageView.heightValue = imageView.maxHeightValue;
-            }
-            yValue = imageView.y - ((imageView.heightValue - imageView.itemHeight) / 2);
-            if (yValue > 0) {
-              yValue = 0;
-            }
-            if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.heightValue) yValue = imageView.defaultHeightValue - imageView.heightValue;
+      imageView.setXYAndHeight();
+      var xValue, yValue;
+      if (imageView.itemWidth < imageView.maxWidthValue) {
+          imageView.widthValue = imageView.itemWidth * imageView.zoomValue;
+          if (imageView.widthValue > imageView.maxWidthValue) {
+            imageView.widthValue = imageView.maxWidthValue;
+          }
+          xValue = imageView.x - ((imageView.widthValue - imageView.itemWidth) / 2);
+          if (xValue > 0) {
+            xValue = 0;
+          }
+          if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.widthValue) {
+            xValue = imageView.defaultWidthValue - imageView.widthValue;
+          }
+          imageView.heightValue = imageView.itemHeight * imageView.zoomValue;
+          if (imageView.heightValue > imageView.maxHeightValue) {
+            imageView.heightValue = imageView.maxHeightValue;
+          }
+          yValue = imageView.y - ((imageView.heightValue - imageView.itemHeight) / 2);
+          if (yValue > 0) {
+            yValue = 0;
+          }
+          if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.heightValue) yValue = imageView.defaultHeightValue - imageView.heightValue;
 
-            if (imageView.heightValue == imageView.defaultHeightValue) { 
-              imageView.stopDrag(); 
-            } else { 
-              imageView.startDrag(); 
-            }
-            imageView.$(".target").stop(true, true).animate({width: imageView.widthValue, "max-width": imageView.widthValue, top: yValue, left: xValue});
-            imageView.itemWidth = imageView.widthValue;
-        }
-      });
-      
+          if (imageView.heightValue == imageView.defaultHeightValue) { 
+            imageView.stopDrag(); 
+          } else { 
+            imageView.startDrag(); 
+          }
+          imageView.$(".target").stop(true, true).animate({width: imageView.widthValue, "max-width": imageView.widthValue, top: yValue, left: xValue});
+          imageView.itemWidth = imageView.widthValue;
+      }
     },
 
     zoomOut: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var xValue, yValue;
-        if (imageView.itemWidth > imageView.defaultWidthValue) {
-          imageView.widthValue = imageView.itemWidth / imageView.zoomValue;
-          if (imageView.widthValue < imageView.defaultWidthValue) imageView.widthValue = imageView.defaultWidthValue;
-          xValue = imageView.x + ((imageView.itemWidth - imageView.widthValue) / 2);
-          if (xValue > 0) xValue = 0;
-          if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.widthValue) xValue = imageView.defaultWidthValue - imageView.widthValue;
-      
-          imageView.heightValue = imageView.itemHeight / imageView.zoomValue;
-          if (imageView.heightValue < imageView.defaultHeightValue) imageView.heightValue = imageView.defaultHeightValue;
-          yValue = imageView.y + ((imageView.itemHeight - imageView.heightValue) / 2);
-          if (yValue > 0) xValue = 0;
-          if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.heightValue) yValue = imageView.defaultHeightValue - imageView.heightValue;
+      imageView.setXYAndHeight();
+      var xValue, yValue;
+      if (imageView.itemWidth > imageView.defaultWidthValue) {
+        imageView.widthValue = imageView.itemWidth / imageView.zoomValue;
+        if (imageView.widthValue < imageView.defaultWidthValue) imageView.widthValue = imageView.defaultWidthValue;
+        xValue = imageView.x + ((imageView.itemWidth - imageView.widthValue) / 2);
+        if (xValue > 0) xValue = 0;
+        if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.widthValue) xValue = imageView.defaultWidthValue - imageView.widthValue;
+    
+        imageView.heightValue = imageView.itemHeight / imageView.zoomValue;
+        if (imageView.heightValue < imageView.defaultHeightValue) imageView.heightValue = imageView.defaultHeightValue;
+        yValue = imageView.y + ((imageView.itemHeight - imageView.heightValue) / 2);
+        if (yValue > 0) xValue = 0;
+        if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.heightValue) yValue = imageView.defaultHeightValue - imageView.heightValue;
 
-          if (imageView.heightValue == imageView.defaultHeightValue) { imageView.stopDrag(); }
-          else { imageView.startDrag(); }
+        if (imageView.heightValue == imageView.defaultHeightValue) { imageView.stopDrag(); }
+        else { imageView.startDrag(); }
 
-          imageView.$(".target").stop(true, true).animate({width: imageView.widthValue, "max-width": imageView.widthValue, top: yValue, left: xValue});
-          imageView.itemWidth = imageView.widthValue;
-        }
-      });
+        imageView.$(".target").stop(true, true).animate({width: imageView.widthValue, "max-width": imageView.widthValue, top: yValue, left: xValue});
+        imageView.itemWidth = imageView.widthValue;
+      }
     },
 
     startDrag: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        var i = imageView.$(".target");
-        var topLimit = 0;
-        var leftLimit = 0;
-        imageView.$(".target").draggable({
-          start: function(event, ui) {
-            if (ui.position != undefined) {
-              topLimit = ui.position.top;
-              leftLimit = ui.position.left;
-            }
-          },
-          drag: function(event, ui) {
+      var i = imageView.$(".target");
+      var topLimit = 0;
+      var leftLimit = 0;
+      imageView.$(".target").draggable({
+        start: function(event, ui) {
+          if (ui.position != undefined) {
             topLimit = ui.position.top;
             leftLimit = ui.position.left;
-            var bottomLimit = i.height() - imageView.defaultHeightValue;
-            var rightLimit = i.width() - imageView.defaultWidthValue;         
-            if (ui.position.top < 0 && ui.position.top * -1 > bottomLimit) topLimit = bottomLimit * -1;
-            if (ui.position.top > 0) topLimit = 0;          
-            if (ui.position.left < 0 && ui.position.left * -1 > rightLimit) leftLimit = rightLimit * -1;
-            if (ui.position.left > 0) leftLimit = 0;
-            ui.position.top = topLimit;
-            ui.position.left = leftLimit;
           }
-        });
-
-        i.css("cursor", "move");
+        },
+        drag: function(event, ui) {
+          topLimit = ui.position.top;
+          leftLimit = ui.position.left;
+          var bottomLimit = i.height() - imageView.defaultHeightValue;
+          var rightLimit = i.width() - imageView.defaultWidthValue;         
+          if (ui.position.top < 0 && ui.position.top * -1 > bottomLimit) topLimit = bottomLimit * -1;
+          if (ui.position.top > 0) topLimit = 0;          
+          if (ui.position.left < 0 && ui.position.left * -1 > rightLimit) leftLimit = rightLimit * -1;
+          if (ui.position.left > 0) leftLimit = 0;
+          ui.position.top = topLimit;
+          ui.position.left = leftLimit;
+        }
       });
+      i.css("cursor", "move");
     },
 
     reset: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.stopDrag();
-        imageView.$(".target").stop(true, true).animate({width: imageView.defaultWidthValue, top: 0, left: 0});
-      });
+      imageView.stopDrag();
+      imageView.$(".target").stop(true, true).animate({width: imageView.defaultWidthValue, top: 0, left: 0});
     },
 
     stopDrag: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        var i = imageView.$(".target");
-        if (i.data('draggable')) {
-          i.draggable("destroy");
-          i.css("cursor", "default");
-        }
-      });
+      var i = imageView.$(".target");
+      if (i.data('draggable')) {
+        i.draggable("destroy");
+        i.css("cursor", "default");
+      }
     },
 
     moveUp: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var yValue;
-        yValue = imageView.y + imageView.moveValue;
-        if (yValue > 0) {
-          yValue = 0;
-        }
-        imageView.$(".target").stop(true, true).animate({top: yValue});
-      });
+      imageView.setXYAndHeight();
+      var yValue;
+      yValue = imageView.y + imageView.moveValue;
+      if (yValue > 0) {
+        yValue = 0;
+      }
+      imageView.$(".target").stop(true, true).animate({top: yValue});
     },
 
     moveDown: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var yValue;
-        yValue = imageView.y - imageView.moveValue;
-        if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.itemHeight) {
-          yValue = imageView.defaultHeightValue - imageView.itemHeight;
-        }
-        imageView.$(".target").stop(true, true).animate({top: yValue});
-      });
+      imageView.setXYAndHeight();
+      var yValue;
+      yValue = imageView.y - imageView.moveValue;
+      if (imageView.defaultHeightValue + Math.abs(yValue) > imageView.itemHeight) {
+        yValue = imageView.defaultHeightValue - imageView.itemHeight;
+      }
+      imageView.$(".target").stop(true, true).animate({top: yValue});
     },
 
     moveLeft: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var xValue;
-        xValue = imageView.x + imageView.moveValue;
-        if (xValue > 0) {
-          xValue = 0;
-        }
-        imageView.$(".target").stop(true, true).animate({left: xValue});
-      });
+      imageView.setXYAndHeight();
+      var xValue;
+      xValue = imageView.x + imageView.moveValue;
+      if (xValue > 0) {
+        xValue = 0;
+      }
+      imageView.$(".target").stop(true, true).animate({left: xValue});
     },
 
     moveRight: function() {
       var imageView = this;
-      imageView.initializeZoomer(function() {
-        imageView.setXYAndHeight();
-        var xValue;
-        xValue = imageView.x - imageView.moveValue;
-        if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.itemWidth) {
-          xValue = imageView.defaultWidthValue - imageView.itemWidth;
-        }
-        imageView.$(".target").stop(true, true).animate({left: xValue});
-      });
+      imageView.setXYAndHeight();
+      var xValue;
+      xValue = imageView.x - imageView.moveValue;
+      if (imageView.defaultWidthValue + Math.abs(xValue) > imageView.itemWidth) {
+        xValue = imageView.defaultWidthValue - imageView.itemWidth;
+      }
+      imageView.$(".target").stop(true, true).animate({left: xValue});
     },
 
     setXYAndHeight: function() {
