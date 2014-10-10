@@ -27,32 +27,18 @@ require.config({
     fancybox: {
       deps: ["jquery"],
       exports: "fancybox"
-    },
-    pretty_loader: {
-      deps: ["jquery"],
-      exports: "pretty-loader"
-    },
-    pretty_photo: {
-      deps: ["jquery", "pretty-loader"],
-      exports: "pretty-photo"
-    },
-    zoomer: {
-      deps: ["jquery", "pretty-loader", "pretty-photo"],
-      exports: "zoomer"
     }
   },
   paths: {
     'jquery': 'jquery.min',
+    'jquery-ui': 'jquery-ui.min',
     'underscore': 'libs/underscore-min',
     'backbone': 'libs/backbone-min',
     'text': 'libs/text',
     'ckeditor_core': 'libs/ckeditor/ckeditor',
     'ckeditor': 'libs/ckeditor/adapters/jquery',
     'bootstrap': 'libs/bootstrap.min',
-    'fancybox': 'libs/fancybox/jquery.fancybox',
-    'pretty-loader': 'libs/zoomer/assets/prettyLoader/js/jquery.prettyLoader',
-    'pretty-photo': 'libs/zoomer/assets/prettyPhoto/js/jquery.prettyPhoto',
-    'zoomer': 'libs/zoomer/assets/jquery.zoomer',
+    'fancybox': 'libs/fancybox/jquery.fancybox'
   },
   urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/training.js'

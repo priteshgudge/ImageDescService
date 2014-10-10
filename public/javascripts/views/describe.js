@@ -3,8 +3,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'bootstrap',
   'text!/javascripts/templates/describe.html'
-], function($, _, Backbone, describeTemplate) {
+], function($, _, Backbone, bootstrap, describeTemplate) {
   var DescribeView = Backbone.View.extend({
     //div.
     tagName:  "div",
@@ -22,7 +23,7 @@ define([
     },
 
     closeDecisionTree: function() {
-      $("#questionnaire").dialog("close");
+      $("#questionnaire").modal("hide");
     }
   });
   return DescribeView;

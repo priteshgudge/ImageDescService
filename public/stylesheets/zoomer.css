@@ -16,22 +16,22 @@
 	min-width: 250px;
 	background-color:#ffffff;
 }
-.zoomer .console .left {
+.console .left {
 	margin: 0;
 	float: left;
 	padding-left: 6px;
 }
-.zoomer .console .right {
+.console .right {
 	margin: 0;
 	float: right;
 	padding-right: 2px;
 }
-.zoomer .console li {
+.console li {
 	list-style-type: none;
 	float: left;
 	margin-right: 6px;
 }
-.zoomer .console li a {
+.console li a {
 	float: left;
 	cursor: pointer;
 }
