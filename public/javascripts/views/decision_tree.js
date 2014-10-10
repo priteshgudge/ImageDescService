@@ -65,8 +65,6 @@ define([
       var decisionTree = this;
       decisionTree.image.model = decisionTree.selectedImage;
       $("#zoomerImage").html(decisionTree.image.render().el);
-      decisionTree.image.initializeZoomer();
-      decisionTree.image.delegateEvents();
     },
 
     loadQuestion: function(question_id) {
