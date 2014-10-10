@@ -36,15 +36,15 @@
       },
       {
         "image_id":"4",
-        "path": "https://poet-static.s3.amazonaws.com/decision_tree/4.jpg",
-        "context_image_path": "https://poet-static.s3.amazonaws.com/decision_tree/4_context.jpg",
-        "thumb_image_path": "https://poet-static.s3.amazonaws.com/decision_tree/4_thumb.jpg",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4_thumb.jpg",
         "alt": "Line Graph",
         "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image adds value by presenting a courtroom example affirming the impact of prior research. Details are already available in the caption immediately right of the image, so providing another description would be redundant.</p><p><strong>Note:</strong> If the caption was also interpreted as an inaccessible image, then a textual transcription would be required.</p>"
       },
       {
         "image_id":"5",
-        "path": "https://poet-static.s3.amazonaws.com/decision_tree/5.jpg",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5.jpg",
         "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5_context.jpg",
         "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5_thumb.jpg",
         "alt": "Pie Chart",
