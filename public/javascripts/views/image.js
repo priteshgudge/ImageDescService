@@ -3,9 +3,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'fancybox',
   'jquery-ui',
   'text!/javascripts/templates/image_with_zoom.html'
-], function($, _, Backbone, jqueryui, imageWithZoomTemplate) {
+], function($, _, Backbone, fancybox, jqueryui, imageWithZoomTemplate) {
   var ImageView = Backbone.View.extend({
     //div.
     tagName:  "div",

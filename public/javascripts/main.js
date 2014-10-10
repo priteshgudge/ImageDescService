@@ -45,8 +45,8 @@ require.config({
     'fancybox': 'libs/fancybox/jquery.fancybox'
   },
   urlArgs: "bust=" + (new Date()).getTime(),
-  mainConfigFile: '/javascripts/main.js'
-
+  mainConfigFile: '/javascripts/main.js',
+  waitSeconds: 15
 });
 
 require([
