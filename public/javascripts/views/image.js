@@ -17,16 +17,15 @@ define([
     widthValue: -1,
     heightValue: -1,
     maxHeightValue: 1000,
-    defaultHeightValue: 450,
     maxWidthValue: 1000,
-    defaultWidthValue: 450,
+    defaultHeightValue: -1,
+    defaultWidthValue: -1,
     zoomValue: 1.2,
     moveValue: 50,
     x: -1,
     y: -1,
     xValue: -1,
     yValue: -1,
-    initialized: false,
 
     // The DOM events specific to an item.
     events: {
@@ -75,6 +74,7 @@ define([
       imageView.$(".thumbnail").css("overflow", "hidden");
       imageView.$(".thumbnail").css("height", imageView.itemHeight + imageView.imagePadding);
       imageView.$(".thumbnail").css("width", imageView.itemWidth + imageView.imagePadding);
+      imageView.$(".target").css("position", "relative");
       imageView.$(".console").show();
       imageView.$(".loader").hide();
     },
@@ -82,20 +82,20 @@ define([
     toggleImage: function(e) {
       var imageView = this;
       e.preventDefault();
-      imageView.reset();
       var isContext = imageView.isContext(imageView.$(".target").attr("src"));
       $(e.currentTarget).html(isContext ? "View Image In Context" : "View Image");
        var toggleImageSource = isContext ? imageView.model.get("path") : imageView.model.get("context_image_path");
       imageView.$(".target").attr("src", "");
       imageView.$(".thumbnail").attr("style", "");
       imageView.$(".target").attr("style", "");
+      imageView.$(".lightboxTrigger").attr("href", toggleImageSource);
       var image = new $("<img />");
       image.attr("src", toggleImageSource);
       image.on("load", function() {
         imageView.$(".target").attr("src", toggleImageSource);
         imageView.initializeImageSizes();
       });
-      imageView.$(".lightboxTrigger").attr("href", toggleImageSource);
+      
     },
 
     isContext: function(currentSrc) {
@@ -195,6 +195,7 @@ define([
       var imageView = this;
       imageView.stopDrag();
       imageView.$(".target").stop(true, true).animate({width: imageView.defaultWidthValue, top: 0, left: 0});
+      imageView.setXYAndDimensions();
     },
 
     stopDrag: function() {
@@ -248,10 +249,11 @@ define([
     },
 
     setXYAndDimensions: function() {
-      this.y = this.$(".target").position().top;
-      this.x = this.$(".target").position().left;
-      this.itemHeight = this.$(".target").height();
-      this.itemWidth = this.$(".target").width();
+      var imageView = this;
+      imageView.y = imageView.$(".target").position().top;
+      imageView.x = imageView.$(".target").position().left;
+      imageView.itemHeight = imageView.$(".target").height();
+      imageView.itemWidth = imageView.$(".target").width();
     }
 
   });
