@@ -11,7 +11,7 @@ define([
     //div.
     tagName:  "div",
 
-    imagePadding: 4,
+    imagePadding: 8,
     itemWidth: -1,
     itemHeight: -1,
     widthValue: -1,
