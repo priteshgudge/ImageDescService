@@ -7,11 +7,11 @@
 			<% _.each(question.get("answers"), function(answer) { %>
 				<div class="radio">
 					<label for="<%= answer['answer_id'] %>">
-						<input type="radio" class="answer" value="<%= answer['answer_id'] %>" name="answer" id="<%= answer['answer_id'] %>" <% if (typeof(answer_id) !== 'undefined' && answer_id == answer['answer_id']) { %> checked <% } %>>
+						<input type="radio" class="answer" value="<%= answer['answer_id'] %>" name="answer" id="<%= answer['answer_id'] %>" <% if (typeof(question.get("answer")) !== 'undefined' && question.get("answer")["answer_id"] == answer['answer_id']) { %> checked <% } %>>
 						<%= answer['label'] %>
 					</label>
-					<% if (answer['value'] == "-oth") { %>
-						<input type="text" name="answer_other" id="other" placeholder="Other"/>
+					<% if (answer['value'] == "-oth") { console.log(question); %>
+						<input type="text" name="answer_other" id="other" placeholder="Other" value="<%= question.get("other") %>"/>
 						<label for="other" class="sr-only">Other</label>
 					<% } %>
 				</div>

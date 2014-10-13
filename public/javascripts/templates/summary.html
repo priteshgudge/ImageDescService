@@ -8,7 +8,7 @@
 						<strong><%= question.get("text") %></strong>
 						<% _.each(question.get("answers"), function(answer) { %>
 							<% if (answer["answer_id"] == question.get("answer")["answer_id"]) { %>
-								<p><%= answer["label"] %></p>
+								<p><%= answer["label"] %><%= question.get("other") != "" ? ": " +  question.get("other") : "" %></p>
 							<% } %>
 						<% }); %>
 					</li>

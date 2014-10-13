@@ -3,7 +3,6 @@
 .zoomer .holder {
 	border: 1px solid #e6e6e6;
 	background: #ffffff;
-	min-width: 250px;
 }
 .zoomer .holder .image {
 	overflow: hidden;
@@ -11,9 +10,7 @@
 
 /* console */
 .console {
-	height: 35px;
 	padding-top: 7px;
-	min-width: 250px;
 	background-color:#ffffff;
 }
 .console .left {
@@ -34,4 +31,9 @@
 .console li a {
 	float: left;
 	cursor: pointer;
+}
+
+.console li a img {
+	width: 100%;
+	height: auto;
 }

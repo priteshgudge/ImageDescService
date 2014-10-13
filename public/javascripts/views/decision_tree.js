@@ -21,8 +21,7 @@ define([
     // The DOM events specific to an item.
     events: {
       "click #prev"     : "goBack",
-      "click #next"     : "getNextQuestion",
-      "click .answer"   : "setAnswer"
+      "click #next"     : "getNextQuestion"
     },
 
     initialize: function() {
@@ -40,6 +39,7 @@ define([
     },
 
     getNextQuestion: function() {
+      this.setAnswer();
       var currentQuestion = this.collection.findWhere({"question_id":this.question.model.get("question_id")});
       if (currentQuestion.has("answer") && this.verifyOther(currentQuestion.get("answer")["answer_id"])) {
         var answer = new Answer(currentQuestion.get("answer"));
@@ -103,10 +103,16 @@ define([
     },
 
     setAnswer: function(evt) {
-      var answer = $(evt.currentTarget).attr("id");
-      this.collection.findWhere({"question_id":this.question.model.get("question_id")}).set({
-        "answer": this.question.model.findAnswerById(answer)
-      });
+      var decisionTree = this;
+      var answer = $("input[name='answer']:checked");
+      if (answer.length > 0) {
+        var answerId = $(answer).attr("id");
+        var other = $("#other").length > 0 && $("#other").val() != "" ? $("#other").val() : "";
+        decisionTree.collection.findWhere({"question_id":decisionTree.question.model.get("question_id")}).set({
+          "answer": decisionTree.question.model.findAnswerById(answerId),
+          "other": other
+        });
+      }
     }
   });
   return DecisionTreeView;

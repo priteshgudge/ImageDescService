@@ -203,7 +203,6 @@ define([
         historyLink.popover({
           html : true, 
           content: function() {
-            console.log($("#descriptionHistory", d));
             var content = $("#descriptionHistory", d);
             content.css("display", "block");
             return content;
