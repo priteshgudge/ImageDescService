@@ -107,7 +107,9 @@ define([
           var latestDescription = editView.model.has("dynamic_description") ? editView.model.get("dynamic_description")["body"] : "";
           textarea.val(latestDescription);
           var name = textarea.attr("name");
-          CKEDITOR.instances[name].setData(latestDescription);
+          CKEDITOR.instances[name].on('focus', function(e) { 
+            e.editor.document.getBody().setHtml(latestDescription); 
+          });
           //make sure that the description is up to date.
           longDescription.show();
           //Show edit tab.
