@@ -41,10 +41,10 @@ define([
     getNextQuestion: function() {
       this.setAnswer();
       var currentQuestion = this.collection.findWhere({"question_id":this.question.model.get("question_id")});
-      if (currentQuestion.has("answer") && this.verifyOther(currentQuestion.get("answer")["answer_id"])) {
+      if ((currentQuestion.has("answer") && this.verifyOther(currentQuestion.get("answer")["answer_id"])) || currentQuestion.has("freeform_answer")) {
         var answer = new Answer(currentQuestion.get("answer"));
         //Where should we go?
-        if (answer.has("describe")) {
+        if (answer.has("describe") || currentQuestion.has("freeform_answer")) {
           this.outputDecision(answer);
         } else {
           $("#prev").show();
@@ -75,6 +75,7 @@ define([
       if (question_id == "1") {
         $("#prev").hide();
       }
+      decisionTree.$('input[type!=hidden]:first').focus();
       decisionTree.question.delegateEvents();
     },
 
@@ -111,6 +112,10 @@ define([
         decisionTree.collection.findWhere({"question_id":decisionTree.question.model.get("question_id")}).set({
           "answer": decisionTree.question.model.findAnswerById(answerId),
           "other": other
+        });
+      } else if ($("#freeform").length > 0 && $("#freeform").val() !="") {
+        decisionTree.collection.findWhere({"question_id":decisionTree.question.model.get("question_id")}).set({
+          "freeform_answer": $("#freeform").val()
         });
       }
     }

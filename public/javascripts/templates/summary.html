@@ -3,14 +3,19 @@
 		<h3>Your Answers:</h3> 
 		<ol>
 			<% _.each(questions, function(question) { %>
-				<% if (question.has("answer")) { %>	
+				<% if (question.has("answer") || question.has("freeform")) { %>	
 					<li>
 						<strong><%= question.get("text") %></strong>
-						<% _.each(question.get("answers"), function(answer) { %>
-							<% if (answer["answer_id"] == question.get("answer")["answer_id"]) { %>
-								<p><%= answer["label"] %><%= question.get("other") != "" ? ": " +  question.get("other") : "" %></p>
-							<% } %>
-						<% }); %>
+						<% if (question.has("answer")) { %>
+							<% _.each(question.get("answers"), function(answer) { %>
+								<% if (answer["answer_id"] == question.get("answer")["answer_id"]) { %>
+									<p><%= answer["label"] %><%= question.get("other") != "" ? ": " +  question.get("other") : "" %></p>
+								<% } %>
+							<% }); %>
+						<% } %>
+						<% if (question.has("freeform_answer")) { %>
+							<p><%= question.get("freeform_answer") %></p>
+						<% } %>
 					</li>
 				<% } %>
 			<% }); %>
