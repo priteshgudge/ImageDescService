@@ -27,7 +27,8 @@ define([
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
       "keyup .math-editor": "getMathML",
-      "click .save-additional-fields": "saveAddtionalFields"
+      "click .save-additional-fields": "saveAddtionalFields",
+      "click .tab-link": "clearMessages"
     },
 
     jax: {},
@@ -97,7 +98,7 @@ define([
 
     showDynamicDescriptionForm: function() {
       var editView = this;
-      editView.$(".update-message").html("");
+      
       var longDescription = editView.$(".long-description");
       var textarea = $(".dynamic-description", $(longDescription));
       textarea.ckeditor(editView.ckeditorConfig);
@@ -140,6 +141,7 @@ define([
 
     saveDescription: function(description) {
       var editView = this;
+      var hasDescription = editView.model.has("dynamic_description");
       var dynamicDescription = new DynamicDescription();
       dynamicDescription.save(
         {
@@ -150,7 +152,7 @@ define([
         {
           success: function () {
             editView.$(".image_description").html(description);
-            editView.$(".text-success").html("The description has been saved.");
+            editView.$(".text-success").html("Your image description has been " + (hasDescription ? "updated" : "created") + ".");
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
@@ -273,6 +275,10 @@ define([
           }
         }
       );
+    },
+
+    clearMessages: function() {
+      this.$(".update-message").html("");
     }
 
 
