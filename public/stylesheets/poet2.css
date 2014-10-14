@@ -130,4 +130,10 @@ h2.math-edit {
   width: 100%;
 }
 
+.open-edit-view {
+  margin-left: 3px;
+}
 
+.buttons {
+  margin-top: .3em;
+}

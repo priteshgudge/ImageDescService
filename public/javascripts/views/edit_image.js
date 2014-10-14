@@ -5,10 +5,11 @@ define([
   'backbone',
   'ckeditor',
   'bootstrap',
+  'mespeak',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, bootstrap, DynamicImage, DynamicDescription, editImageTemplate){
+], function($, _, Backbone, ckeditor, bootstrap, mespeak, DynamicImage, DynamicDescription, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -28,7 +29,8 @@ define([
       "click .history_link": "showDescriptionHistory",
       "keyup .math-editor": "getMathML",
       "click .save-additional-fields": "saveAddtionalFields",
-      "click .tab-link": "clearMessages"
+      "click .read-description": "readDescription",
+      "click .add-description-button": "hideAddButton"
     },
 
     jax: {},
@@ -93,6 +95,9 @@ define([
     openEditor: function(e) {
       e.preventDefault(e);
       this.showDynamicDescriptionForm();
+    },
+
+    hideAddButton: function(e) {
       $(e.currentTarget).hide();
     },
 
@@ -125,7 +130,7 @@ define([
 
     cancelEditor: function(e) {
       e.preventDefault();
-      this.$(".long-description").hide();
+      this.$(".preview").trigger("click");
     },
 
     showPreview: function(e) {
@@ -153,6 +158,7 @@ define([
           success: function () {
             editView.$(".image_description").html(description);
             editView.$(".text-success").html("Your image description has been " + (hasDescription ? "updated" : "created") + ".");
+            editView.$(".preview").trigger("click");
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
@@ -258,6 +264,7 @@ define([
         {
           success: function () {
             editView.$(".text-success").html("The description has been saved.");
+            editView.$(".preview").trigger("click");
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
@@ -268,6 +275,11 @@ define([
 
     clearMessages: function() {
       this.$(".update-message").html("");
+    },
+
+    readDescription: function(e) {
+      e.preventDefault();
+      meSpeak.speak(this.$(".image_description").text());
     }
 
 

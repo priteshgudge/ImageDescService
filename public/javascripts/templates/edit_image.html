@@ -40,7 +40,7 @@
 			  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
 			  				<div class="form-group">
 			  					<div class="col-sm-6">
-			  						<button class="btn btn-primary open-edit-view">Add Image Description</button>
+			  						<button class="btn btn-primary open-edit-view add-description-button">Add Image Description</button>
 			  					</div>
 			  				</div>
 			  			<% } %>
@@ -83,9 +83,16 @@
 											<div class="image_description">
 												<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
 											</div>
-											<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
 										</div>
 									</div>
+									<div class="buttons fluid-content">
+										<button class="btn btn-primary open-edit-view pull-right">Edit</button>
+										<button class="read-description btn btn-primary pull-right">Listen</button>
+										<p class="text-success update-message pull-right"></p>
+			  							<p class="text-danger update-message pull-right"></p>
+									</div>
+									<div class="clearfix"></div>
+									<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
 								  </div>
 								  <div class="tab-pane" id="math-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
@@ -96,10 +103,11 @@
 											<a href="http://www1.chapman.edu/~jipsen/mathml/asciimath.html" target="_blank">ASCII Math Cheat Sheet</a><br />
 											<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 											<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
-											<div>
+											<div class="buttons">
 												<button class="btn btn-primary pull-right save-mathml">Save</button>
-					  							<p class="text-success pull-right update-message"></p>
+												<p class="text-success pull-right update-message"></p>
 					  							<p class="text-danger pull-right update-message"></p>
+												<button class="btn btn-default pull-left cancel">Cancel</button>
 					  						</div>
 										</div>
 									</div>

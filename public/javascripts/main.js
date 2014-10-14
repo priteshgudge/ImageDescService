@@ -31,6 +31,9 @@ require.config({
     fancybox: {
       deps: ["jquery"],
       exports: "fancybox"
+    },
+    mespeak: {
+      exports: "mespeak"
     }
   },
   paths: {
@@ -42,7 +45,8 @@ require.config({
     'ckeditor_core': 'libs/ckeditor/ckeditor',
     'ckeditor': 'libs/ckeditor/adapters/jquery',
     'bootstrap': 'libs/bootstrap.min',
-    'fancybox': 'libs/fancybox/jquery.fancybox'
+    'fancybox': 'libs/fancybox/jquery.fancybox',
+    'mespeak': 'libs/mespeak/mespeak'
   },
   urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/main.js',
