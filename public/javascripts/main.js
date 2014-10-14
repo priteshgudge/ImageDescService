@@ -48,7 +48,6 @@ require.config({
     'fancybox': 'libs/fancybox/jquery.fancybox',
     'mespeak': 'libs/mespeak/mespeak.min'
   },
-  urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/main.js',
   waitSeconds: 60
 });
