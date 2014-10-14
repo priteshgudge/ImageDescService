@@ -22,7 +22,9 @@
 			  			<div class="form-group">
 			    			<span class="col-sm-3 control-label">Alt Text</span>
 			    			<div class="col-sm-9">
-			      				<p class="form-control-static altText"></p>
+			      				<p class="form-control-static altText">
+			      					<%= image.get("alt").length > 0 ? image.get("alt") : "<em>(No description provided by publisher)</em>" %>
+			      				</p>
 			    			</div>
 			  			</div>
 			  			<div class="form-group">

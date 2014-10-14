@@ -40,21 +40,20 @@ define([
 
     outputEditForm: function(image, i) {
       var contentView = this;
+      //Handle the first one.
+      var domImage = $("img[img-id='" + image.get("id") + "']:first");
       var editImage = new EditImageView();
       editImage.imageCategories = contentView.imageCategories;
+      image.set({path: image.get("image_source"), alt: domImage.attr("alt")});
       editImage.model = image;
       editImage.previousImage = contentView.collection.models[i-1];
       editImage.nextImage = contentView.collection.models[i+1];
-
-      //Handle the first one.
-      var domImage = $("img[img-id='" + image.get("id") + "']:first");
       var editDiv = editImage.render();
       var imageView = new ImageView();
-      imageView.model = new ImageModel({path: image.get("image_source"), alt: domImage.attr("alt")});
+      imageView.model = image;
       imageView.render();
       $(".domImage", editDiv.el).html(imageView.el);
       domImage.replaceWith(editDiv.el);
-      imageView.initializeZoomer();
     },
 
     renderDuplicates: function(image) {
