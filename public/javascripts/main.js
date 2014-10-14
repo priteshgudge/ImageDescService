@@ -46,11 +46,11 @@ require.config({
     'ckeditor': 'libs/ckeditor/adapters/jquery',
     'bootstrap': 'libs/bootstrap.min',
     'fancybox': 'libs/fancybox/jquery.fancybox',
-    'mespeak': 'libs/mespeak/mespeak'
+    'mespeak': 'libs/mespeak/mespeak.min'
   },
   urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/main.js',
-  waitSeconds: 15
+  waitSeconds: 60
 });
 
 require([
