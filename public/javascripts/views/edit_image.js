@@ -57,7 +57,7 @@ define([
           previousImage: editImage.previousImage,
           nextImage: editImage.nextImage
         });
-      if (editImage.model.has("image_category_id") && $("#example-" + editImage.model.get("image_category_id")).html().length > 0) {
+      if (editImage.model.has("image_category_id") && $("#exampleModalBody" + editImage.model.get("image_category_id")).html().length > 0) {
         editImage.$(".view_sample").show();
       } else {
         editImage.$(".view_sample").hide();
@@ -71,7 +71,7 @@ define([
       var imageCategory = $(e.currentTarget).val();
       //Save.
       imageView.model.save({"image_category_id": imageCategory});
-      if (!$("#example-" + imageCategory).html().length > 0) {
+      if (!$("#exampleModalBody" + imageCategory).html().length > 0) {
         imageView.$(".view_sample").hide();
       } else {
         imageView.$(".view_sample").show();
@@ -183,19 +183,8 @@ define([
     },
 
     showSample: function(e) {
-      var editImage = this;
-      $(e.currentTarget).popover({
-        html : true, 
-        content: function() {
-          var content = $('#example-' + editImage.$(".image_category").val()).clone();
-          content.css("display", "block");
-          return content;
-        },
-        title: function() {
-          return "Guidelines";
-        }
-      });
-      $(e.currentTarget).popover('show');
+      e.preventDefault();
+      $("#exampleModal" + this.$(".image_category").val()).modal("show");
     },
 
     showDescriptionHistory: function(e) {

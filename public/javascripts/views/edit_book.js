@@ -5,9 +5,10 @@ define([
   'backbone',
   '/javascripts/views/side_bar.js',
   '/javascripts/views/book_content.js',
+  '/javascripts/views/example_modal.js',
   '/javascripts/collections/dynamic_image_collection.js',
   '/javascripts/collections/image_category_collection.js'
-], function($, _, Backbone, SideBarView, BookContentView, DynamicImageCollection, ImageCategoryCollection) {
+], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     
     el: $('#edit_book'),
@@ -44,10 +45,10 @@ define([
 
     loadExamples: function(imageCategories) {
       _.each(imageCategories.models, function(category) {
-        var categoryDiv = $("<div id='example-" + category.get("id") + "'></div>");
-        categoryDiv.load("/dynamic_images_sample_html/" + category.get("id"));
-        $("#examples").append(categoryDiv);
-
+        var modalView = new ExampleModalView();
+        modalView.model = category;
+        var template = modalView.render();
+        $("body").append(template.$el);
       });
     }
   });
