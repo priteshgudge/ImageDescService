@@ -49,7 +49,7 @@ require.config({
     'mespeak': 'libs/mespeak/mespeak.min'
   },
   mainConfigFile: '/javascripts/main.js',
-  waitSeconds: 60
+  waitSeconds: 120
 });
 
 require([
