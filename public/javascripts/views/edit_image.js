@@ -200,19 +200,8 @@ define([
     showDescriptionHistory: function(e) {
       e.preventDefault();
       var historyLink = $(e.currentTarget);
-      var content = $.get(historyLink.attr("href"), function(d) {
-        historyLink.popover({
-          html : true, 
-          content: function() {
-            var content = $("#descriptionHistory", d);
-            content.css("display", "block");
-            return content;
-          },
-          title: function() {
-            return "Description History";
-          }
-        });
-        historyLink.popover('show');
+      $("#descriptionHistoryBody").load(historyLink.attr("href") + " #descriptionHistory", function() {
+        $("#descriptionHistoryModal").modal("show");
       });
     },
 

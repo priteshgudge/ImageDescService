@@ -71,6 +71,21 @@
 	$.getScript("https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML");
 </script>
 
+<div class="modal fade" id="descriptionHistoryModal" tabindex="-1" role="dialog" aria-labelledby="descriptionHeader" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="descriptionHeader">Description History</h4>
+      </div>
+      <div class="modal-body" id="descriptionHistoryBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Load the script "javascripts/edit_book/main.js" as our entry point -->
 <script data-main="/javascripts/main" src="/javascripts/libs/require.js"></script>
 
