@@ -36,6 +36,7 @@
 									<option value="false" <%= image.get("should_be_described") == false ? "selected" : "" %>>No</option>
 								</select>
 			  				</div>
+			  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
 			  			</div>
 			  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
 			  				<div class="form-group">
