@@ -61,8 +61,8 @@
 				  			<div class="form-group container-fluid">
 				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
-  									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
   									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview tab-link">Preview</a></li>
+  									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
   									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link">Math Editor</a></li>
   									<li class="additional-fields-tab" <% if (typeof(image.get("dynamic_description")) == "undefined" || $("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
 								</ul>
