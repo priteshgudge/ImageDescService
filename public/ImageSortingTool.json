@@ -8,73 +8,73 @@
         "answers": [
           {
             "answer_id": "1",
-            "label": "Photo.",
+            "label": "Photo",
             "value": "A1",
             "next": "2"
           },
           {
             "answer_id": "2",
-            "label": "Drawing.",
+            "label": "Drawing",
             "value": "A2",
             "next": "2"
           },
           {
             "answer_id": "3",
-            "label": "Cartoon.",
+            "label": "Cartoon",
             "value": "A3",
             "next": "2"
           },
           {
             "answer_id": "4",
-            "label": "Illustration of a process.",
+            "label": "Illustration of a process",
             "value": "A4",
             "next": "2"
           },
           {
             "answer_id": "5",
-            "label": "Flowchart.",
+            "label": "Flowchart",
             "value": "A5",
             "next": "2"
           },
           {
             "answer_id": "6",
-            "label": "Table (data display).",
+            "label": "Table (data display)",
             "value": "A6",
             "next": "2"
           },
           {
             "answer_id": "7",
-            "label": "Graphic organizer (hierarchy charts, decision tree, etc).",
+            "label": "Graphic organizer (hierarchy charts, decision tree, etc)",
             "value": "A7",
             "next": "2"
           },
           {
             "answer_id": "8",
-            "label": "Map.",
+            "label": "Map",
             "value": "A8",
             "next": "2"
           },
           {
             "answer_id": "9",
-            "label": "Timeline.",
+            "label": "Timeline",
             "value": "A9",
             "next": "2"
           },
           {
             "answer_id": "10",
-            "label": "Graph (e.g. bar, circle, pie, line).",
+            "label": "Graph (e.g. bar, circle, pie, line)",
             "value": "A10",
             "next": "2"
           },
           {
             "answer_id": "11",
-            "label": "Displays text only, with no additional graphics.",
+            "label": "Displays text only, with no additional graphics",
             "value": "A11",
             "next": "2"
           },
           {
             "answer_id": "12",
-            "label": "Displays a math expression only, with no additional graphics.",
+            "label": "Displays a math expression only, with no additional graphics",
             "value": "A12",
             "next": "2"
           },
@@ -98,11 +98,12 @@
             "answer_id": "14",
             "label": "It provides visual interest only (it is not needed for understanding subject matter).",
             "value": "6",
-            "describe":"no"
+            "describe":"no",
+            "comments": "do not describe."
           },
           {
             "answer_id": "15",
-            "label": "It is a functional icon (e.g., a button or link) It is a graphical or activity icon.",
+            "label": "It is a functional icon (e.g., a button or link).",
             "value": "A2",
             "next": "3"
           },
@@ -116,7 +117,7 @@
             "answer_id": "17",
             "label": "Other",
             "value": "-oth",
-            "describe":"no",
+            "next":"9",
             "contingentQuestion": {
               "text": "Other",
               "length": "24"
@@ -133,19 +134,20 @@
             "label": "Yes.",
             "value": "4",
             "describe": "yes",
-            "more_info": "NEEDS VERBAL DESCRIPTION OF FUNCTIONAL ROLE"
+            "comments": "provide a text description of the icon’s functional role."
           },
           {
             "answer_id": "19",
             "label": "No.",
             "value": "6",
-            "describe": "no"
+            "describe": "no",
+            "comments": "do not describe."
           }
         ]
       },
       {
         "question_id": "4",
-        "text": "Does the image provide additional information essential to understanding that the student would not otherwise read in the surrounding chapter on the page?",
+        "text": "Does the image provide information essential to understanding that is not available in the surrounding text?",
         "answers": [
           {
             "answer_id": "20",
@@ -157,7 +159,8 @@
             "answer_id": "21",
             "label": "No.",
             "value": "A1",
-            "describe": "no"
+            "describe": "no",
+            "comments": "do not describe."
           }
         ]
       },
@@ -181,14 +184,14 @@
       },
       {
         "question_id": "6",
-        "text": "Would a verbal description adequately convey the main idea of this image?",
+        "text": "Would a text description adequately convey the main idea of this image?",
         "answers": [
           {
             "answer_id": "24",
             "label": "Yes.",
             "value": "4",
             "describe": "yes",
-            "more_info": "NEEDS VERBAL DESCRIPTION"
+            "comments": "provide a text description for the image."
           },
           {
             "answer_id": "25",
@@ -230,24 +233,27 @@
             "label": "It represents a spatial concept.",
             "value": "A1",
             "describe": "yes",
-            "more_info": "CONSIDER PROVIDING A TACTILE GRAPHIC"
+            "comments": "provide a tactile representation of the image."
           },
           {
             "answer_id": "29",
             "label": "It is needed for the student to participate in an activity.",
             "value": "A2",
-            "describe": "yes"
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
           },
           {
             "answer_id": "30",
             "label": "The subject matter is otherwise inaccessible.",
             "value": "A3",
-            "describe": "yes"
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
           },
           {
             "answer_id": "31",
             "label": "It would require an excessively longer time to describe the image than if it would if the student explored it tactually.",
-            "describe": "yes"
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
           },
           {
             "answer_id": "32",
@@ -260,7 +266,9 @@
       {
         "question_id": "9",
         "text": "How do you think this image could be best represented to a student who is visually impaired?",
-        "freeform": "yes"
+        "freeform": "yes",
+        "describe": "yes",
+        "comments": "please refer to the &quotComments from the Experts.&quot;"
       }
     ]
   }

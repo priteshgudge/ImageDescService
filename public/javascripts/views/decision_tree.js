@@ -45,6 +45,9 @@ define([
         var answer = new Answer(currentQuestion.get("answer"));
         //Where should we go?
         if (answer.has("describe") || currentQuestion.has("freeform_answer")) {
+          if (currentQuestion.has("freeform_answer")) {
+            answer.set({comments: currentQuestion.get("comments")});
+          }
           this.outputDecision(answer);
         } else {
           $("#prev").show();
@@ -98,6 +101,7 @@ define([
       describe.model = answer;
       $("#describe").html(describe.render().el);
       describe.delegateEvents();
+      
       $("#comments").html("<h3>Comments From the Experts:</h3>" + this.selectedImage.get("comments"));
       $("#buttons").hide();
       $("#question").html("");

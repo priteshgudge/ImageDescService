@@ -3,7 +3,7 @@
 		<h3>Your Answers:</h3> 
 		<ol>
 			<% _.each(questions, function(question) { %>
-				<% if (question.has("answer") || question.has("freeform")) { %>	
+				<% if (question.has("answer") || question.has("freeform_answer")) { %>	
 					<li>
 						<strong><%= question.get("text") %></strong>
 						<% if (question.has("answer")) { %>
@@ -22,3 +22,5 @@
 		</ol>
 	</p>
 </div>
+<div id="comments"></div>
+<p id="play_again"><input type="button" class="btn btn-primary" id="play_again_button" value="Choose a New Image" /></p>

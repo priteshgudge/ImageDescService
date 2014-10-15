@@ -1,12 +1,1 @@
-<div>
-	<p>
-		<h3>Based on your answers, the recommended action is to:</h3> 
-		<% if (describe == "no") { %>
-			<span id="no">Do not describe this image.</span>
-		<% } else { %>
-			<span id="yes">Describe the image.</span>
-		<% } %>
-	</p>
-	<div id="comments"></div>
-	<p id="play_again"><input type="button" class="btn btn-primary" id="play_again_button" value="Choose a New Image" /></p>
-</div>
+<h4>Based on your answers, the recommended action is to: <%= answer.get("comments") %><h4>

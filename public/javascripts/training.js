@@ -40,6 +40,7 @@ require.config({
     'bootstrap': 'libs/bootstrap.min',
     'fancybox': 'libs/fancybox/jquery.fancybox'
   },
+  urlArgs: "bust=" + (new Date()).getTime(),
   mainConfigFile: '/javascripts/training.js'
 
 });
