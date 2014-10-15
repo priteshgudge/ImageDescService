@@ -61,13 +61,13 @@
 				  			<div class="form-group container-fluid">
 				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
-  									<li><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
-  									<li class="active"><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview tab-link">Preview</a></li>
+  									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
+  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview tab-link">Preview</a></li>
   									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link">Math Editor</a></li>
   									<li class="additional-fields-tab" <% if (typeof(image.get("dynamic_description")) == "undefined" || $("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
 								</ul>
 								<div class="tab-content">
-								  <div class="tab-pane" id="edit-<%=image.get("id") %>">
+								  <div class="tab-pane <% if (!image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
 								  	<div class="clearfix"></div>
 					  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
 					  				<div>
@@ -77,7 +77,7 @@
 					  					<button class="btn btn-default cancel">Cancel</button>
 					  				</div>
 								  </div>
-								  <div class="tab-pane active" id="preview-<%=image.get("id") %>">
+								  <div class="tab-pane <% if (image.has("dynamic_description")) { %> active <% } %>" id="preview-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
 										<div class="panel-body">
 											<div class="image_description">

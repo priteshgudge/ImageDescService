@@ -38,8 +38,8 @@ define([
     },
 
     closeNav: function() {
-      $("#left").removeClass("col-md-3");
-      $("#right").removeClass("col-md-9");
+      $("#left").removeClass("col-md-2");
+      $("#right").removeClass("col-md-10");
       $("#right").addClass("col-md-12");
       $(".offcanvas").hide();
       $("#close-nav").hide();
@@ -48,8 +48,8 @@ define([
     },
 
     openNav: function() {
-      $("#left").addClass("col-md-3");
-      $("#right").addClass("col-md-9");
+      $("#left").addClass("col-md-2");
+      $("#right").addClass("col-md-10");
       $("#right").removeClass("col-md-12");
       $(".offcanvas").show();
       $("#expand").hide();

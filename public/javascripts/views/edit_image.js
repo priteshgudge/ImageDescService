@@ -80,6 +80,8 @@ define([
       }
       if (imageCategory == "10") {
         imageView.$(".math-tab").show();
+      } else {
+        imageView.$(".math-tab").hide();
       }
     },
 
@@ -103,6 +105,7 @@ define([
 
     showDynamicDescriptionForm: function() {
       var editView = this;
+      editView.clearMessages();
       
       var longDescription = editView.$(".long-description");
       var textarea = $(".dynamic-description", $(longDescription));
@@ -158,6 +161,7 @@ define([
           success: function () {
             editView.$(".image_description").html(description);
             editView.$(".text-success").html("Your image description has been " + (hasDescription ? "updated" : "created") + ".");
+            editView.$(".preview-tab").show();
             editView.$(".preview").trigger("click");
           },
           error: function (model, response) {

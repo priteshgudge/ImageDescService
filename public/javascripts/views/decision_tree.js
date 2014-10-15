@@ -4,13 +4,14 @@ define([
   'underscore',
   'backbone',
   'fancybox',
+  'mespeak',
   '/javascripts/models/answer.js',
   '/javascripts/collections/question_collection.js',
   '/javascripts/views/question.js',
   '/javascripts/views/summary.js',
   '/javascripts/views/describe.js',
   '/javascripts/views/image.js'
-], function($, _, Backbone, fancybox, Answer, QuestionCollection, QuestionView, SummaryView, DescribeView, ImageView) {
+], function($, _, Backbone, fancybox, mespeak, Answer, QuestionCollection, QuestionView, SummaryView, DescribeView, ImageView) {
   var DecisionTreeView = Backbone.View.extend({
     lastImage: -1,
 

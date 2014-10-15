@@ -4,13 +4,20 @@ define([
   'underscore',
   'backbone',
   'fancybox',
+  'mespeak',
   '/javascripts/models/image.js',
   '/javascripts/views/edit_image.js',
   '/javascripts/views/duplicate_image.js',
   '/javascripts/views/image.js'
-], function($, _, Backbone, fancybox, ImageModel, EditImageView, DuplicateImageView, ImageView){
+], function($, _, Backbone, fancybox, mespeak, ImageModel, EditImageView, DuplicateImageView, ImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
+
+    initialize: function() {
+      //initialize meSpeak
+      meSpeak.loadConfig("/javascripts/libs/mespeak/mespeak_config.json"); 
+      meSpeak.loadVoice('/javascripts/libs/mespeak/voices/en/en-us.json'); 
+    },
 
     render: function() {
       var contentView = this;
