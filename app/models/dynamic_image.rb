@@ -17,7 +17,7 @@ class DynamicImage < ActiveRecord::Base
     json = super(options)
     json['thumb_source'] = thumb_source(options[:host])
     json['image_source'] = image_source(options[:host])
-    json['author'] = dynamic_description.submitter_name()
+    json['author'] = dynamic_description.submitter_name() if dynamic_description
     json
   end
 

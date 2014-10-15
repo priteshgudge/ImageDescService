@@ -8,8 +8,8 @@ class EditBookController < ApplicationController
   end
 
   FILTER_ALL = 0
-  FILTER_ESSENTIAL = 1
-  FILTER_NON_ESSENTIAL = 2
+  FILTER_ALREADY_DESCRIBED = 1
+  FILTER_NEEDS_DESCRIPTION = 2
   FILTER_DESCRIPTION_NEEDED = 3
   FILTER_UNSPECIFIED = 4
 
@@ -146,11 +146,10 @@ class EditBookController < ApplicationController
         case filter.to_i
           when FILTER_ALL
             @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id).order("id ASC")
-          when FILTER_ESSENTIAL
-            @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => true).order("id ASC")
-          when FILTER_NON_ESSENTIAL
-            @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => false).order("id ASC")
-          when FILTER_DESCRIPTION_NEEDED
+          when FILTER_ALREADY_DESCRIBED
+            # If we upgrade to ActiveRecord 4, we can use where.not.
+            @images = DynamicImage.includes(:dynamic_description).where("dynamic_descriptions.id IS NOT NULL").where(:book_id => @book.id, :book_fragment_id => @book_fragment.id).order('dynamic_images.id asc')
+          when FILTER_NEEDS_DESCRIPTION
             # ESH: used to be:::
             # @images = DynamicImage.find_by_sql("SELECT * FROM dynamic_images WHERE book_uid = '#{book_uid}' and should_be_described = true and id not in (select dynamic_image_id from dynamic_descriptions where dynamic_descriptions.book_uid = '#{book_uid}') ORDER BY id ASC;")
             @images = DynamicImage.includes(:dynamic_description).where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => true, :dynamic_descriptions => {:id => nil}).order('dynamic_images.id asc')
