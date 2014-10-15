@@ -30,7 +30,8 @@ define([
       "keyup .math-editor": "getMathML",
       "click .save-additional-fields": "saveAddtionalFields",
       "click .read-description": "readDescription",
-      "click .add-description-button": "hideAddButton"
+      "click .add-description-button": "hideAddButton",
+      "click .tab-link": "clearMessages"
     },
 
     jax: {},

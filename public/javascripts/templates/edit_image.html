@@ -62,19 +62,20 @@
 				  			<div class="form-group container-fluid">
 				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
-  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview tab-link">Preview</a></li>
+  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
   									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
   									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link">Math Editor</a></li>
   									<li class="additional-fields-tab" <% if (typeof(image.get("dynamic_description")) == "undefined" || $("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
 								</ul>
 								<div class="tab-content">
 								  <div class="tab-pane <% if (!image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
-								  	<div class="clearfix"></div>
-					  				<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
-					  				<div>
+								  	<div class="panel panel-default">
+										<div class="panel-body">
+								  			<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
+								  		</div>
+								  	</div>
+					  				<div class="buttons">
 					  					<button class="btn btn-primary pull-right save-text">Save</button>
-					  					<p class="text-success pull-right update-message"></p>
-					  					<p class="text-danger pull-right update-message"></p>
 					  					<button class="btn btn-default cancel">Cancel</button>
 					  				</div>
 								  </div>
@@ -87,13 +88,15 @@
 										</div>
 									</div>
 									<div class="buttons fluid-content">
-										<button class="btn btn-primary open-edit-view pull-right">Edit</button>
-										<button class="read-description btn btn-primary pull-right">Listen</button>
 										<p class="text-success update-message pull-right"></p>
 			  							<p class="text-danger update-message pull-right"></p>
+										<a class="read-description pull-right" href="#"><img src="/images/listen.jpg" alt="Listen to description" style="height: 10%;"/></a>
+										<button class="btn btn-primary open-edit-view pull-right">Edit</button>
 									</div>
 									<div class="clearfix"></div>
 									<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
+									<% console.log(image.get("dynamic_description")) %>
+									<p><strong>Author:</strong> <%= image.get("author") %></p>
 								  </div>
 								  <div class="tab-pane" id="math-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
@@ -104,14 +107,12 @@
 											<a href="http://www1.chapman.edu/~jipsen/mathml/asciimathsyntax.html" target="_blank">ASCII Math Cheat Sheet</a><br />
 											<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 											<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
-											<div class="buttons">
-												<button class="btn btn-primary pull-right save-mathml">Save</button>
-												<p class="text-success pull-right update-message"></p>
-					  							<p class="text-danger pull-right update-message"></p>
-												<button class="btn btn-default pull-left cancel">Cancel</button>
-					  						</div>
 										</div>
 									</div>
+									<div>
+										<button class="btn btn-primary pull-right save-mathml">Save</button>
+										<button class="btn btn-default pull-left cancel">Cancel</button>
+			  						</div>
 								  </div>
 								  <div class="tab-pane" id="additional-fields-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
@@ -190,13 +191,11 @@
 													<textarea id="tour-<%=image.get("id") %>" name="tour-<%=image.get("id") %>" class="form-control tactile-tour"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").tactile_tour : ""%></textarea>
 												</div>
 											</div>
-											<div>
-							  					<button class="btn btn-primary pull-right save-additional-fields">Save</button>
-							  					<p class="text-success pull-right update-message"></p>
-							  					<p class="text-danger pull-right update-message"></p>
-							  				</div>
 										</div>
 									  </div>
+									  <div>
+					  					<button class="btn btn-primary pull-right save-additional-fields">Save</button>
+					  				  </div>
 									</div>
 								</div>
 				  			</div>

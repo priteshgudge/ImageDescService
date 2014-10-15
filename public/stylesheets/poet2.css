@@ -137,3 +137,8 @@ h2.math-edit {
 .buttons {
   margin-top: .3em;
 }
+
+.read-description {
+  margin-left: 5px;
+  margin-top: auto;
+}
