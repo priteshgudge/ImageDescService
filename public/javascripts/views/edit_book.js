@@ -33,6 +33,7 @@ define([
       //add math cheat sheet.
       var mathCheatSheet = new MathCheatSheetView();
       $("body").append(mathCheatSheet.render().$el);
+      MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     },
 
     renderSideBar: function(images) {
