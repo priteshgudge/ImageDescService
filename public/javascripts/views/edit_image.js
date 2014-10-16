@@ -115,12 +115,20 @@ define([
 
       editView.model.fetch({
         success: function() {
-          var latestDescription = editView.model.has("dynamic_description") ? editView.model.get("dynamic_description")["body"] : "";
+          var currentDescription = editView.model.has("dynamic_description") ? editView.model.get("dynamic_description")["body"] : "";
+          //If current description has mathml, don't output it here and display a message
+          //to use the mathML editor for mathML.
+          var hasMathML = editView.hasMathML(currentDescription);
+          var latestDescription = hasMathML ? "" : currentDescription;
           textarea.val(latestDescription);
           var name = textarea.attr("name");
           CKEDITOR.instances[name].on('focus', function(e) { 
             e.editor.document.getBody().setHtml(latestDescription); 
-          });
+          });  
+          if (hasMathML) {
+            editView.$(".text-danger").html("Please use the Math Editor tab to edit MathML.");
+          }
+          
           //make sure that the description is up to date.
           longDescription.show();
           //Show edit tab.
@@ -131,6 +139,10 @@ define([
           }
         }    
       });
+    },
+
+    hasMathML: function(description) {
+      return description.indexOf('xmlns="http://www.w3.org/1998/Math/MathML"') != -1;
     },
 
     cancelEditor: function(e) {
