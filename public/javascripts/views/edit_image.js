@@ -75,6 +75,7 @@ define([
       var imageCategory = $(e.currentTarget).val();
       //Save.
       imageView.model.save({"image_category_id": imageCategory});
+      this.showDynamicDescriptionForm();
       if (!$("#exampleModalBody" + imageCategory).html().length > 0) {
         imageView.$(".view_sample").hide();
       } else {
@@ -85,6 +86,7 @@ define([
       } else {
         imageView.$(".math-tab").hide();
       }
+      imageView.$(".add-description-button").hide();
     },
 
     saveNeedsDescription: function(e) {
@@ -92,7 +94,8 @@ define([
       //First, update the image.
       this.model.save({"should_be_described": shouldBeDescribed});
       if (shouldBeDescribed == "true") {
-        this.showDynamicDescriptionForm();
+        console.log(this.$(".image-category"));
+        this.$(".image-category").show();
       }
     },
 
@@ -156,6 +159,7 @@ define([
         success: function() {
           editView.$(".image_description").html(editView.model.has("dynamic_description") ? 
             editView.model.get("dynamic_description")["body"] : "");
+          editView.$(".author").html(editView.model.get("author"));
         }
       });
       

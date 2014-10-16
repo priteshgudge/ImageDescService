@@ -38,6 +38,19 @@
 			  				</div>
 			  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
 			  			</div>
+			  			<div class="form-group image-category" <%= !image.has("image_category_id") && !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
+			  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
+			  				<div class="col-sm-6">
+			  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
+			  						<% _.each(image_categories, function(category) { %>
+			  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
+			  						<% }); %>
+								</select>
+			  				</div>
+			  				<div class="col-sm-3">
+			  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
+			  				</div>
+			  			</div>
 			  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
 			  				<div class="form-group">
 			  					<div class="col-sm-6">
@@ -46,19 +59,6 @@
 			  				</div>
 			  			<% } %>
 			  			<div class="long-description" <%= !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
-				  			<div class="form-group">
-				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
-				  				<div class="col-sm-6">
-				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
-				  						<% _.each(image_categories, function(category) { %>
-				  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
-				  						<% }); %>
-									</select>
-				  				</div>
-				  				<div class="col-sm-3">
-				  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
-				  				</div>
-				  			</div>
 				  			<div class="form-group container-fluid">
 				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
 				  				<ul class="nav nav-tabs" role="tablist">
@@ -95,7 +95,7 @@
 									</div>
 									<div class="clearfix"></div>
 									<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
-									<p><strong>Author:</strong> <%= image.get("author") %></p>
+									<p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
 								  </div>
 								  <div class="tab-pane" id="math-<%=image.get("id") %>">
 								  	<div class="panel panel-default">
