@@ -30,7 +30,6 @@ define([
       $(selectedEditorId).removeClass("selectedMathEditor");
       $(selectedEditorId).trigger("keyup");
       setTimeout(function() {
-        console.log($(selectedEditorId));
         $(selectedEditorId).focus();
         $(selectedEditorId).focus();
       }, 500);
