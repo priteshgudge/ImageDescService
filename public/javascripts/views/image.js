@@ -49,7 +49,14 @@ define([
         'showCloseButton'   : true
       });
       this.initializeZoomer();
-      return this;
+      //When the window resizes, we need to reinitialize the zoomers.
+      var imageView = this;
+      $(window).resize(_.debounce(function() {
+        imageView.$(".thumbnail").css({width: "auto", height: "auto", overflow: "visible"});
+        imageView.$(".target").css({height: "auto", width: "auto", left: 0, top: 0, "max-width": "auto"});
+        imageView.initializeImageSizes();
+      }, 500));
+      return imageView;
     },
 
     initializeZoomer: function(zoomFunction) {
