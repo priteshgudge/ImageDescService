@@ -142,3 +142,7 @@ h2.math-edit {
   margin-left: 5px;
   margin-top: auto;
 }
+
+button.cancel {
+  margin-right: 5px;
+}
