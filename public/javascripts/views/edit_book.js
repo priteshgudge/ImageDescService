@@ -6,9 +6,10 @@ define([
   '/javascripts/views/side_bar.js',
   '/javascripts/views/book_content.js',
   '/javascripts/views/example_modal.js',
+  '/javascripts/views/math_cheat_sheet.js',
   '/javascripts/collections/dynamic_image_collection.js',
   '/javascripts/collections/image_category_collection.js'
-], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, DynamicImageCollection, ImageCategoryCollection) {
+], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     
     el: $('#edit_book'),
@@ -28,6 +29,10 @@ define([
           editBook.loadExamples(imageCategories);
         });
       });
+
+      //add math cheat sheet.
+      var mathCheatSheet = new MathCheatSheetView();
+      $("body").append(mathCheatSheet.render().$el);
     },
 
     renderSideBar: function(images) {

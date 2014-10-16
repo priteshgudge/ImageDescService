@@ -31,7 +31,8 @@ define([
       "click .save-additional-fields": "saveAddtionalFields",
       "click .read-description": "readDescription",
       "click .add-description-button": "hideAddButton",
-      "click .tab-link": "clearMessages"
+      "click .tab-link": "clearMessages",
+      "click .math-toggle": "setSelectedMathEditor"
     },
 
     jax: {},
@@ -274,6 +275,11 @@ define([
     readDescription: function(e) {
       e.preventDefault();
       meSpeak.speak(this.$(".image_description").text());
+    },
+
+    setSelectedMathEditor: function(e) {
+      e.preventDefault();
+      this.$(".math-editor").addClass("selectedMathEditor");
     }
 
 
