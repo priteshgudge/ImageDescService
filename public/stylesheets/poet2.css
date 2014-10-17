@@ -156,3 +156,10 @@ button.cancel {
   vertical-align: top;
 }
 
+/* Possible caption classes and types. */
+caption, .fig, .label, .caption, aside, figcaption, .chcaption {
+  font-weight: bold;
+  font-size: 110%;
+  color: black;
+}
+
