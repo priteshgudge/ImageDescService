@@ -32,7 +32,8 @@ define([
       "click .read-description": "readDescription",
       "click .add-description-button": "hideAddButton",
       "click .tab-link": "clearMessages",
-      "click .math-toggle": "setSelectedMathEditor"
+      "click .math-toggle": "setSelectedMathEditor",
+      "click .image_description": "showDynamicDescriptionForm"
     },
 
     jax: {},
