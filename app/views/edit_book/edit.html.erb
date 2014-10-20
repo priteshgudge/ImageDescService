@@ -27,7 +27,7 @@
 					<div class="col-sm-7">
 						<%= select_tag(:filter, options_for_select([[t(:filter_all), EditBookController::FILTER_ALL], [t(:filter_already_described), EditBookController::FILTER_ALREADY_DESCRIBED], [t(:filter_needs_description), EditBookController::FILTER_NEEDS_DESCRIPTION], [t(:filter_unspecified), EditBookController::FILTER_UNSPECIFIED]], @filter),{ :class=> "form-control"})%>
 					</div>
-					<div class="col-sm-2"><span id="num_images"></span></div>
+					<div class="col-sm-2" id="num_images"></div>
 				</div>
 				<div class="form-group fluid-container">
 					<div class="col-sm-10">

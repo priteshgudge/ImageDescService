@@ -85,6 +85,11 @@ html, body {
   padding-left: 30px;
 }
 
+#num_images {
+  padding-left: 0;
+}
+
+
 .domImage img {
   max-width: 100%;
 }
