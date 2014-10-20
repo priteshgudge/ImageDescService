@@ -1,16 +1,10 @@
 <% @title="My Books" %>
 <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-2" role="navigation">
-          <h2>My Books</h2>
-          <ul class="nav">
-              <li><a href="/edit_book/describe">Describe Images for Uploaded Book</a></li>
-              <li><a href="/upload_book/upload">Upload Book for Describing</a></li>
-              <li><a href="/image_book/process">Update Book</a></li>
-              <li><a href="/image_book/image_check">Image Coverage Checker</a></li>
-          </ul>
-      </div>
-      <div class="col-md-10">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10 container-fluid"> 
         <h1>My Books</h1>
         <table class="table table-bordered table-striped" id="books">
         
