@@ -1,18 +1,25 @@
 <% @title="Check Image Coverage" %>
- <div style="margin: auto; width:700px; padding-top: 40px;" >
-    <h1>Check Image Coverage</h1>
-    </br>
-    <p>
-    To check image coverage for a DAISY or EPUB book, follow these steps:
-    </p>
-    <ol>
-    <li>Click the Browse (or Choose File) button below, and select a DAISY book (zip) or EPUB book (epub) from your local drive to process.</li>
-    <li>Click the Process button.</li>
-    </ol>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2" role="navigation">
+            <%= render partial: 'books/my_books_navigation' %>
+        </div>
+        <div class="col-md-10">
+            <h1>Check Image Coverage</h1>
+            </br>
+            <p>
+            To check image coverage for a DAISY or EPUB book, follow these steps:
+            </p>
+            <ol>
+            <li>Click the Browse (or Choose File) button below, and select a DAISY book (zip) or EPUB book (epub) from your local drive to process.</li>
+            <li>Click the Process button.</li>
+            </ol>
 
-    <%= form_tag("/image_book/check_image_coverage", {:multipart => true}) do %>
-    <p><label for="upload_file">Select book </label> :
-    <%= file_field_tag 'book' %> </p>
-    <%= submit_tag "Check" %>
-    <% end %>
+            <%= form_tag("/image_book/check_image_coverage", {:multipart => true}) do %>
+            <p><label for="upload_file">Select book </label> :
+            <%= file_field_tag 'book' %> </p>
+            <%= submit_tag "Check", :class => "btn btn-primary" %>
+            <% end %>
+        </div>
+    </div>
  </div>

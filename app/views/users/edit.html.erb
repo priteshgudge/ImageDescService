@@ -6,7 +6,9 @@
 <%= semantic_form_for  @user do |f| %>
 	<%= f.inputs "Username &nbsp; &nbsp; #{@user.username}" do %>
 		<%= render :partial => "users/form", :locals => {:f => f} %>
-		<%= f.submit "Update" %>
+		<div class="buttons">
+			<%= f.submit "Update", :class => 'btn btn-primary'%>
+		</div>
 	<% end %>
 <% end %>
 </div>

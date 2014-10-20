@@ -1,19 +1,25 @@
 <% @title="Describe Images" %>
- <div style="margin: auto; width:700px; padding-top: 40px;" >
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10">
 
-    <h1>Welcome to the Poet Image Description Tool</h1>
-    </br>
-    </br>
+            <h1>Welcome to the Poet Image Description Tool</h1>
+            </br>
+            </br>
 
-    <form action="/edit_book/edit" method="get">
-    To enter descriptions for a DAISY or EPUB book that was previously uploaded,</br>
-    enter the book ID, and click Edit.
-    </br></br>
-    Book ID: <input type="text" name="book_uid"/>
-    <input type="submit" value="Edit" />
-    </form>
-    </br>
-    </br>
-
+            <form action="/edit_book/edit" method="get">
+            To enter descriptions for a DAISY or EPUB book that was previously uploaded,</br>
+            enter the book ID, and click Edit.
+            </br></br>
+            Book ID: <input type="text" name="book_uid"/>
+            <input type="submit" value="Edit" class="btn btn-primary" />
+            </form>
+            </br>
+            </br>
+        </div>
+    </div>
 </div>
 

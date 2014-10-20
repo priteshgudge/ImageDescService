@@ -1,53 +1,55 @@
 
 <% @title="When to Describe?" %>
-<div class= "row">
-	<div class="col-md-3">
-		<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
-	</div>
-	<div class="col-md-9"> 
-		<div id="when-to-describe">
-			<p>
-				<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="pull-right" /></a>
-				<h1>When to describe?</h1>
-				Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
-				
-			</p>
+<div class="container-fluid">
+	<div class= "row">
+		<div class="col-md-2">
+			<%= render partial: 'training_navigation', locals: {section: :tools_and_examples} %>
 		</div>
-		<div class="clearfix"></div>
-		<h2>Now, pick an image and start making decisions!</h2>
-		<div id="imageGallery">
-			
-		</div>
-	</div>
-</div>
-<div class="clear"></div>
-<!-- Modal -->
-<div class="modal fade" id="questionnaire" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Decision Tree</h4>
-      </div>
-      <div class="modal-body">
-        <div class="container-fluid">
-			<div class="col-md-6">
-				<div id="zoomerImage"></div>
-				<div class="clear"></div>
+		<div class="col-md-10"> 
+			<div id="when-to-describe">
+				<p>
+					<a class="fancybox" href="/images/decision_tree_flow_chart.jpg"><img src="/images/decision_tree_flow_chart_thumb.jpg" alt="decision-making points" width="250" class="pull-right" /></a>
+					<h1>When to describe?</h1>
+					Many images can be described with text to adequately convey the necessary information. Descriptions are easily written for voicing, and current tools exist to allow many different people to add descriptions to images. In other cases, it is preferable to provide a tactile graphic rendering of the image. However, tactile graphics are not easily created, so should only be chosen when it is not possible for a verbal description to convey the necessary information from an image. There are also cases when a description or other alternative for an image is simply unnecessary because the image does not carry any necessary information. These images are commonly known as "eye candy." This section aims to guide you through the process of deciding when to describe an image. You will be asked a series of up to nine questions that takes you through the key decision-making points diagrammed at the right.
+					
+				</p>
 			</div>
-			<div class="col-md-6">
-				<div id="question"></div>
-				<div id="describe"></div>
-				<div id="summary"></div>
-				<div id="buttons">
-					<input type="button" id="prev" value="Back" class="btn btn-default" />
-					<input type="button" id="next" value="Next" class="btn btn-primary" />
+			<div class="clearfix"></div>
+			<h2>Now, pick an image and start making decisions!</h2>
+			<div id="imageGallery">
+				
+			</div>
+		</div>
+	</div>
+	<div class="clear"></div>
+	<!-- Modal -->
+	<div class="modal fade" id="questionnaire" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title" id="myModalLabel">Decision Tree</h4>
+	      </div>
+	      <div class="modal-body">
+	        <div class="container-fluid">
+				<div class="col-md-6">
+					<div id="zoomerImage"></div>
+					<div class="clear"></div>
+				</div>
+				<div class="col-md-6">
+					<div id="question"></div>
+					<div id="describe"></div>
+					<div id="summary"></div>
+					<div id="buttons">
+						<input type="button" id="prev" value="Back" class="btn btn-default" />
+						<input type="button" id="next" value="Next" class="btn btn-primary" />
+					</div>
 				</div>
 			</div>
-		</div>
-      </div>
-    </div>
-  </div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </div>
 
 

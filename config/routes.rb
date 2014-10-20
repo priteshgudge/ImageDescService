@@ -31,6 +31,7 @@ DiagramRailsApp::Application.routes.draw do
   get "image_book/poll_file_with_descriptions", :as => :poll_file_with_descriptions
   
   post "image_book/submit_to_get_descriptions"
+  get "image_book/submit_to_get_descriptions"
   post "image_book/check_image_coverage"
 
   post "upload_book/submit"
