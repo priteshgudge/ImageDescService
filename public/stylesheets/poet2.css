@@ -66,6 +66,7 @@ html, body {
 }
 
 #left {
+  font-size: 75%;
   position: absolute;
   top: 41px;
   bottom: 60px;
