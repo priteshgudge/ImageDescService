@@ -35,7 +35,7 @@ html, body {
 }
 
 .navbar-static-top {
-  margin-bottom: 19px;
+  margin-bottom: 0px;
 }
 
 #header {
@@ -168,4 +168,11 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
   font-size: 110%;
   color: black;
 }
+
+.description-scroller {
+  width: 100%;
+  height: 100px;
+  overflow-y: auto;
+}
+
 
