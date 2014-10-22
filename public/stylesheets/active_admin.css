@@ -214,7 +214,10 @@ body.active_admin form {
         float: left;
         font-size: 1.0em;
         font-weight: bold;
-        color: #5e6469; }
+        color: #5e6469;
+        margin-bottom: 5px;
+        font-size: 90%;
+        white-space: normal !important; }
         body.active_admin form fieldset ol > li label abbr {
           border: none;
           color: #aaa; }
@@ -1641,7 +1644,7 @@ body.active_admin table.dashboard {
       border: none;
       border-bottom: 1px solid #E8E8E8; }
 body.active_admin.logged_out {
-  background: #e8e9ea; }
+  background: #f5f5f5; }
   body.active_admin.logged_out #content_wrapper {
     width: 500px;
     margin: 70px auto; }
@@ -1704,7 +1707,7 @@ body.active_admin.logged_out {
       body.active_admin.logged_out #login form fieldset li {
         padding: 10px 0; }
       body.active_admin.logged_out #login form fieldset input[type=text], body.active_admin.logged_out #login form fieldset input[type=email], body.active_admin.logged_out #login form fieldset input[type=password] {
-        width: 70%; }
+        width: 78%;}
       body.active_admin.logged_out #login form fieldset.buttons {
         margin-left: 20%; }
     body.active_admin.logged_out #login a {
