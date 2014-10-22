@@ -1,212 +1,214 @@
 
-<% if (typeof(previousImage) !== "undefined") { %>
-	<div class="fluid-container upArrow">
-		<a href="#edit-image-<%= previousImage.get("id") %>"><img src="/images/up.jpg" alt="Go To Previous Image" /></a>
-	</div>
-<% } %>
-<div class="panel panel-default" id="edit-image-<%= image.get("id") %>">
-	<div class="panel-body">
-		<div class="container-fluid">
-			<div class="col-md-4 domImage">
-			</div>
-			<div class="col-md-8" id="image<%= image.get("id") %>_editor">
-				<h3>Image Description Details</h3>
-				<form class="form-horizontal" role="form" action="#">
-					<div class="row">
-						<div class="form-group">
-			    			<span class="col-sm-3 control-label">Poet Image ID</span>
-			    			<div class="col-sm-9">
-			      				<p class="form-control-static"> <%= image.get("id") %></p>
-			    			</div>
-			  			</div>
-			  			<div class="form-group">
-			    			<span class="col-sm-3 control-label">Alt Text</span>
-			    			<div class="col-sm-9">
-			      				<p class="form-control-static altText">
-			      					<%= image.get("alt").length > 0 ? image.get("alt") : "<em>(No alt text provided by publisher)</em>" %>
-			      				</p>
-			    			</div>
-			  			</div>
-			  			<div class="form-group">
-			  				<label class="col-sm-3 control-label" for="dynamic_image_should_be_described_<%= image.get("id") %>">Needs Description?</label>
-			  				<div class="col-sm-6">
-			  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control should_be_described">
-			  						<option value="">Don't Know</option>
-									<option value="true" <%= image.get("should_be_described") == true ? "selected" : "" %>>Yes</option>
-									<option value="false" <%= image.get("should_be_described") == false ? "selected" : "" %>>No</option>
-								</select>
-			  				</div>
-			  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
-			  			</div>
-			  			<div class="form-group image-category" <%= !image.has("image_category_id") && !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
-			  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
-			  				<div class="col-sm-6">
-			  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
-			  						<% _.each(image_categories, function(category) { %>
-			  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
-			  						<% }); %>
-								</select>
-			  				</div>
-			  				<div class="col-sm-3">
-			  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
-			  				</div>
-			  			</div>
-			  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
-			  				<div class="form-group">
-			  					<div class="col-sm-6">
-			  						<button class="btn btn-primary open-edit-view add-description-button">Add Image Description</button>
-			  					</div>
-			  				</div>
-			  			<% } %>
-			  			<div class="long-description" <%= !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
-				  			<div class="form-group container-fluid">
-				  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
-				  				<ul class="nav nav-tabs" role="tablist">
-  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
-  									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
-  									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link">Math Editor</a></li>
-  									<li class="additional-fields-tab" <% if (typeof(image.get("dynamic_description")) == "undefined" || $("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
-								</ul>
-								<div class="tab-content">
-								  <div class="tab-pane <% if (!image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
-								  	<div class="panel panel-default">
-										<div class="panel-body">
-								  			<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
-								  		</div>
-								  	</div>
-					  				<div class="buttons">
-					  					<p class="text-danger update-message pull-left"></p>
-					  					<button class="btn btn-primary pull-right save-text">Save</button>
-					  					<button class="btn btn-default pull-right cancel">Cancel</button>
-					  				</div>
-								  </div>
-								  <div class="tab-pane <% if (image.has("dynamic_description")) { %> active <% } %>" id="preview-<%=image.get("id") %>">
-								  	<div class="panel panel-default">
-										<div class="panel-body">
-											<div class="image_description">
-												<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
-											</div>
-										</div>
-									</div>
-									<div class="buttons fluid-content">
-										<p class="text-success update-message pull-left"></p>
-										<a class="read-description pull-right" href="#"><img src="/images/listen.jpg" alt="Listen to description" style="height: 10%;"/></a>
-										<button class="btn btn-primary open-edit-view pull-right">Edit</button>
-									</div>
-									<div class="clearfix"></div>
-									<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
-									<p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
-								  </div>
-								  <div class="tab-pane" id="math-<%=image.get("id") %>">
-								  	<div class="panel panel-default">
-										<div class="panel-body">
-											<h2 class="math-preview">MathML Preview</h2>
-											<div class="typeset-math"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
-											<h2 class="math-edit">MathML Editor</h2>
-											<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
-											<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
-											<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
-										</div>
-									</div>
-									<div>
-										<button class="btn btn-primary pull-right save-mathml">Save</button>
-										<button class="btn btn-default pull-right cancel">Cancel</button>
-			  						</div>
-								  </div>
-								  <div class="tab-pane" id="additional-fields-<%=image.get("id") %>">
-								  	<div class="panel panel-default">
-										<div class="panel-body">
-											<div class="form-group">
-												<label for="summary-<%=image.get("id") %>" class="col-sm-11">Summary</label><br />
-												<div class="col-sm-6">
-													<textarea id="summary-<%=image.get("id") %>" name="summary-<%=image.get("id") %>" class="form-control summary"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").summary : ""%></textarea>
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="language-description-<%=image.get("id") %>" class="col-sm-11">Simplified Language Description</label>
-												<div class="col-sm-6">
-													<textarea id="language-description-<%=image.get("id") %>" name="language-description-<%=image.get("id") %>" class="form-control simplified-language-description"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").simplified_language_description : ""%></textarea>
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="annotation-<%=image.get("id") %>" class="col-sm-11">Annotation</label>
-												<div class="col-sm-6">
-													<textarea id="annotation-<%=image.get("id") %>" name="annotation-<%=image.get("id") %>" class="form-control annotation"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").annotation : ""%></textarea>
-												</div>
-											</div>
-											<h2 class="math-edit">Target Age & Grade</h2>
-											<div class="form-group">
-												<div class="row">
-													<label class="col-sm-3 control-label" for="from-age-<%=image.get("id") %>">From Age:</label>
-													<div class="col-md-2">
-														<select id="from-age-<%=image.get("id") %>" class="form-control from-age" name="from-age-<%=image.get("id") %>">
-															<option value=""></option>
-															<% for (var i = 1; i < 101; i++) { %>
-																<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_age_start) === i ? "selected" : ""%>><%= i %></option>
-															<% } %>
-														</select>
-													</div>
-													<label class="col-sm-3 control-label" for="to-age-<%=image.get("id") %>">To Age:</label>
-													<div class="col-md-2">
-														<select id="to-age-<%=image.get("id") %>" class="form-control to-age" name="to-age-<%=image.get("id") %>">
-															<option value=""></option>
-															<% for (var i = 1; i < 101; i++) { %>
-																<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_age_end) === i ? "selected" : ""%>><%= i %></option>
-															<% } %>
-														</select>
-													</div>
-												</div>
-												<div class="row">
-													<label class="col-sm-3 control-label" for="from-grade-<%=image.get("id") %>">From Grade:</label>
-													<div class="col-md-2">
-														<select id="from-grade-<%=image.get("id") %>" class="form-control from-grade" name="from-grade-<%=image.get("id") %>">
-															<option value=""></option>
-															<% for (var i = 1; i < 13; i++) { %>
-																<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_grade_start) === i ? "selected" : ""%>><%= i %></option>
-															<% } %>
-														</select>
-													</div>
-													<label class="col-sm-3 control-label" for="to-grade-<%=image.get("id") %>">To Grade:</label>
-													<div class="col-md-2">
-														<select id="to-grade-<%=image.get("id") %>" class="form-control to-grade" name="to-grade-<%=image.get("id") %>">
-															<option value=""></option>
-															<% for (var i = 1; i < 13; i++) { %>
-																<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_grade_end) === i ? "selected" : ""%>><%= i %></option>
-															<% } %>
-														</select>
-													</div>
-												</div>
-											</div>
-											<h2 class="math-edit">Tactile</h2>
-											<div class="form-group">
-												<label for="source-<%=image.get("id") %>" class="col-sm-11">Source</label>
-												<div class="col-sm-6">
-													<input type="text" id="source-<%=image.get("id") %>" name="source-<%=image.get("id") %>" class="form-control tactile-source" value="<%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").tactile_src : "" %>" />
-												</div>
-											</div>
-											<div class="form-group">
-												<label for="tour-<%=image.get("id") %>" class="col-sm-11">Tour</label>
-												<div class="col-sm-6">
-													<textarea id="tour-<%=image.get("id") %>" name="tour-<%=image.get("id") %>" class="form-control tactile-tour"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").tactile_tour : ""%></textarea>
-												</div>
-											</div>
-										</div>
-									  </div>
-									  <div>
-					  					<button class="btn btn-primary pull-right save-additional-fields">Save</button>
-					  				  </div>
-									</div>
-								</div>
+<div id="edit-image-<%= image.get("id") %>">
+	<% if (typeof(previousImage) !== "undefined") { %>
+		<div class="fluid-container upArrow">
+			<a href="#edit-image-<%= previousImage.get("id") %>"><img src="/images/up.jpg" alt="Go To Previous Image" /></a>
+		</div>
+	<% } %>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="container-fluid">
+				<div class="col-md-4 domImage">
+				</div>
+				<div class="col-md-8" id="image<%= image.get("id") %>_editor">
+					<h3>Image Description Details</h3>
+					<form class="form-horizontal" role="form" action="#">
+						<div class="row">
+							<div class="form-group">
+				    			<span class="col-sm-3 control-label">Poet Image ID</span>
+				    			<div class="col-sm-9">
+				      				<p class="form-control-static"> <%= image.get("id") %></p>
+				    			</div>
 				  			</div>
+				  			<div class="form-group">
+				    			<span class="col-sm-3 control-label">Alt Text</span>
+				    			<div class="col-sm-9">
+				      				<p class="form-control-static altText">
+				      					<%= image.get("alt").length > 0 ? image.get("alt") : "<em>(No alt text provided by publisher)</em>" %>
+				      				</p>
+				    			</div>
+				  			</div>
+				  			<div class="form-group">
+				  				<label class="col-sm-3 control-label" for="dynamic_image_should_be_described_<%= image.get("id") %>">Needs Description?</label>
+				  				<div class="col-sm-6">
+				  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control should_be_described">
+				  						<option value="">Don't Know</option>
+										<option value="true" <%= image.get("should_be_described") == true ? "selected" : "" %>>Yes</option>
+										<option value="false" <%= image.get("should_be_described") == false ? "selected" : "" %>>No</option>
+									</select>
+				  				</div>
+				  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
+				  			</div>
+				  			<div class="form-group image-category" <%= !image.has("image_category_id") && !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
+				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
+				  				<div class="col-sm-6">
+				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
+				  						<% _.each(image_categories, function(category) { %>
+				  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
+				  						<% }); %>
+									</select>
+				  				</div>
+				  				<div class="col-sm-3">
+				  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
+				  				</div>
+				  			</div>
+				  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
+				  				<div class="form-group">
+				  					<div class="col-sm-6">
+				  						<button class="btn btn-primary open-edit-view add-description-button">Add Image Description</button>
+				  					</div>
+				  				</div>
+				  			<% } %>
+				  			<div class="long-description" <%= !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
+					  			<div class="form-group container-fluid">
+					  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
+					  				<ul class="nav nav-tabs" role="tablist">
+	  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
+	  									<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
+	  									<li class="math-tab" <% if (typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") != "10") { %> style="display: none;" <% } %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link">Math Editor</a></li>
+	  									<li class="additional-fields-tab" <% if (typeof(image.get("dynamic_description")) == "undefined" || $("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
+									</ul>
+									<div class="tab-content">
+									  <div class="tab-pane <% if (!image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
+									  	<div class="panel panel-default">
+											<div class="panel-body">
+									  			<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
+									  		</div>
+									  	</div>
+						  				<div class="buttons">
+						  					<p class="text-danger update-message pull-left"></p>
+						  					<button class="btn btn-primary pull-right save-text">Save</button>
+						  					<button class="btn btn-default pull-right cancel">Cancel</button>
+						  				</div>
+									  </div>
+									  <div class="tab-pane <% if (image.has("dynamic_description")) { %> active <% } %>" id="preview-<%=image.get("id") %>">
+									  	<div class="panel panel-default">
+											<div class="panel-body">
+												<div class="image_description">
+													<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
+												</div>
+											</div>
+										</div>
+										<div class="buttons fluid-content">
+											<p class="text-success update-message pull-left"></p>
+											<a class="read-description pull-right" href="#"><img src="/images/listen.jpg" alt="Listen to description" style="height: 10%;"/></a>
+											<button class="btn btn-primary open-edit-view pull-right">Edit</button>
+										</div>
+										<div class="clearfix"></div>
+										<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
+										<p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
+									  </div>
+									  <div class="tab-pane" id="math-<%=image.get("id") %>">
+									  	<div class="panel panel-default">
+											<div class="panel-body">
+												<h2 class="math-preview">MathML Preview</h2>
+												<div class="typeset-math"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
+												<h2 class="math-edit">MathML Editor</h2>
+												<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
+												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
+												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
+											</div>
+										</div>
+										<div>
+											<button class="btn btn-primary pull-right save-mathml">Save</button>
+											<button class="btn btn-default pull-right cancel">Cancel</button>
+				  						</div>
+									  </div>
+									  <div class="tab-pane" id="additional-fields-<%=image.get("id") %>">
+									  	<div class="panel panel-default">
+											<div class="panel-body">
+												<div class="form-group">
+													<label for="summary-<%=image.get("id") %>" class="col-sm-11">Summary</label><br />
+													<div class="col-sm-6">
+														<textarea id="summary-<%=image.get("id") %>" name="summary-<%=image.get("id") %>" class="form-control summary"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").summary : ""%></textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="language-description-<%=image.get("id") %>" class="col-sm-11">Simplified Language Description</label>
+													<div class="col-sm-6">
+														<textarea id="language-description-<%=image.get("id") %>" name="language-description-<%=image.get("id") %>" class="form-control simplified-language-description"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").simplified_language_description : ""%></textarea>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="annotation-<%=image.get("id") %>" class="col-sm-11">Annotation</label>
+													<div class="col-sm-6">
+														<textarea id="annotation-<%=image.get("id") %>" name="annotation-<%=image.get("id") %>" class="form-control annotation"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").annotation : ""%></textarea>
+													</div>
+												</div>
+												<h2 class="math-edit">Target Age & Grade</h2>
+												<div class="form-group">
+													<div class="row">
+														<label class="col-sm-3 control-label" for="from-age-<%=image.get("id") %>">From Age:</label>
+														<div class="col-md-2">
+															<select id="from-age-<%=image.get("id") %>" class="form-control from-age" name="from-age-<%=image.get("id") %>">
+																<option value=""></option>
+																<% for (var i = 1; i < 101; i++) { %>
+																	<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_age_start) === i ? "selected" : ""%>><%= i %></option>
+																<% } %>
+															</select>
+														</div>
+														<label class="col-sm-3 control-label" for="to-age-<%=image.get("id") %>">To Age:</label>
+														<div class="col-md-2">
+															<select id="to-age-<%=image.get("id") %>" class="form-control to-age" name="to-age-<%=image.get("id") %>">
+																<option value=""></option>
+																<% for (var i = 1; i < 101; i++) { %>
+																	<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_age_end) === i ? "selected" : ""%>><%= i %></option>
+																<% } %>
+															</select>
+														</div>
+													</div>
+													<div class="row">
+														<label class="col-sm-3 control-label" for="from-grade-<%=image.get("id") %>">From Grade:</label>
+														<div class="col-md-2">
+															<select id="from-grade-<%=image.get("id") %>" class="form-control from-grade" name="from-grade-<%=image.get("id") %>">
+																<option value=""></option>
+																<% for (var i = 1; i < 13; i++) { %>
+																	<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_grade_start) === i ? "selected" : ""%>><%= i %></option>
+																<% } %>
+															</select>
+														</div>
+														<label class="col-sm-3 control-label" for="to-grade-<%=image.get("id") %>">To Grade:</label>
+														<div class="col-md-2">
+															<select id="to-grade-<%=image.get("id") %>" class="form-control to-grade" name="to-grade-<%=image.get("id") %>">
+																<option value=""></option>
+																<% for (var i = 1; i < 13; i++) { %>
+																	<option value="<%= i %>" <%= typeof(image.get("dynamic_description")) != "undefined" && parseInt(image.get("dynamic_description").target_grade_end) === i ? "selected" : ""%>><%= i %></option>
+																<% } %>
+															</select>
+														</div>
+													</div>
+												</div>
+												<h2 class="math-edit">Tactile</h2>
+												<div class="form-group">
+													<label for="source-<%=image.get("id") %>" class="col-sm-11">Source</label>
+													<div class="col-sm-6">
+														<input type="text" id="source-<%=image.get("id") %>" name="source-<%=image.get("id") %>" class="form-control tactile-source" value="<%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").tactile_src : "" %>" />
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="tour-<%=image.get("id") %>" class="col-sm-11">Tour</label>
+													<div class="col-sm-6">
+														<textarea id="tour-<%=image.get("id") %>" name="tour-<%=image.get("id") %>" class="form-control tactile-tour"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").tactile_tour : ""%></textarea>
+													</div>
+												</div>
+											</div>
+										  </div>
+										  <div>
+						  					<button class="btn btn-primary pull-right save-additional-fields">Save</button>
+						  				  </div>
+										</div>
+									</div>
+					  			</div>
+					  		</div>
 				  		</div>
-			  		</div>
-				</form>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
+	<% if (typeof(nextImage) !== "undefined") { %>
+		<div class="fluid-container">
+			<a href="#edit-image-<%= nextImage.get("id") %>"><img src="/images/down.jpg" alt="Go To Next Image" /></a>
+		</div>
+	<% } %>
 </div>
-<% if (typeof(nextImage) !== "undefined") { %>
-	<div class="fluid-container">
-		<a href="#edit-image-<%= nextImage.get("id") %>"><img src="/images/down.jpg" alt="Go To Next Image" /></a>
-	</div>
-<% } %>
