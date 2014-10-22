@@ -175,4 +175,9 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
   overflow-y: auto;
 }
 
+#book_title , #book_title h1{
+  font-style: italic;
+  font-size: 105%;
+}
+
 
