@@ -3,13 +3,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'bootstrap',
+  'bootstrap/modal',
   '/javascripts/models/decision_tree_image.js',
   '/javascripts/collections/question_collection.js',
   'text!/javascripts/templates/image_gallery.html',
   '/javascripts/views/decision_tree.js',
   '/javascripts/views/describe.js'
-], function($, _, Backbone, bootstrap, DecisionTreeImage, QuestionCollection, imageGalleryTemplate, DecisionTreeView, DescribeView){
+], function($, _, Backbone, modal, DecisionTreeImage, QuestionCollection, imageGalleryTemplate, DecisionTreeView, DescribeView){
   var ImageGalleryView = Backbone.View.extend({
     
     el: $("#imageGallery"),

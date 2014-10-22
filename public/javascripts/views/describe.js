@@ -3,9 +3,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'bootstrap',
   'text!/javascripts/templates/describe.html'
-], function($, _, Backbone, bootstrap, describeTemplate) {
+], function($, _, Backbone, describeTemplate) {
   var DescribeView = Backbone.View.extend({
     //div.
     tagName:  "div",

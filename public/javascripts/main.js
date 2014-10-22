@@ -24,9 +24,9 @@ require.config({
       deps: ["jquery", "ckeditor_core"],
       exports: "ckeditor"
     },
-    bootstrap: {
-      deps: ["jquery"],
-      exports: "bootstrap"
+    'bootstrap/modal': { 
+      deps: ['jquery'], 
+      exports: '$.fn.modal' 
     },
     fancybox: {
       deps: ["jquery"],
@@ -44,7 +44,7 @@ require.config({
     'text': 'libs/text',
     'ckeditor_core': 'libs/ckeditor/ckeditor',
     'ckeditor': 'libs/ckeditor/adapters/jquery',
-    'bootstrap': 'libs/bootstrap.min',
+    'bootstrap': 'libs/bootstrap',
     'fancybox': 'libs/fancybox/jquery.fancybox',
     'mespeak': 'libs/mespeak/mespeak.min'
   },

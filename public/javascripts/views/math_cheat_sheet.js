@@ -3,9 +3,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'bootstrap',
+  'bootstrap/modal',
   'text!/javascripts/templates/math_cheat_sheet_modal.html'
-], function($, _, Backbone, bootstrap, mathCheatSheetTemplate) {
+], function($, _, Backbone, modal, mathCheatSheetTemplate) {
   var MathCheatSheetView = Backbone.View.extend({
     //div.
     tagName:  "div",
