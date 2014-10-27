@@ -28,6 +28,10 @@ require.config({
       deps: ['jquery'], 
       exports: '$.fn.modal' 
     },
+    'bootstrap/tab': { 
+      deps: ['jquery'], 
+      exports: '$.fn.tab' 
+    },
     fancybox: {
       deps: ["jquery"],
       exports: "fancybox"

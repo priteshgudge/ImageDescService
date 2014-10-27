@@ -5,11 +5,12 @@ define([
   'backbone',
   'ckeditor',
   'bootstrap/modal',
+  'bootstrap/tab',
   'mespeak',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, mespeak, DynamicImage, DynamicDescription, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
