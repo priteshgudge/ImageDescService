@@ -4,12 +4,13 @@ define([
   'underscore',
   'backbone',
   'bootstrap/modal',
+  'fancybox',
   '/javascripts/models/decision_tree_image.js',
   '/javascripts/collections/question_collection.js',
   'text!/javascripts/templates/image_gallery.html',
   '/javascripts/views/decision_tree.js',
   '/javascripts/views/describe.js'
-], function($, _, Backbone, modal, DecisionTreeImage, QuestionCollection, imageGalleryTemplate, DecisionTreeView, DescribeView){
+], function($, _, Backbone, modal, fancybox, DecisionTreeImage, QuestionCollection, imageGalleryTemplate, DecisionTreeView, DescribeView){
   var ImageGalleryView = Backbone.View.extend({
     
     el: $("#imageGallery"),
@@ -34,6 +35,11 @@ define([
 
       $("#questionnaire").on('hidden.bs.modal', function (e) {
         imageGallery.resetDecisionTree();
+      });
+      $('.fancybox').fancybox({ 
+        'scrolling'     : 'no',
+        'overlayOpacity': 0.1,
+        'showCloseButton'   : true
       });
       imageGallery.decisionTree = new DecisionTreeView();
     },
