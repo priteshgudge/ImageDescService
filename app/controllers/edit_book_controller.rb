@@ -10,8 +10,7 @@ class EditBookController < ApplicationController
   FILTER_ALL = 0
   FILTER_ALREADY_DESCRIBED = 1
   FILTER_NEEDS_DESCRIPTION = 2
-  FILTER_DESCRIPTION_NEEDED = 3
-  FILTER_UNSPECIFIED = 4
+  FILTER_UNSPECIFIED = 3
 
   # just to help determine page size limits
   def edit_side_bar_only

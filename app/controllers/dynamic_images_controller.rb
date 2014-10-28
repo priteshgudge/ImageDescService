@@ -86,7 +86,7 @@ class DynamicImagesController < ApplicationController
   def mark_all_essential
     book = load_book
     if book
-      DynamicImage.update_all({:should_be_described => EditBookController::FILTER_ESSENTIAL}, {:book_id => book.id})
+      DynamicImage.update_all({:should_be_described => true}, {:book_id => book.id})
       render :text=>"submitted #{params[:id]}: #{params[:dynamic_image]}",  :content_type => 'text/plain'
     end
   end
