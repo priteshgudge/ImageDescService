@@ -140,7 +140,8 @@ define([
           } else { 
             imageView.startDrag(); 
           }
-          imageView.$(".target").stop(true, true).animate({width: imageView.widthValue, "max-width": imageView.widthValue, top: yValue, left: xValue});
+          imageView.$(".target").css("max-width", imageView.widthValue);
+          imageView.$(".target").stop(true, true).animate({top: yValue, left: xValue, width: imageView.widthValue}, 1000);
           imageView.itemWidth = imageView.widthValue;
       }
     },
