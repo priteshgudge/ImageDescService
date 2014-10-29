@@ -53,7 +53,6 @@ module DaisyUtils
       end
       images = nil;
       
-      
       captions = doc.xpath("//xmlns:imggroup//xmlns:caption")
       @captions_hash = Hash.new()
       captions.each do |node|
