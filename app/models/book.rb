@@ -74,6 +74,8 @@ class Book < ActiveRecord::Base
         'Ready'
       when 4
         'Preprocessing Book'  
+      when 5
+        'Failed'
       else
         'Processing'
     end
