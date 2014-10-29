@@ -77,7 +77,7 @@ module EpubUtils
      @alt_text_hash = Hash.new()
      @longdesc_hash = Hash.new()
      @figcaption_hash = Hash.new()
-     limit = 249
+
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
      file_names = EpubUtils.get_epub_book_xml_file_names(book_directory)
@@ -99,7 +99,6 @@ module EpubUtils
          if alt_text.size > 1
            @alt_text_hash[image_name] = alt_text
          end
-         break if @alt_text_hash.size > limit
          unless img_node['aria-describedby'].blank?
            describer = doc.css('#' + img_node['aria-describedby'])[0]
            @described_by_hash[image_name] = describer.text

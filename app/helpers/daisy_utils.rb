@@ -46,31 +46,23 @@ module DaisyUtils
   end
   
   def extract_images_prod_notes_for_daisy doc
-      images = doc.xpath("//xmlns:img")
       prodnotes = doc.xpath("//xmlns:imggroup//xmlns:prodnote")
-      captions = doc.xpath("//xmlns:imggroup//xmlns:caption")
-
-      @num_images = images.size()
-      limit = 249
       @prodnotes_hash = Hash.new()
       prodnotes.each do |node|
-        # MQ: Why are we even querying the DB for a matching DynamicImage?
-        # And why doesn't it care about the book the image belongs to?
-        dynamic_image = DynamicImage.where(:xml_id => node['imgref']).first
-        if (dynamic_image)
-          @prodnotes_hash[dynamic_image] = node.inner_text
-        else
-          @prodnotes_hash[node['imgref']] = node.inner_text
-        end
-        break if @prodnotes_hash.size > limit
+        @prodnotes_hash[node['imgref']] = node.inner_text
       end
+      images = nil;
+      
+      
+      captions = doc.xpath("//xmlns:imggroup//xmlns:caption")
       @captions_hash = Hash.new()
-
       captions.each do |node|
         @captions_hash[node['imgref']] = node.inner_text
-        break if @captions_hash.size > limit
       end
+      captions = nil;
 
+      images = doc.xpath("//xmlns:img")
+      @num_images = images.size()
       @alt_text_hash = Hash.new()
       images.each do |node|
         alt_text =  node['alt']
@@ -78,8 +70,8 @@ module DaisyUtils
         if alt_text.size > 1
           @alt_text_hash[id] = alt_text
         end
-        break if @alt_text_hash.size > limit
       end
+      images = nil;
   end
   
 end
