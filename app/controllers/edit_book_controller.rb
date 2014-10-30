@@ -67,6 +67,7 @@ class EditBookController < ApplicationController
       render :template => error_redirect
       return
     end
+    flash[:notice] = nil;
   end
   
   def book_header
