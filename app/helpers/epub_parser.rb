@@ -34,6 +34,8 @@ class EpubParser <  S3UnzippingJob
 
         # in case this is a re-upload, we should reset the book_fragment_id of the images
         DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
+        book.update_attribute("status", 2)
+        
         splitter.segments.each_with_index do |segment_xml, i|
             sequence_number = i+1
             book_fragment = BookFragment.where(:book_id => book.id, :sequence_number => sequence_number).first || BookFragment.create(:book_id => book.id, :sequence_number => sequence_number)
@@ -51,7 +53,6 @@ class EpubParser <  S3UnzippingJob
               end
             end
             segment_xml = doc.to_xml
-            book.update_attribute("status", 2) if i == 0
 
             content_html = File.join("","tmp", "#{book.uid}_#{sequence_number}.html")
             File.open(content_html, 'wb'){|f|f.write(segment_xml)}

@@ -19,7 +19,7 @@ class DaisyParser <  S3UnzippingJob
         doc = Nokogiri::XML xml
         opf = get_opf_from_dir(book_directory)
       
-        contents_filename =DaisyUtils.get_contents_xml_name(book_directory)
+        contents_filename = DaisyUtils.get_contents_xml_name(book_directory)
 
         book = Book.where(:id => book_id, :deleted_at => nil).first
         book = update_daisy_book_in_db(book, doc, File.basename(contents_filename), opf, uploader_id)
@@ -37,6 +37,8 @@ class DaisyParser <  S3UnzippingJob
 
         # in case this is a re-upload, we should reset the book_fragment_id of the images
         DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
+        book.update_attribute("status", 2)
+        
         splitter.segments.each_with_index do |segment_xml, i|
             sequence_number = i+1
             book_fragment = BookFragment.where(:book_id => book.id, :sequence_number => sequence_number).first || BookFragment.create(:book_id => book.id, :sequence_number => sequence_number)
@@ -54,7 +56,6 @@ class DaisyParser <  S3UnzippingJob
               end
             end
             segment_xml = doc.to_xml
-            book.update_attribute("status", 2) if i == 0
             contents = repository.xslt(segment_xml, xsl) 
             content_html = File.join("","tmp", "#{book.uid}_#{sequence_number}.html")
             File.open(content_html, 'wb'){|f|f.write(contents)}
