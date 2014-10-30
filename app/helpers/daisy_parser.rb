@@ -10,37 +10,34 @@ class DaisyParser <  S3UnzippingJob
    def perform
       begin
         repository = RepositoryChooser.choose(repository_name)
-          book = Book.where(:id => book_id, :deleted_at => nil).first
-          file = repository.read_file(book.uid + ".zip", File.join( "", "tmp", "#{book.uid}.zip"))
-          book_directory  = accept_book(file)
-
+        book = Book.where(:id => book_id, :deleted_at => nil).first
+        file = repository.read_file(book.uid + ".zip", File.join( "", "tmp", "#{book.uid}.zip"))
+        book_directory  = accept_book(file)
   
-          xml = get_xml_from_dir(book_directory, book.file_type)
+        xml = get_xml_from_dir(book_directory, book.file_type)
 
-          doc = Nokogiri::XML xml
-          opf = get_opf_from_dir(book_directory)
+        doc = Nokogiri::XML xml
+        opf = get_opf_from_dir(book_directory)
       
-          contents_filename =DaisyUtils.get_contents_xml_name(book_directory)
+        contents_filename =DaisyUtils.get_contents_xml_name(book_directory)
 
-          book = Book.where(:id => book_id, :deleted_at => nil).first
-          book = update_daisy_book_in_db(book, doc, File.basename(contents_filename), opf, uploader_id)
+        book = Book.where(:id => book_id, :deleted_at => nil).first
+        book = update_daisy_book_in_db(book, doc, File.basename(contents_filename), opf, uploader_id)
 
-          splitter = SplitXmlHelper::DTBookSplitter.new(IMAGE_LIMIT)
-          parser = Nokogiri::XML::SAX::Parser.new(splitter)
+        splitter = SplitXmlHelper::DTBookSplitter.new(IMAGE_LIMIT)
+        parser = Nokogiri::XML::SAX::Parser.new(splitter)
 
-          # Send some XML to the parser
-          parser.parse(xml)
+        parser.parse(xml)
 
-          xsl_filename = DaisyParser.daisy_xsl
-          xsl = File.read(xsl_filename)
+        xsl_filename = DaisyParser.daisy_xsl
+        xsl = File.read(xsl_filename)
 
-          # Keep track of the original img src attribute and whether it has been used already
-          image_srces = []
+        # Keep track of the original img src attribute and whether it has been used already
+        image_srces = []
 
-
-          # in case this is a re-upload, we should reset the book_fragment_id of the images
-          DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
-          splitter.segments.each_with_index do |segment_xml, i|
+        # in case this is a re-upload, we should reset the book_fragment_id of the images
+        DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
+        splitter.segments.each_with_index do |segment_xml, i|
             sequence_number = i+1
             book_fragment = BookFragment.where(:book_id => book.id, :sequence_number => sequence_number).first || BookFragment.create(:book_id => book.id, :sequence_number => sequence_number)
             doc = Nokogiri::XML segment_xml
@@ -58,21 +55,21 @@ class DaisyParser <  S3UnzippingJob
             end
             segment_xml = doc.to_xml
             book.update_attribute("status", 2) if i == 0
-            contents = repository.xslt(segment_xml, xsl) # don't do that for epub files only read contents
+            contents = repository.xslt(segment_xml, xsl) 
             content_html = File.join("","tmp", "#{book.uid}_#{sequence_number}.html")
             File.open(content_html, 'wb'){|f|f.write(contents)}
             repository.store_file(content_html, book.uid, "#{book.uid}/#{book.uid}_#{sequence_number}.html", nil)
-          end
-          book.update_attribute("status", 3) 
-          doc = nil
-          xml = nil
-          current_user = User.where(:id => uploader_id, :deleted_at => nil).first
-          UserMailer.book_uploaded_email(current_user, book).deliver #email 'current user'
+        end
+        book.update_attribute("status", 3) 
+        doc = nil
+        xml = nil
+        current_user = User.where(:id => uploader_id, :deleted_at => nil).first
+        UserMailer.book_uploaded_email(current_user, book).deliver
 
-          # remove zip file from holding bucket
-          repository.remove_file(book.uid + ".zip")
+        # remove zip file from holding bucket
+        repository.remove_file(book.uid + ".zip")
 
-          daisy_file = nil
+        daisy_file = nil
 
         rescue Exception => e
             book.update_attribute("status", 5) if book
