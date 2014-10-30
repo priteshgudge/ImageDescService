@@ -35,7 +35,7 @@ class ReportsController < ApplicationController
     @images_described = DynamicDescription.connection.select_value("select count(distinct(dynamic_image_id)) from dynamic_descriptions where book_id = '#{book_id}'")
     @images_total = DynamicImage.connection.select_value("select count(id) from dynamic_images where book_id = '#{book_id}'")
     @description_still_needed  = DynamicImage.connection.select_value("SELECT count(id) FROM dynamic_images WHERE book_id = '#{book_id}' and should_be_described = true and id not in (select dynamic_image_id from dynamic_descriptions where dynamic_descriptions.book_id = '#{book_id}') ORDER BY id ASC;")
-    @essential_images_total = DynamicImage.connection.select_value("select count(id) from dynamic_images where book_id = '#{book_id}' and should_be_described = #{EditBookController::FILTER_ESSENTIAL}")
+    @essential_images_total = DynamicImage.connection.select_value("select count(id) from dynamic_images where book_id = '#{book_id}' and should_be_described = true")
 
   end
 
