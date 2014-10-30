@@ -54,14 +54,6 @@ class S3Repository
         bucket = s3_service.buckets[ENV['POET_ASSET_BUCKET']]
         s3_object = bucket.objects[file_path]
         File.open(new_local_file, 'wb') {|f| f.write(s3_object.read) }
-        rescue AWS::Errors::Base => e
-          puts "S3 Problem uploading reading file #{file_path}"
-          puts "#{e.class}: #{e.message}"
-        rescue Exception => e
-          puts "Unknown problem reading file from S3 for  #{file_path}"
-          puts "#{e.class}: #{e.message}"
-          puts e.backtrace.join("\n")
-          $stderr.puts e
       end
       return new_local_file
   end
