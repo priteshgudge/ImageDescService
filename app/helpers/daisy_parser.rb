@@ -75,6 +75,7 @@ class DaisyParser <  S3UnzippingJob
           daisy_file = nil
 
         rescue Exception => e
+            book.update_attribute("status", 5) if book
             puts "Unknown problem in unzipping job for book #{book ? book.uid : ''}"
             puts "#{e.class}: #{e.message}"
             puts e.backtrace.join("\n")

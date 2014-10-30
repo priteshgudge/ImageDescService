@@ -20,6 +20,19 @@
             <%= file_field_tag 'book' %> </p>
             <%= submit_tag "Check", :class => "btn btn-primary" %>
             <% end %>
+            <p id="throbber" style="display: none;">
+                Please wait while we check image coverage
+                <img src="/images/throbber.gif" alt="Please wait" />
+            </p>
         </div>
     </div>
  </div>
+
+ <script type="text/javascript">
+    $(function() {
+        $("form").on("submit", function() {
+            $("input[name='commit']").hide();
+            $("#throbber").show();
+        });
+    });
+ </script>

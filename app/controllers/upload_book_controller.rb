@@ -119,6 +119,7 @@ class UploadBookController < ApplicationController
           # end
 
         rescue AWS::Errors::Base => e
+          book.update_attribute("status", 5) if book
           logger.info "S3 Problem uploading book to S3 for book #{@book_uid}"
           logger.info "#{e.class}: #{e.message}"
           logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
@@ -126,6 +127,7 @@ class UploadBookController < ApplicationController
           redirect_to :action => 'upload'
           return
         rescue Exception => e
+          book.update_attribute("status", 5) if book
           logger.info "Unknown problem uploading book to S3 for book #{@book_uid}"
           logger.info "#{e.class}: #{e.message}"
           logger.info e.backtrace.join("\n")
