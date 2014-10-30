@@ -60,13 +60,13 @@ class UploadBookController < ApplicationController
       end 
 
     rescue Exception => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+        logger.info "#{e.class}: #{e.message}"
         if e.message.include?("Not a zip archive")
-            ActiveRecord::Base.logger.info "#{caller_info} Not a ZIP File"
+            logger.info "#{caller_info} Not a ZIP File"
             flash[:alert] = "Uploaded file must be a valid DAISY or EPUB 3 file"
         else
-            ActiveRecord::Base.logger.info "#{caller_info} Other problem with zip file"
-          flash[:alert] = "There is a problem with this zip file"
+            logger.info "#{caller_info} Other problem with zip file"
+            flash[:alert] = "There is a problem with this zip file"
         end
         puts e
         puts e.backtrace.join("\n")
