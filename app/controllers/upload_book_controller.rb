@@ -41,17 +41,17 @@ class UploadBookController < ApplicationController
     session[:daisy_directory] = nil
     file_type = nil
     
-    book = params[:book]
-    if !book
+    book_file = params[:book]
+    if !book_file
       flash[:alert] = "Must specify a book file to upload"
       redirect_to :action => 'upload'
       return
     end
 
     begin
-      if valid_daisy_zip?(book.path)
+      if valid_daisy_zip?(book_file.path)
         file_type = "Daisy"
-      elsif valid_epub_zip?(book.path)
+      elsif valid_epub_zip?(book_file.path)
         # to do - when turning on the upload for EPUB files we need to check the deleted_at flag
         file_type = "Epub"
       else  
@@ -75,15 +75,15 @@ class UploadBookController < ApplicationController
     end   
 
     begin
-      zip_directory, book_directory, file = accept_and_copy_book(book.path, file_type) #store filetype bookstable
-      xml = get_xml_from_dir book_directory, file_type
+      zip_directory, book_directory, file = accept_and_copy_book(book_file.path, file_type)
+      xml = get_xml_from_dir(book_directory, file_type)
       doc = Nokogiri::XML xml
       @book_uid = extract_book_uid(doc, file_type)
       doc = nil
       xml = nil
      
-      preprocessing_book = Book.where(:uid => @book_uid, :deleted_at => nil).first
-      if preprocessing_book && preprocessing_book.status == 4
+      book = Book.where(:uid => @book_uid, :deleted_at => nil).first
+      if book && book.status == 4
         flash[:alert] = "The book (#{@book_uid}) is still being processed. Please try again later."
         redirect_to :action => 'upload'
         return
@@ -96,18 +96,18 @@ class UploadBookController < ApplicationController
         return
       end
 
-      if !preprocessing_book
-         preprocessing_book = Book.create(:uid => @book_uid, :file_type => file_type, :status => 4, :library =>  current_library, :user_id => current_user.id)
+      if !book
+         book = Book.create(:uid => @book_uid, :file_type => file_type, :status => 4, :library =>  current_library, :user_id => current_user.id)
       end
 
       pid = fork do
         begin
-          @repository.store_file(book.path, @book_uid, @book_uid + ".zip", nil)
+          @repository.store_file(book_file.path, @book_uid, @book_uid + ".zip", nil)
           job = nil
           if file_type == "Epub"
-            job = EpubParser.new(preprocessing_book.id, @repository.name, current_library, current_user.id)
+            job = EpubParser.new(book.id, @repository.name, current_library, current_user.id)
           else
-            job = DaisyParser.new(preprocessing_book.id, @repository.name, current_library, current_user.id)
+            job = DaisyParser.new(book.id, @repository.name, current_library, current_user.id)
           end
 
         job.perform
