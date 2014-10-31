@@ -53,7 +53,7 @@ class DynamicImagesController < ApplicationController
     end
   end
 
-  # GET /dynamic_images/1/edit
+  # GET /dynamic_images/1/show
   def show
     render :json => JSON.parse(DynamicImage.find(params[:id]).to_json(:host => @host, :include => :dynamic_description))
   end
