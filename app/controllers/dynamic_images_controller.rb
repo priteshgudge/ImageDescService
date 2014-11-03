@@ -1,36 +1,12 @@
 class DynamicImagesController < ApplicationController
 
-  # GET /dynamic_images/1
-  # GET /dynamic_images/1.xml
-  # GET /dynamic_images/1.json
+  # GET /dynamic_images/1/edit
+  # GET /dynamic_images/1/edit.xml
+  # GET /dynamic_images/1/edit.json
   def edit
-    book = load_book
-    if params[:image_location] && book
-      @dynamic_image = DynamicImage.where(:book_id => book.id, :image_location => params[:image_location]).first
-      if @dynamic_image
-        @last_desc = @dynamic_image.dynamic_description
-      else
-        @last_desc = DynamicDescription.new
-        @last_desc.body = "no description found"
-        @status = :no_content
-      end
-    else
-      @last_desc = DynamicDescription.new
-      @last_desc.body = "missing parameter book_id=#{book.id}, loc=#{params[:image_location]}"
-      @status = :non_authoritative_information
-    end
-
-    respond_to do |format|
-      if @dynamic_image
-        format.html # show.html.erb
-        format.xml  { render :xml => @last_desc }
-        format.json { render :json => @last_desc, :callback => params[:callback]}
-      else
-        format.html
-        format.xml { render :xml => @last_desc, :status => @status}
-        format.json { render :json => @last_desc, :callback => params[:callback], :status => @status}
-      end
-    end
+    # This is no longer a real route, but keep a simple lookup here just in case
+    # someone accidently codes to it.
+    show
   end
 
   def show_history
@@ -53,7 +29,7 @@ class DynamicImagesController < ApplicationController
     end
   end
 
-  # GET /dynamic_images/1/show
+  # GET /dynamic_images/1
   def show
     render :json => JSON.parse(DynamicImage.find(params[:id]).to_json(:host => @host, :include => :dynamic_description))
   end

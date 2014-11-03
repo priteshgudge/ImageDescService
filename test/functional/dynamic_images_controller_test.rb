@@ -18,21 +18,6 @@ class DynamicImagesControllerTest < ActionController::TestCase
     assert_redirected_to dynamic_image_path(assigns(:dynamic_image))
   end
 
-  test "should edit description" do
-    get :edit, :book_id => '1', :image_location => 'img03.jpg'
-    assert_response :success
-  end
-
-  test "non-existent image on json edit description" do
-    get :edit, :book_id => '1', :image_location => 'blah', :format => 'json'
-    assert_response :no_content
-  end
-
-  test "missing parameters on json edit description" do
-    get :edit, :book_id => '1', :format => 'json'
-    assert_response :non_authoritative_information
-  end
-
   test "should get show" do
     get :show, :id => @dynamic_image.to_param
     assert_response :success
