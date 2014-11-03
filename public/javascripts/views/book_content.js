@@ -52,6 +52,11 @@ define([
       var editImage = new EditImageView();
       editImage.imageCategories = contentView.imageCategories;
       image.set({path: image.get("image_source"), alt: domImage.attr("alt")});
+      //See if the images parent div has a class of imggroup
+      var parent = $(domImage).parent().eq(0);
+      if ($(parent).hasClass("imggroup")) {
+        image.set({caption: $(".caption", parent).text() });
+      }
       editImage.model = image;
       editImage.previousImage = contentView.collection.models[i-1];
       editImage.nextImage = contentView.collection.models[i+1];

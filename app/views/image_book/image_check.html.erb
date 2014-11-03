@@ -16,8 +16,8 @@
             </ol>
 
             <%= form_tag("/image_book/check_image_coverage", {:multipart => true}) do %>
-            <p><label for="upload_file">Select book </label> :
-            <%= file_field_tag 'book' %> </p>
+            <p><label>Select book:
+            <%= file_field_tag 'book' %></label></p>
             <%= submit_tag "Check", :class => "btn btn-primary" %>
             <% end %>
             <p id="throbber" style="display: none;">
