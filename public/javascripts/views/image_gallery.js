@@ -27,7 +27,8 @@ define([
       var imageGallery = this;
       $('#questionnaire').modal({
         keyboard: true,
-        show: false
+        show: false,
+        backdrop: 'static'
       });
       $('#questionnaire').on('show.bs.modal', function (e) {
         imageGallery.startDecisionTree();
