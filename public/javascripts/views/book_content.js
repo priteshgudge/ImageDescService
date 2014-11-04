@@ -55,7 +55,15 @@ define([
       //See if the images parent div has a class of imggroup
       var parent = $(domImage).parent().eq(0);
       if ($(parent).hasClass("imggroup")) {
-        image.set({caption: $(".caption", parent).text() });
+        var captionElement = $(".caption", parent);
+        if (captionElement.length != 0) {
+          image.set({caption: $(captionElement).text()});
+        }
+      } else if ($(parent).prop("tagName") == "figure") {
+        var captionElement = $("figcaption", parent);
+        if (captionElement.length != 0) {
+          image.set({caption: $(captionElement).text()});
+        }
       }
       editImage.model = image;
       editImage.previousImage = contentView.collection.models[i-1];
