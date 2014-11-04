@@ -50,7 +50,7 @@ class DynamicImage < ActiveRecord::Base
 
   def path_by_book
     path = "#{book.uid}/:style/#{image_location}"
-    if ENV['POET_LOCAL_STORAGE_DIR']
+    if ENV['POET_LOCAL_STORAGE_DIR'] && ENV['POET_LOCAL_STORAGE_DIR'].length > 0
       path = File.join(ENV['POET_LOCAL_STORAGE_DIR'], path)
     end
     path
