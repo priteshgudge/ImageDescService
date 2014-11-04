@@ -1,11 +1,14 @@
 require 'rubygems'
 require 'selenium-webdriver'
 require 'test/unit'
+require 'page/home_page'
+require 'page/login_page'
+require 'page/edit_search_page'
+require 'page/edit_page'
 
 class BookSearchTest < Test::Unit::TestCase
   def setup
     @driver = Selenium::WebDriver.for :firefox
-    @wait = Selenium::WebDriver::Wait.new(:timeout => 10)
   end
   
   def teardown
@@ -16,19 +19,26 @@ class BookSearchTest < Test::Unit::TestCase
     @driver.get 'https://diagram-staging.herokuapp.com'
     
     # Click the login link
-    @driver.find_element(:link => 'Sign in').click
-    @driver.find_element(:id => 'user_login').send_keys 'QA_admin'
-    @driver.find_element(:id => 'user_password').send_keys 'qaadmin123'
-    @driver.find_element(:name => 'commit').click
+    home_page = HomePage.new(@driver)
+    home_page.sign_in
+    
+    login_page = LoginPage.new(@driver)
+    login_page.name = 'QA_admin'
+    login_page.password = 'qaadmin123'
+    login_page.submit
     
     # Go to search
-    @driver.find_element(:link => 'Poet Image Description').click
-    @driver.find_element(:link => 'Edit').click
+    login_page.home
+    home_page = HomePage.new(@driver)
+    home_page.edit
+    
     # Search by ID
-    @driver.find_element(:name => 'book_uid').send_keys '_id384972'
-    @driver.find_element(:xpath => '//input[@value="Edit"]').click
-
+    edit_search_page = EditSearchPage.new(@driver)
+    edit_search_page.book_id = '_id384972'
+    edit_search_page.submit
+    
     # Check if book found
-    assert @driver.find_element(:xpath => '//div[@id="book_title"]').text.start_with? 'What is Biodiversity'
+    edit_page = EditPage.new(@driver)
+    assert edit_page.book_title.start_with? 'What is Biodiversity'
   end
 end
