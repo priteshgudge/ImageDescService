@@ -15,4 +15,5 @@ class PoetPage
   link(:register, :link => 'Register')
   link(:sign_in, :link => 'Sign in')
   # TODO: Define the dropdowns for Books, Users, profile
+  
 end
