@@ -24,11 +24,13 @@ class S3Repository
           puts "S3 Problem uploading book to S3 for book #{book_uid}"
           puts "#{e.class}: #{e.message}"
           puts "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+          raise
         rescue Exception => e
           puts "Unknown problem uploading book to S3 for book #{book_uid}"
           puts "#{e.class}: #{e.message}"
           puts e.backtrace.join("\n")
           $stderr.puts e
+          raise
         end
   end
   

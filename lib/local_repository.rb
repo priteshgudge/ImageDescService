@@ -19,10 +19,11 @@ class LocalRepository
           # puts "file does not exist in local dir #{file_path} for copy to local store"
         end
       rescue Exception => e
-         puts "Unknown problem copying to local storage dir for book #{book_uid}"
-          puts "#{e.class}: #{e.message}"
-          puts e.backtrace.join("\n")
-          $stderr.puts e
+        puts "Unknown problem copying to local storage dir for book #{book_uid}"
+        puts "#{e.class}: #{e.message}"
+        puts e.backtrace.join("\n")
+        $stderr.puts e
+        raise
       end
   end
 
