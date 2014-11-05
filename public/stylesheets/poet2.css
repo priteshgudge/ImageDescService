@@ -73,7 +73,6 @@ html, body {
   overflow-y: scroll; 
   padding: 0;
   border-right: 4px solid #D4D4D4;
-  z-index: 1000;
 }
 
 #right {
@@ -178,5 +177,6 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
   font-style: italic;
   font-size: 105%;
 }
+
 
 

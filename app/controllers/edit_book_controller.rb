@@ -68,6 +68,7 @@ class EditBookController < ApplicationController
       return
     end
     flash[:notice] = nil;
+    flash[:alert] = nil;
   end
   
   def book_header
