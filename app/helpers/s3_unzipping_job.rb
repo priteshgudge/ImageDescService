@@ -69,6 +69,7 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
             puts "#{e.class}: #{e.message}"
             puts e.backtrace.join("\n")
             $stderr.puts e
+            raise
           end
         elsif image
           # This should only happen on re-uploading of books in order to split existing books
