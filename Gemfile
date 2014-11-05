@@ -64,6 +64,6 @@ group :development, :test do
   gem 'foreman'
   gem 'oink'
   gem 'factory_girl_rails', '1.2.0'
-
-
+  gem 'selenium-webdriver'
+  gem 'page-object'
 end
