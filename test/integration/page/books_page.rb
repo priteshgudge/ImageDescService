@@ -8,4 +8,5 @@ class BooksPage < PoetPage
   text_field(:isbn_search, :id => 'q_isbn')
   text_field(:uid_search, :id => 'q_uid')
   button(:submit, :name => 'commit')
+  link(:clear_filter, :link => 'Clear Filters')
 end

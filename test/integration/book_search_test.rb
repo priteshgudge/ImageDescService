@@ -24,5 +24,19 @@ class BookSearchTest < PoetWebDriverTest
     
     # Check if book found
     assert books_page.books_table_element['_id384972']['Title'].text.start_with? 'What is Biodiversity'
+    
+    # Search by ISBN
+    books_page.clear_filter
+    books_page.isbn_search = '9780078952715'
+    books_page.submit
+    
+    assert books_page.books_table_element['9780078952715']['Title'].text.start_with? 'Glencoe Geometry'
+    
+    # Search by title
+    books_page.clear_filter
+    books_page.title_search = 'Hugo Cabret'
+    books_page.submit
+    
+    assert books_page.books_table_element['9780439813785']['Title'].text.start_with? 'The Invention of Hugo Cabret'
   end
 end
