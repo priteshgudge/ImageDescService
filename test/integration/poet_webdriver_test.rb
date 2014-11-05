@@ -7,6 +7,7 @@ require 'test/unit'
 class PoetWebDriverTest < Test::Unit::TestCase
   def setup
     @driver = Selenium::WebDriver.for :firefox
+    @driver.manage.timeouts.implicit_wait = 15
   end
   
   def teardown
