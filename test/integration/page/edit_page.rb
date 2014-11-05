@@ -1,7 +1,6 @@
-require 'page-object'
+require 'page/poet_page'
 
-class EditPage
-  include PageObject
+class EditPage < PoetPage
   
   div(:book_title, :xpath => '//div[@id="book_title"]')
 end

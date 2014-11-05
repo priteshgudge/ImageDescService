@@ -1,20 +1,14 @@
 require 'rubygems'
 require 'selenium-webdriver'
 require 'test/unit'
+require 'poet_webdriver_test'
 require 'page/home_page'
 require 'page/login_page'
 require 'page/edit_search_page'
 require 'page/edit_page'
 
-class BookSearchTest < Test::Unit::TestCase
-  def setup
-    @driver = Selenium::WebDriver.for :firefox
-  end
-  
-  def teardown
-    @driver.quit
-  end
-  
+class BookSearchTest < PoetWebDriverTest
+
   def test_find_and_edit_by_uid
     @driver.get 'https://diagram-staging.herokuapp.com'
     
