@@ -65,6 +65,7 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
                   :physical_file => File.new(image_path, "rb"),
                   :image_location => image_location)
           rescue Exception => e
+            book.update_attribute("status", 5) if book
             puts "Unknown problem creating dynamic image, #{image_location}, for book #{book.id}"
             puts "#{e.class}: #{e.message}"
             puts e.backtrace.join("\n")
