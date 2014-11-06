@@ -29,7 +29,6 @@ define([
     goToImage: function(e) {
       e.preventDefault();
       var navLink = $("#go_to_" + $("#image_number").val());
-      console.log("go_to_" + $("#image_number").val());
       if (navLink.length > 0) {
         window.location.href = navLink.attr('href');
       } else {

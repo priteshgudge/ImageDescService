@@ -96,7 +96,6 @@ define([
       //First, update the image.
       this.model.save({"should_be_described": shouldBeDescribed});
       if (shouldBeDescribed == "true") {
-        console.log(this.$(".image-category"));
         this.$(".image-category").show();
       }
     },
@@ -227,7 +226,6 @@ define([
 
     getMathML: function(e) {
       var editImage = this;
-      console.log("Getting mathml");
       var s = $(e.currentTarget).val();
       editImage.$(".typeset-math").text("`" + s + "`");
       MathJax.Callback.Queue(

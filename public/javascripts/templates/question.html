@@ -10,7 +10,7 @@
 						<input type="radio" class="answer" value="<%= answer['answer_id'] %>" name="answer" id="<%= answer['answer_id'] %>" <% if (typeof(question.get("answer")) !== 'undefined' && question.get("answer")["answer_id"] == answer['answer_id']) { %> checked <% } %>>
 						<%= answer['label'] %>
 					</label>
-					<% if (answer['value'] == "-oth") { console.log(question); %>
+					<% if (answer['value'] == "-oth") { %>
 						<input type="text" name="answer_other" id="other" placeholder="Other" value="<%= question.get("other") %>"/>
 						<label for="other" class="sr-only">Other</label>
 					<% } %>
