@@ -7,7 +7,7 @@ DiagramRailsApp::Application.configure do
   config.cache_classes = false
 
   # non-minified JS for environment
-  config.action_view.javascript_expansions[:defaults] = ['jquery.js', 'jquery_ujs.js', 'jquery-ui.js']
+  config.action_view.javascript_expansions[:defaults] = ['jquery.min.js', 'jquery_ujs.js']
 
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true

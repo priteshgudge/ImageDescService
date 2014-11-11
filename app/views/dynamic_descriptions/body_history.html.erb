@@ -1,12 +1,15 @@
-<div id="descriptionHistory">
-<h3>Description History</h3>  
 
+<h3>Description History</h3>  
 <hr />
+<div id="descriptionHistory">
 <%
    @dynamic_description.audits.descending.each do |change|
  %>
 	<h4><%= change.created_at %> - <%= change.user.full_name %></h4>
-    <p><%= (change.audited_changes['body'].size == 2) ? change.audited_changes['body'][1] : change.audited_changes['body'] %></p>
+    <p> 
+    <%	if change.audited_changes['body'] != nil then %>
+    	<%= (change.audited_changes['body'].kind_of?(Array) && change.audited_changes['body'].size == 2) ? change.audited_changes['body'][1].html_safe : change.audited_changes['body'].html_safe %></p>
+    <%	end %>
 <%
   end
 %>

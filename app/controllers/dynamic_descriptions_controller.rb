@@ -48,15 +48,28 @@ class DynamicDescriptionsController < ApplicationController
   # POST /dynamic_descriptions.xml
   def create
     book = load_book
-    if params[:dynamic_description] && params[:dynamic_description][:dynamic_image_id] 
-      @dynamic_image = DynamicImage.where(:id => params[:dynamic_description][:dynamic_image_id]).first
+    if params[:dynamic_description] && params[:dynamic_image_id] 
+      @dynamic_image = DynamicImage.where(:id => params[:dynamic_image_id]).first
       book = @dynamic_image.book if @dynamic_image
       @dynamic_description = @dynamic_image.dynamic_description  
         
       if @dynamic_description
-          @dynamic_description.update_attributes(params[:dynamic_description].merge({:book_id => book.id, :submitter_id => current_user.id})) if params[:dynamic_description] && params[:dynamic_description].is_a?(Hash)
+          @dynamic_description.update_attributes({
+            :body => params[:dynamic_description], 
+            :book_id => book.id, 
+            :submitter_id => current_user.id, 
+            :summary => params[:summary],
+            :simplified_language_description => params[:simplified_language_description],
+            :target_age_start => params[:target_age_start],
+            :target_age_end => params[:target_age_end],
+            :target_grade_start => params[:target_grade_start],
+            :target_grade_end => params[:target_grade_end],
+            :annotation => params[:annotation],
+            :tactile_src => params[:tactile_src],
+            :tactile_tour => params[:tactile_tour]
+          }) if params[:dynamic_description]
       else
-          @dynamic_description = DynamicDescription.create(params[:dynamic_description].merge({:book_id => book.id, :submitter_id => current_user.id})) if params[:dynamic_description] && params[:dynamic_description].is_a?(Hash)
+          @dynamic_description = DynamicDescription.create({:body => params[:dynamic_description], :book_id => book.id, :submitter_id => current_user.id}) if params[:dynamic_description]
           @dynamic_image.dynamic_description =  @dynamic_description
       end       
     else

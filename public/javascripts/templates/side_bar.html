@@ -1,0 +1,13 @@
+<% _.each(images, function(image) { %>
+	<div class="side-nav-image">
+		<p>
+			<a id="go_to_<%= image.get("id") %>" href="#edit-image-<%= image.get("id") %>" class="navLink">
+				<img alt="Image <%= image.get("id") %>. Clicking will cause the frame to the right to scroll to this image within the book." src="<%= image.get("thumb_source") %>" />
+			</a>
+		</p>
+		<p>
+			Image: <%= image.get("id") %>
+		</p>
+		<hr />
+	</div>
+<% }) %>

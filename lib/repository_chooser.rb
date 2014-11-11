@@ -3,7 +3,7 @@ module RepositoryChooser
   require 's3_repository'
 
   def self.choose klass_name=nil
-    if (Rails.env.test? || ENV['POET_LOCAL_STORAGE_DIR']) || (klass_name == LocalRepository.name)
+    if (Rails.env.test? || (ENV['POET_LOCAL_STORAGE_DIR'] && ENV['POET_LOCAL_STORAGE_DIR'].length > 0) || klass_name == LocalRepository.name)
       return LocalRepository
     else
       return S3Repository

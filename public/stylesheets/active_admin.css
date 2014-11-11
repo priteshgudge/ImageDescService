@@ -17,32 +17,6 @@ body.active_admin span.icon {
 body.active_admin span.icon svg {
   width: 0.8em;
   height: 0.8em; }
-
-/* Active Admin CSS */
-body.active_admin html, body.active_admin body, body.active_admin div, body.active_admin span, body.active_admin applet, body.active_admin object, body.active_admin iframe,
-body.active_admin h1, body.active_admin h2, body.active_admin h3, body.active_admin h4, body.active_admin h5, body.active_admin h6, body.active_admin p, body.active_admin blockquote, body.active_admin pre,
-body.active_admin a, body.active_admin abbr, body.active_admin acronym, body.active_admin address, body.active_admin big, body.active_admin cite, body.active_admin code,
-body.active_admin del, body.active_admin dfn, body.active_admin em, body.active_admin font, body.active_admin img, body.active_admin ins, body.active_admin kbd, body.active_admin q, body.active_admin s, body.active_admin samp,
-body.active_admin small, body.active_admin strike, body.active_admin strong, body.active_admin sub, body.active_admin sup, body.active_admin tt, body.active_admin var,
-body.active_admin dl, body.active_admin dt, body.active_admin dd, body.active_admin ol, body.active_admin ul, body.active_admin li,
-body.active_admin fieldset, body.active_admin form, body.active_admin label, body.active_admin legend,
-body.active_admin table, body.active_admin caption, body.active_admin tbody, body.active_admin tfoot, body.active_admin thead, body.active_admin tr, body.active_admin th, body.active_admin td {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  font-weight: inherit;
-  font-style: inherit;
-  font-size: 100%;
-  font-family: inherit;
-  vertical-align: baseline; }
-body.active_admin body {
-  height: 100%;
-  line-height: 1;
-  color: black;
-  background: white; }
-body.active_admin ol, body.active_admin ul {
-  list-style: none; }
 body.active_admin table {
   border-collapse: separate;
   border-spacing: 0;
@@ -58,11 +32,6 @@ body.active_admin q, body.active_admin blockquote {
 body.active_admin a img {
   border: none; }
 
-body.active_admin html {
-  font-size: 100.01%; }
-body.active_admin {
-  font-size: 75%;
-  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif; }
 body.active_admin h1, body.active_admin h2, body.active_admin h3, body.active_admin h4, body.active_admin h5, body.active_admin h6 {
   font-weight: normal;
   color: #5e6469; }
@@ -129,11 +98,6 @@ body.active_admin pre, body.active_admin code, body.active_admin tt {
 body.active_admin li ul,
 body.active_admin li ol {
   margin: 0; }
-body.active_admin ul, body.active_admin ol {
-  margin: 0 1.5em 1.5em 0;
-  padding-left: 1.5em; }
-body.active_admin ul {
-  list-style-type: disc; }
 body.active_admin ol {
   list-style-type: decimal; }
 body.active_admin dl {
@@ -185,142 +149,8 @@ body.active_admin .top {
 body.active_admin .bottom {
   margin-bottom: 0;
   padding-bottom: 0; }
-body.active_admin #header {
-  background: #6a7176;
-  background: -webkit-linear-gradient(-90deg, #6a7176, #4d5256);
-  background: -moz-linear-gradient(-90deg, #6a7176, #4d5256);
-  background: linear, -90deg, #6a7176, #4d5256;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6A7176', endColorstr='#FF4D5256');
-  -ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FF6A7176', endColorstr='#FF4D5256');
-  border-bottom: 1px solid #44484b;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
-  text-shadow: black 0 1px 0;
-  height: 20px;
-  overflow: visible;
-  position: inherit;
-  padding: 9px 30px;
-  z-index: 900; }
-  body.active_admin #header h1 {
-    display: inline-block;
-    color: #cdcdcd;
-    float: left;
-    margin-right: 20px;
-    margin-bottom: 0px;
-    padding-top: 3px;
-    font-size: 1.3em;
-    font-weight: normal; }
-    body.active_admin #header h1 a {
-      text-decoration: none; }
-      body.active_admin #header h1 a:hover {
-        color: #fff; }
-    body.active_admin #header h1 img {
-      position: relative;
-      top: -2px; }
-  body.active_admin #header a, body.active_admin #header a:link {
-    color: #ffffff; }
-  body.active_admin #header .header-item {
-    float: left;
-    top: 2px;
-    position: relative;
-    height: 20px; }
-  body.active_admin #header ul.tabs {
-    display: inline-block;
-    height: 100%;
-    margin: 0;
-    padding: 0; }
-    body.active_admin #header ul.tabs > li {
-      display: inline-block;
-      margin-right: 4px;
-      font-size: 1.0em;
-      position: relative;
-      color: #dedede;
-      /* Hover on li, display the ul */
-      /* Drop down menus */ }
-      body.active_admin #header ul.tabs > li a {
-        text-decoration: none;
-        padding: 6px 10px 4px 10px;
-        position: relative;
-        -webkit-border-radius: 10px;
-        -moz-border-radius: 10px;
-        border-radius: 10px; }
-      body.active_admin #header ul.tabs > li.current > a {
-        background: #7b8389;
-        color: #fff; }
-      body.active_admin #header ul.tabs > li.has_nested > a {
-        background: url("/images/active_admin/nested_menu_arrow.gif") no-repeat 89% 50%;
-        padding-right: 20px;
-        z-index: 1050; }
-      body.active_admin #header ul.tabs > li.has_nested.current > a {
-        background: #7b8389 url("/images/active_admin/nested_menu_arrow_dark.gif") no-repeat 89% 50%;
-        padding-right: 20px; }
-      body.active_admin #header ul.tabs > li:hover > a {
-        background: #7b8389;
-        color: #fff; }
-      body.active_admin #header ul.tabs > li.has_nested:hover > a {
-        -webkit-border-radius: 0;
-        -moz-border-radius: 0;
-        border-radius: 0;
-        border-top-right-radius: 10px;
-        border-top-left-radius: 10px;
-        -moz-border-radius-topright: 10px;
-        -moz-border-radius-topleft: 10px;
-        -webkit-border-top-right-radius: 10px;
-        -webkit-border-top-left-radius: 10px;
-        border-bottom: 5px solid #7b8389;
-        background: #7b8389 url("/images/active_admin/nested_menu_arrow_dark.gif") no-repeat 89% 50%; }
-      body.active_admin #header ul.tabs > li:hover ul {
-        display: block; }
-      body.active_admin #header ul.tabs > li ul {
-        background: #7b8389;
-        border-top-right-radius: 10px;
-        -moz-border-radius-topright: 10px;
-        -webkit-border-top-right-radius: 10px;
-        border-top-left-radius: 0;
-        -moz-border-radius-topleft: 0;
-        -webkit-border-top-left-radius: 0;
-        border-bottom-right-radius: 10px;
-        -moz-border-radius-bottomright: 10px;
-        -webkit-border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
-        -moz-border-radius-bottomleft: 10px;
-        -webkit-border-bottom-left-radius: 10px;
-        box-shadow: 0 1px 3px #444444;
-        -moz-box-shadow: 0 1px 3px #444444;
-        -webkit-box-shadow: 0 1px 3px #444444;
-        position: absolute;
-        width: 175px;
-        margin-top: 5px;
-        float: left;
-        display: none;
-        padding: 3px 0px 5px 0;
-        list-style: none;
-        z-index: 1010; }
-        body.active_admin #header ul.tabs > li ul li {
-          margin: 0px; }
-          body.active_admin #header ul.tabs > li ul li a {
-            background: none;
-            display: block; }
-            body.active_admin #header ul.tabs > li ul li a:hover {
-              color: #fff;
-              background: none; }
-          body.active_admin #header ul.tabs > li ul li.current a {
-            -webkit-border-radius: 0;
-            -moz-border-radius: 0;
-            border-radius: 0; }
-  body.active_admin #header #utility_nav {
-    color: #aaa;
-    float: right;
-    display: inline-block;
-    margin: 0;
-    padding: 0; }
-    body.active_admin #header #utility_nav a {
-      text-decoration: none; }
-    body.active_admin #header #utility_nav a:hover {
-      color: #fff; }
-    body.active_admin #header #utility_nav li {
-      display: inline; }
+  
+  
 body.active_admin form {
   /* Reset margins & Padding */
   /* Nested Fieldsets and Legends */
@@ -384,7 +214,10 @@ body.active_admin form {
         float: left;
         font-size: 1.0em;
         font-weight: bold;
-        color: #5e6469; }
+        color: #5e6469;
+        margin-bottom: 5px;
+        font-size: 90%;
+        white-space: normal !important; }
         body.active_admin form fieldset ol > li label abbr {
           border: none;
           color: #aaa; }
@@ -1398,11 +1231,6 @@ body.active_admin .columns {
   padding: 0; }
   body.active_admin .columns .column {
     float: left; }
-body.active_admin a, body.active_admin a:link, body.active_admin a:visited {
-  color: #38678b;
-  text-decoration: underline; }
-body.active_admin a:hover {
-  text-decoration: none; }
 body.active_admin .paginated_collection_contents {
   clear: both; }
 body.active_admin .pagination {
@@ -1816,7 +1644,7 @@ body.active_admin table.dashboard {
       border: none;
       border-bottom: 1px solid #E8E8E8; }
 body.active_admin.logged_out {
-  background: #e8e9ea; }
+  background: #f5f5f5; }
   body.active_admin.logged_out #content_wrapper {
     width: 500px;
     margin: 70px auto; }
@@ -1879,7 +1707,7 @@ body.active_admin.logged_out {
       body.active_admin.logged_out #login form fieldset li {
         padding: 10px 0; }
       body.active_admin.logged_out #login form fieldset input[type=text], body.active_admin.logged_out #login form fieldset input[type=email], body.active_admin.logged_out #login form fieldset input[type=password] {
-        width: 70%; }
+        width: 78%;}
       body.active_admin.logged_out #login form fieldset.buttons {
         margin-left: 20%; }
     body.active_admin.logged_out #login a {
@@ -2031,11 +1859,3 @@ body.active_admin #title_bar {
     body.active_admin #title_bar .action_items a:hover span.icon svg path, body.active_admin #title_bar .action_items a:hover span.icon svg polygon, body.active_admin #title_bar .action_items a:hover span.icon svg rect, body.active_admin #title_bar .action_items a:hover span.icon svg circle {
       fill: black !important; }
 
-body.active_admin {
-  font-family: Helvetica, Arial, sans-serif;
-  line-height: 150%;
-  font-size: 72%;
-  background: #fff;
-  margin: 0;
-  padding: 0;
-  color: #323537; }

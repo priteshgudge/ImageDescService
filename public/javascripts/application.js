@@ -63,6 +63,10 @@ jQuery(function($) {
       bookToggleOnElement(this).toggle();
     });
 
+    $(".dropdown").on('shown.bs.dropdown', function() {
+      $("li a:first", this).first().focus();
+    });
+
   window.Poet = {
     imageCategoryPostSave: function(imageId, categoryId) {
       return function(data, status) {

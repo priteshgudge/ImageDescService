@@ -1,0 +1,8 @@
+one:
+  id: 1
+  uid: 12345678
+  title: Test Book
+  isbn: "9780596516178"
+  status: 3
+  library_id: 1
+  xml_file: foo

@@ -77,55 +77,49 @@ module EpubUtils
      @alt_text_hash = Hash.new()
      @longdesc_hash = Hash.new()
      @figcaption_hash = Hash.new()
-     limit = 249
+
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
      file_names = EpubUtils.get_epub_book_xml_file_names(book_directory)
-     file_contents = file_names.inject('') do |acc, file_name|
-      cur_file_contents = File.read(file_name)
-      cur_doc = Nokogiri::XML cur_file_contents
-      acc = "#{acc} #{cur_doc.css('body').children.to_s}"
-      acc
-     end
-     mainDirectory = EpubUtils.get_epub_file_main_directory(book_directory)
 
-     file_contents = "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'><link rel='stylesheet' type='text/css' href='//s3.amazonaws.com/org-benetech-poet/html.css'/><body>#{file_contents}</body></html>"
-     doc = Nokogiri::XML file_contents
-     @num_images = doc.css('img').size()
-     doc.css('img').each do |img_node| 
-       unless (img_node['src']).blank? 
-         image_name =  img_node['src'].gsub!(/images\//i, '') 
-         alt_text =  img_node['alt']
-         if alt_text.size > 1
-           @alt_text_hash[image_name] = alt_text
-         end
-         break if @alt_text_hash.size > limit
-         unless img_node['aria-describedby'].blank?
-           describer = doc.css('#' + img_node['aria-describedby'])[0]
-           @described_by_hash[image_name] = describer.text
-         end
-         #See if the image is wrapped in a figure element.
-         img_parent = img_node.parent()
-         unless img_parent.nil? and img_parent.name() != "figure"
-           #get described by from figure parent aria-describedby attribute.
-           unless img_parent['aria-describedby'].blank?
-            describer = doc.css('#' + img_parent['aria-describedby'])[0]
+     @num_images = 0;
+     file_names.each do |file_name|
+      doc = Nokogiri::XML File.read(file_name)
+      doc.css('img').each do |img_node| 
+        unless (img_node['src']).blank? 
+          image_name =  img_node['src'].gsub!(/images\//i, '') 
+          alt_text =  img_node['alt']
+          if alt_text.size > 1
+            @alt_text_hash[image_name] = alt_text
+          end
+          unless img_node['aria-describedby'].blank?
+            describer = doc.css('#' + img_node['aria-describedby'])[0]
             @described_by_hash[image_name] = describer.text
-           end
-           #see if the figure has a figcaption.
-           figcaption = img_parent.css("figcaption").first
-           unless figcaption.nil?
-            @figcaption_hash[image_name] = figcaption.text
-           end
-         end
-         unless img_node['aria-describedat'].blank?
-           @described_at_hash[image_name] = img_node['aria-describedat']
-         end
-         unless img_node['longdesc'].blank?
-           @longdesc_hash[image_name] = img_node['longdesc']
-         end         
-       end
-     end
+          end
+          #See if the image is wrapped in a figure element.
+          img_parent = img_node.parent()
+          unless img_parent.nil? and img_parent.name() != "figure"
+            #get described by from figure parent aria-describedby attribute.
+            unless img_parent['aria-describedby'].blank?
+              describer = doc.css('#' + img_parent['aria-describedby'])[0]
+              @described_by_hash[image_name] = describer.text
+            end
+            #see if the figure has a figcaption.
+            figcaption = img_parent.css("figcaption").first
+            unless figcaption.nil?
+              @figcaption_hash[image_name] = figcaption.text
+            end
+          end
+          unless img_node['aria-describedat'].blank?
+            @described_at_hash[image_name] = img_node['aria-describedat']
+          end
+          unless img_node['longdesc'].blank?
+            @longdesc_hash[image_name] = img_node['longdesc']
+          end  
+          @num_images += 1;       
+        end
+      end
+    end
   end
  
   #  def caller_info

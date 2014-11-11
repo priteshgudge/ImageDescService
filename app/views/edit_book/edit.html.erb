@@ -1,0 +1,85 @@
+<% book_fragment_id=@book.book_fragments.first.id %>
+<%
+	book = Book.find session[:book_id] rescue nil
+	book_fragment_id = book.book_fragments.first.id
+	if f = book.book_fragments.find { |f| f['book_fragment_id'] == book_fragment_id }
+  		part = f['book_sequence_number']
+	else
+ 	 	part = 1
+	end
+%>
+<div class="container-fixed" id="edit_book">
+	<div class="col-md-2" id="left">
+		<div id="toggle" class="pull-right">
+			<img src="/images/close-icon.png" id="close-nav" alt="close nav" />
+			<img src="/images/expand.jpg" alt="open nav" id="expand" style="display: none;" />
+		</div>
+		<div id="tool_bar" class="offcanvas">
+			<form class="form-horizontal" role="form" id="filterForm">
+				<div class="form-group fluid-container">
+					<label for="fragment" class="col-sm-3 control-label">Book Part</label>
+					<div class="col-sm-7">
+					<%= select_tag(:fragment, options_for_select(book.book_fragments.map{|book| [" #{book.sequence_number}", book.id]}, (params[:book_fragment_id] || 0).to_i),{ :class=>"form-control input-sm"}) if book%>
+					</div>
+				</div>
+				<div class="form-group fluid-container">
+					<label for="filter" class="col-sm-3 control-label">Show</label>
+					<div class="col-sm-7">
+						<%= select_tag(:filter, options_for_select([[t(:filter_all), EditBookController::FILTER_ALL], [t(:filter_already_described), EditBookController::FILTER_ALREADY_DESCRIBED], [t(:filter_needs_description), EditBookController::FILTER_NEEDS_DESCRIPTION], [t(:filter_unspecified), EditBookController::FILTER_UNSPECIFIED]], @filter),{ :class=> "form-control input-sm"})%>
+					</div>
+					<div class="col-sm-2" id="num_images"></div>
+				</div>
+				<div class="form-group fluid-container">
+					<div class="col-sm-12">
+						<div class="input-group">
+							<label for="image_number" class="sr-only">Go to Image #</label>
+							<%= text_field_tag :image_number, nil, :class=>"form-control input-sm", :placeholder=>"Go to Image #" %>
+				      		<span class="input-group-btn">
+				        		<button class="btn btn-default input-sm" type="button" id="goToImage">Go!</button>
+				      		</span>
+				    	</div>
+				    </div>
+			    </div>
+			    <div class="clearfix"></div>
+		    </form>
+		</div>
+		<div id="side_bar" class="offcanvas">
+		</div>
+	</div>   
+	<div class="col-md-10" id="right">
+		<div id="book_title"><h1><%= book.title %> (Part <span id="part"><%= part %></span> of <%= book.book_fragments.length %>)</h1>
+			<hr />
+		</div>
+		<div id="book_content">Please wait while book content loads...</div>
+	</div>
+</div>
+
+<input id="book_id" value="<%= book.id %>" type="hidden" />
+<input id="book_fragment_id" value="<%= book_fragment_id %>" type="hidden" />
+<input id="show_additional_fields" value="<%= can? :view_admin, @all %>" type="hidden" />
+
+<!-- Load the script "javascripts/edit_book/main.js" as our entry point -->
+<script data-main="/javascripts/main" src="/javascripts/libs/require.js"></script>
+
+
+<!-- Tempaltes -->
+<div class="modal fade" id="descriptionHistoryModal" tabindex="-1" role="dialog" aria-labelledby="descriptionHeader" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="descriptionHeader">Description History</h4>
+      </div>
+      <div class="modal-body" id="descriptionHistoryBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+

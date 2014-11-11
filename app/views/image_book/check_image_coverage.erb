@@ -1,224 +1,244 @@
 <% @title="Image Coverage Results" %>
-<div id= "active_admin_content" class="with_sidebar">
- <div id="main_content_wrapper">
- <div id="main_content">  
-    <h1>Image Coverage Results</h1>
-    <h2><%=	 @book_title %></h2>
-    </br>    
-    <h4 id="altTexts"><b>Alt texts</b></h4>
-    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-       <tbody>
-       <% @alt_text_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%"><%= key %></td>
-       <td width= "60%">
-       <% value = @alt_text_hash[key]%>
-       <div class='convert-to-iframe'>
-          <%= value %>
-       </div>
-       </td> </tr>
-       <% end %>
-
-       <% if (@alt_text_hash.keys.size == 0) %>
-          <tr class= "odd"><td width="50%">No alt texts</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% if @figcaption_hash %>
-    <h4 id="figcaptions"><b>Figcaptions</b></h4>
-    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-       <tbody>
-       <% @figcaption_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%"><%= key %></td>
-       <td width= "60%">
-       <% value = @figcaption_hash[key]%>
-       <div class='convert-to-iframe'>
-          <%= value.html_safe %>
-       </div>
-       </td> </tr>
-       <% end %>
-
-       <% if (@figcaption_hash.keys.size == 0) %>
-          <tr class= "odd"><td width="50%">No figcaptions</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
-    <% if @prodnotes_hash %>
-    <h4 id="prodNotes"><b>Prodnotes </b></h4> 
-    <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-      <tbody>
-      <% @prodnotes_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%">
-        <% if (key.is_a? DynamicImage) %>
-           <%= key.xml_id%>
-        <% else %>
-           <%= key %>
-        <% end %>
-       </td>
-       <td width= "60%">
-        <% value = @prodnotes_hash[key]%>
-        <div class='description-scroller'>
-          <%= value %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10 container-fluid"> 
+      <h1>Image Coverage Results</h1>
+      <h2><%=  @book_title %></h2>
+      <div class="row">
+        <div class="col-md-9">
+          <h4 id="altTexts">Alt texts</h4>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Image/ID</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+             <% @alt_text_hash.keys.each do |key| %>
+             <tr>
+                <td><%= key %></td>
+                <td>
+                  <% value = @alt_text_hash[key]%>
+                  <div class='convert-to-iframe'>
+                    <%= value %>
+                  </div>
+                </td> 
+            </tr>
+            <% end %>
+            <% if (@alt_text_hash.keys.size == 0) %>
+              <tr><td>No alt texts</td><td></td></tr>
+            <% end %>
+            </tbody>
+          </table>
+          <% if @figcaption_hash %>
+            <h4 id="figcaptions">Figcaptions</h4>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr><th>Image/ID</th><th>Value</th></tr>
+              </thead>
+              <tbody>
+              <% @figcaption_hash.keys.each do |key| %>
+                <tr>
+                  <td><%= key %></td>
+                  <td>
+                    <% value = @figcaption_hash[key]%>
+                    <div class='convert-to-iframe'>
+                      <%= value.html_safe %>
+                    </div>
+                  </td> 
+                </tr>
+             <% end %>
+             <% if (@figcaption_hash.keys.size == 0) %>
+                <tr><td>No figcaptions</td><td></td></tr>
+             <% end %>
+            </tbody>
+          </table>
+          <% end %>
+          <% if @prodnotes_hash %>
+            <h4 id="prodNotes">Prodnotes</h4> 
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr><th>Image/ID</th><th>Value</th></tr>
+              </thead>
+              <tbody>
+              <% @prodnotes_hash.keys.each do |key| %>
+                <tr>
+                  <td>
+                    <% if (key.is_a? DynamicImage) %>
+                      <%= key.xml_id%>
+                    <% else %>
+                      <%= key %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% value = @prodnotes_hash[key]%>
+                    <div class='description-scroller'>
+                      <%= value %>
+                    </div>
+                  </td> 
+                </tr>
+              <% end %>
+              <% if @prodnotes_hash.keys.size == 0 %>
+                <tr><td>No prodnotes</td><td></td></tr>
+              <% end %>
+              </tbody>
+            </table>
+          <% end %>
+          <% if @described_by_hash %>
+            <h4 id="describedBy">Described by</h4> 
+            <table class="table table-bordered table-striped">
+              <thead><tr><th>Image/ID</th><th>Value</th></tr></thead>
+              <tbody>
+              <% @described_by_hash.keys.each do |key| %>
+                <tr>
+                  <td>
+                    <% if (key.is_a? DynamicImage) %>
+                      <%= key.xml_id%>
+                    <% else %>
+                      <%= key %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% value = @described_by_hash[key]%>
+                    <div class='description-scroller'>
+                      <%= value.html_safe %>
+                    </div>
+                  </td> 
+                </tr>
+              <% end %>
+              <% if @described_by_hash.keys.size == 0 %>
+               <tr><td>No Described by</td><td></td></tr>
+              <% end %>
+            </tbody>
+          </table>
+          <% end %>
+          <% if @described_at_hash %>
+            <h4 id="describedAt">Described at</h4> 
+            <table class="table table-bordered table-striped">
+              <thead><tr><th>Image/ID</th><th>Value</th></tr></thead>
+              <tbody>
+              <% @described_at_hash.keys.each do |key| %>
+                <tr>
+                  <td>
+                    <% if (key.is_a? DynamicImage) %>
+                      <%= key.xml_id%>
+                    <% else %>
+                      <%= key %>
+                    <% end %>
+                  </td>
+                  <td>
+                    <% value = @described_at_hash[key]%>
+                    <div class='description-scroller'>
+                      <%= value %>
+                    </div>
+                  </td> 
+                </tr>
+              <% end %>
+              <% if @described_at_hash.keys.size == 0 %>
+                <tr><td>No Described at</td><td></td></tr>
+             <% end %>
+            </tbody>
+          </table>
+          <% end %>
+          <% if @captions_hash %>
+            <h4 id="captions">Captions</h4> 
+            <table class="table table-bordered table-striped">
+              <thead><tr><th>Image/ID</th><th>Value</th></tr></thead>
+              <tbody>
+                <% @captions_hash.keys.each do |key| %>
+                  <tr>
+                    <td><%= key %></td>
+                    <td>
+                      <% value = @captions_hash[key]%>
+                      <div class='description-scroller'>
+                        <%= value %> 
+                      </div>
+                    </td> 
+                  </tr>
+                <% end %>
+                <% if (@captions_hash.keys.size == 0) %>
+                  <tr><td>No captions</td><td></td></tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+          <% if @longdesc_hash %>
+            <h4 id="longDesc">Long Descriptions</h4> 
+            <table class="table table-bordered table-striped">
+              <thead><tr><th>Image/ID</th><th>Value</th></tr></thead>
+              <tbody>
+                <% @longdesc_hash.keys.each do |key| %>
+                  <tr>
+                    <td><%= key %></td>
+                    <td>
+                      <% value = @longdesc_hash[key]%>
+                      <div class='description-scroller'>
+                        <%= value %> 
+                      </div>
+                    </td> 
+                  </tr>
+                <% end %>
+                <% if (@longdesc_hash.keys.size == 0) %>
+                  <tr><td>No Long Descriptions</td><td></td></tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
         </div>
-       </td> </tr>
-      <% end %>
-      <% if @prodnotes_hash.keys.size == 0 %>
-         <tr class= "odd"><td width="50%">No prodnotes</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
-    <% if @described_by_hash %>
-    <h4 id="describedBy"><b>Described by </b></h4> 
-    <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-      <tbody>
-      <% @described_by_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%">
-        <% if (key.is_a? DynamicImage) %>
-           <%= key.xml_id%>
-        <% else %>
-           <%= key %>
-        <% end %>
-       </td>
-       <td width= "60%">
-        <% value = @described_by_hash[key]%>
-        <div class='description-scroller'>
-          <%= value.html_safe %>
+        <div class="col-md-3">
+          <table class="table table-bordered">
+            <tr>
+              <td>Total images </td>
+              <td><%= @num_images  %></td>
+            </tr>
+            <tr>
+              <td>Total  <a href="#altTexts">alt text</a></td>
+              <td><%= @alt_text_hash.size %></td>
+            </tr>
+            <% if @figcaption_hash %>
+            <tr>
+              <td>Total <a href="#figcaptions">figcaptions</a></td>
+              <td><%= @figcaption_hash.size %></td>
+            </tr>
+            <% end %>
+            <% if @prodnotes_hash %>
+            <tr>
+              <td>Total <a href="#prodNotes">prodnotes</a></td>
+              <td><%= @prodnotes_hash.size %></td>
+            </tr>
+            <% end %>
+            <% if @described_by_hash %>
+            <tr>
+              <td>Total <a href="#describedBy">described by</a></td>
+              <td><%= @described_by_hash.size %></td>
+            </tr>
+            <% end %>
+            <% if @described_at_hash %>
+            <tr>
+              <td>Total <a href="#describedAt">described at</a></td>
+              <td><%= @described_at_hash.size %></td>
+            </tr>
+            <% end %>
+            <% if @captions_hash %>
+            <tr>
+              <td>Total <a href="#captions">captions</a></td>
+              <td><%= @captions_hash.size %></td>
+            </tr>
+            <% end %>
+            <% if @longdesc_hash %>
+            <tr>
+              <td>Total <a href="#longDesc">long descriptions</a></td>
+              <td><%= @longdesc_hash.size %></td>
+            </tr>
+            <% end %>   
+          </table>
         </div>
-       </td> </tr>
-      <% end %>
-      <% if @described_by_hash.keys.size == 0 %>
-         <tr class= "odd"><td width="50%">No Described by</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
-    <% if @described_at_hash %>
-    <h4 id="describedAt"><b>Described at </b></h4> 
-    <table border="0" cellspacting="0" cellpadding="0"  class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-      <tbody>
-      <% @described_at_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%">
-        <% if (key.is_a? DynamicImage) %>
-           <%= key.xml_id%>
-        <% else %>
-           <%= key %>
-        <% end %>
-       </td>
-       <td width= "60%">
-        <% value = @described_at_hash[key]%>
-        <div class='description-scroller'>
-          <%= value %>
-        </div>
-       </td> </tr>
-      <% end %>
-      <% if @described_at_hash.keys.size == 0 %>
-         <tr class= "odd"><td width="50%">No Described at</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
-    <% if @captions_hash %>
-    <h4 id="captions"><b>Captions</b></h4> 
-    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-       <tbody>
-       <% @captions_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%"><%= key %></td>
-       <td width= "60%">
-       <% value = @captions_hash[key]%>
-       <div class='description-scroller'>
-          <%= value %> 
-       </div>
-       </td> </tr>
-       <% end %>
-       
-       <% if (@captions_hash.keys.size == 0) %>
-         <tr class= "odd"><td width="50%">No captions</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
-    <% if @longdesc_hash %>
-    <h4 id="longDesc"><b>Long Descriptions</b></h4> 
-    <table border="0" cellspacting="0" cellpadding="0" class="index_table" style="margin-bottom:100px !important">
-      <thead><tr><th>Image/ID</th><th>Value</th></tr></thead><tr>  
-       <tbody>
-       <% @longdesc_hash.keys.each do |key| %>
-       <tr class= "odd"><td width="50%"><%= key %></td>
-       <td width= "60%">
-       <% value = @longdesc_hash[key]%>
-       <div class='description-scroller'>
-          <%= value %> 
-       </div>
-       </td> </tr>
-       <% end %>
-       
-       <% if (@longdesc_hash.keys.size == 0) %>
-         <tr class= "odd"><td width="50%">No Long Descriptions</td><td width= "60%"></td></tr>
-       <% end %>
-      </tbody>
-    </table>
-    <% end %>
- </div>
- 
+      </div>
+    </div>
+  </div>
 </div>
 
-<div id="sidebar">
-      <div class="sidebar_section panel">
-            <div class="panel_contents"><table>
-              <tr>
-                <td align="right">Total images </td>
-                <td align="right"><%= @num_images  %></td>
-              </tr>
-              <tr>
-                <td align="right">Total  <a href="#altTexts">alt text</a></td>
-                <td align="right"><%= @alt_text_hash.size %></td>
-              </tr>
-              <% if @figcaption_hash %>
-              <tr>
-                <td align="right">Total <a href="#figcaptions">figcaptions</a></td>
-                <td align="right"><%= @figcaption_hash.size %></td>
-              </tr>
-              <% end %>
-              <% if @prodnotes_hash %>
-              <tr>
-                <td align="right">Total <a href="#prodNotes">prodnotes</a></td>
-                <td align="right"><%= @prodnotes_hash.size %></td>
-              </tr>
-              <% end %>
-              <% if @described_by_hash %>
-              <tr>
-                <td align="right">Total <a href="#describedBy">described by</a></td>
-                <td align="right"><%= @described_by_hash.size %></td>
-              </tr>
-              <% end %>
-              <% if @described_at_hash %>
-              <tr>
-                <td align="right">Total <a href="#describedAt">described at</a></td>
-                <td align="right"><%= @described_at_hash.size %></td>
-              </tr>
-              <% end %>
-              <% if @captions_hash %>
-              <tr>
-                <td align="right">Total <a href="#captions">captions</a></td>
-                <td align="right"><%= @captions_hash.size %></td>
-              </tr>
-              <% end %>
-              <% if @longdesc_hash %>
-              <tr>
-                <td align="right">Total <a href="#longDesc">long descriptions</a></td>
-                <td align="right"><%= @longdesc_hash.size %></td>
-              </tr>
-              <% end %>   
-            </table>
-          </div>    
-  </div>
-  </div>
-  
-</div>  

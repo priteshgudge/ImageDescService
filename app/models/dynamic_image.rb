@@ -13,6 +13,13 @@ class DynamicImage < ActiveRecord::Base
   has_one :dynamic_description
   has_one :image_category
 
+  def as_json(options = {})
+    json = super(options)
+    json['thumb_source'] = thumb_source(options[:host])
+    json['image_source'] = image_source(options[:host])
+    json['author'] = dynamic_description.submitter_name() if dynamic_description
+    json
+  end
 
   def image_source(host)
     return "#{host}/#{book.uid}/original/#{image_location}"
@@ -43,7 +50,7 @@ class DynamicImage < ActiveRecord::Base
 
   def path_by_book
     path = "#{book.uid}/:style/#{image_location}"
-    if ENV['POET_LOCAL_STORAGE_DIR']
+    if ENV['POET_LOCAL_STORAGE_DIR'] && ENV['POET_LOCAL_STORAGE_DIR'].length > 0
       path = File.join(ENV['POET_LOCAL_STORAGE_DIR'], path)
     end
     path

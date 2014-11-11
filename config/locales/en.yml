@@ -5,10 +5,9 @@ en:
   hello: "Hello world"
 
   filter_all: "All Images"
-  filter_essential: "Only Essential"
-  filter_non_essential: "Only Non-essential"
-  filter_description_needed: "Description Needed"
-  filter_unspecified: "Unspecified"
+  filter_already_described: "Already Described"
+  filter_needs_description: "Needs Description"
+  filter_unspecified: "Don't Know"
   filter_result: "Images"
   version: "4.0.3"
 

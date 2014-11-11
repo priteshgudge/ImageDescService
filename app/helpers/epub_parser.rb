@@ -6,35 +6,37 @@ class EpubParser <  S3UnzippingJob
       begin
         repository = RepositoryChooser.choose(repository_name)
         
-          book = Book.where(:id => book_id, :deleted_at => nil).first
-          file = repository.read_file(book.uid + ".zip", File.join( "", "tmp", "#{book.uid}.zip"))
-          book_directory  = accept_book(file)
-          xml = get_xml_from_dir(book_directory, book.file_type)
-          doc = Nokogiri::XML xml
+        book = Book.where(:id => book_id, :deleted_at => nil).first
+        file = repository.read_file(book.uid + ".zip", File.join( "", "tmp", "#{book.uid}.zip"))
+        book_directory  = accept_book(file)
+        xml = get_xml_from_dir(book_directory, book.file_type)
+        doc = Nokogiri::XML xml
 
-          file_names = EpubUtils.get_epub_book_xml_file_names(book_directory)
-          file_contents = file_names.inject('') do |acc, file_name|
-           cur_file_contents = File.read(file_name)
-           cur_doc = Nokogiri::XML cur_file_contents
-           acc = "#{acc} #{cur_doc.css('body').children.to_s}"
-           acc
-          end
-          file_contents = "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'><link rel='stylesheet' type='text/css' href='//s3.amazonaws.com/org-benetech-poet/html.css'/><body>#{file_contents}</body></html>"
+        file_names = EpubUtils.get_epub_book_xml_file_names(book_directory)
+        file_contents = file_names.inject('') do |acc, file_name|
+          cur_file_contents = File.read(file_name)
+          cur_doc = Nokogiri::XML cur_file_contents
+          acc = "#{acc} #{cur_doc.css('body').children.to_s}"
+          acc
+        end
+        file_contents = "<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'><link rel='stylesheet' type='text/css' href='//s3.amazonaws.com/org-benetech-poet/html.css'/><body>#{file_contents}</body></html>"
 
 
-          book = Book.where(:id => book_id, :deleted_at => nil).first
-          book = update_epub_book_in_db(book, doc, file_names.join(', '), uploader_id)
+        book = Book.where(:id => book_id, :deleted_at => nil).first
+        book = update_epub_book_in_db(book, doc, file_names.join(', '), uploader_id)
 
-          splitter = SplitXmlHelper::DTBookSplitter.new(IMAGE_LIMIT)
-          parser = Nokogiri::XML::SAX::Parser.new(splitter)
-          parser.parse(file_contents)
+        splitter = SplitXmlHelper::DTBookSplitter.new(IMAGE_LIMIT)
+        parser = Nokogiri::XML::SAX::Parser.new(splitter)
+        parser.parse(file_contents)
 
-          # Keep track of the original img src attribute and whether it has been used already
-          image_srces = []
+        # Keep track of the original img src attribute and whether it has been used already
+        image_srces = []
 
-          # in case this is a re-upload, we should reset the book_fragment_id of the images
-          DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
-          splitter.segments.each_with_index do |segment_xml, i|
+        # in case this is a re-upload, we should reset the book_fragment_id of the images
+        DynamicImage.update_all({:book_fragment_id => nil}, {:book_id => book.id})
+        book.update_attribute("status", 2)
+        
+        splitter.segments.each_with_index do |segment_xml, i|
             sequence_number = i+1
             book_fragment = BookFragment.where(:book_id => book.id, :sequence_number => sequence_number).first || BookFragment.create(:book_id => book.id, :sequence_number => sequence_number)
             doc = Nokogiri::XML segment_xml
@@ -51,34 +53,31 @@ class EpubParser <  S3UnzippingJob
               end
             end
             segment_xml = doc.to_xml
-            book.update_attribute("status", 2) if i == 0
 
             content_html = File.join("","tmp", "#{book.uid}_#{sequence_number}.html")
             File.open(content_html, 'wb'){|f|f.write(segment_xml)}
             repository.store_file(content_html, book.uid, "#{book.uid}/#{book.uid}_#{sequence_number}.html", nil)
-          end
+        end
           
-          book.update_attribute("status", 3) 
-          doc = nil
-          xml = nil
-          current_user = User.where(:id => uploader_id, :deleted_at => nil).first
-          UserMailer.book_uploaded_email(current_user, book).deliver #email 'current user'
+        book.update_attribute("status", 3) 
+        doc = nil
+        xml = nil
+        current_user = User.where(:id => uploader_id, :deleted_at => nil).first
+        UserMailer.book_uploaded_email(current_user, book).deliver #email 'current user'
 
-          # remove zip file from holding bucket
-          repository.remove_file(book.uid + ".zip")
+        # remove zip file from holding bucket
+        repository.remove_file(book.uid + ".zip")
 
-          daisy_file = nil
+        daisy_file = nil
 
         rescue Exception => e
+            book.update_attribute("status", 5) if book
             puts "Unknown problem in unzipping job for book #{book.uid}"
             puts "#{e.class}: #{e.message}"
             puts e.backtrace.join("\n")
             $stderr.puts e
       end
     end
-    
-
-    
 
     def update_epub_book_in_db(book, doc, xml_file, uploader)
       @book_title = EpubUtils.extract_book_title(doc)

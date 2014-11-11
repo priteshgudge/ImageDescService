@@ -10,8 +10,12 @@ ActiveAdmin.register Book do
       link_to book.uid, admin_reports_path('q[book_uid_contains]' => book.uid)
       end
     column  :title do |book|
-      link_to book.title, edit_book_edit_path(:book_id => book.id)
+      unless book.status == 3 then
+        book.title
+      else
+        link_to book.title, edit_book_edit_path(:book_id => book.id)
       end
+    end
     column "Library" do |book|
       Book.connection.select_value "select libraries.name from libraries where libraries.id = #{book.library_id}"  
     end

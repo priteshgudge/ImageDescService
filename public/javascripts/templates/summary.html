@@ -1,0 +1,26 @@
+<div>
+	<p>
+		<h3>Your Answers:</h3> 
+		<ol>
+			<% _.each(questions, function(question) { %>
+				<% if (question.has("answer") || question.has("freeform_answer")) { %>	
+					<li>
+						<strong><%= question.get("text") %></strong>
+						<% if (question.has("answer")) { %>
+							<% _.each(question.get("answers"), function(answer) { %>
+								<% if (answer["answer_id"] == question.get("answer")["answer_id"]) { %>
+									<p><%= answer["label"] %><%= question.get("other") != "" ? ": " +  question.get("other") : "" %></p>
+								<% } %>
+							<% }); %>
+						<% } %>
+						<% if (question.has("freeform_answer")) { %>
+							<p><%= question.get("freeform_answer") %></p>
+						<% } %>
+					</li>
+				<% } %>
+			<% }); %>
+		</ol>
+	</p>
+</div>
+<div id="comments"></div>
+<p id="play_again"><input type="button" class="btn btn-primary" data-dismiss="modal" id="play_again_button" value="Choose a New Image" /></p>
