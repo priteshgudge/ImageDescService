@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   validates_presence_of  :last_name
   
   before_save :populate_new_library, :delete_library_if_checked
+  before_create :populate_new_library, :add_user_roles
   before_validation :set_demo_library, :on => :create
   validates_acceptance_of :agreed_tos, :accept => true, :message => "To Sign up you must accept our Terms of Service", :if => lambda {|user| user.from_signup }
   validate :library_to_delete_not_linked
@@ -123,6 +124,11 @@ class User < ActiveRecord::Base
         end   
         self.libraries = [library]   
      end
+   end
+
+   def add_user_roles
+    describer = Role.where(:name => "Describer").first
+    self.roles = [describer]
    end
    
   def set_demo_library
