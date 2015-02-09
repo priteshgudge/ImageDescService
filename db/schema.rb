@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150209163939) do
+ActiveRecord::Schema.define(:version => 20150209181152) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20150209163939) do
     t.string   "simplified_image_src"
     t.text     "simplified_image_tour"
     t.integer  "submitter_id"
+    t.string   "alt"
   end
 
   add_index "dynamic_descriptions", ["dynamic_image_id", "is_current"], :name => "dynamic_descriptions_uid_image_id_current"
