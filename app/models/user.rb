@@ -45,11 +45,15 @@ class User < ActiveRecord::Base
   end
  
   def has_role?(role_sym)
-    roles.any? { |r| r.name.underscore.to_sym == role_sym }
+    roles.any? { |r| r.name.parameterize.underscore.to_sym == role_sym }
   end
   
   def admin?
     has_role? :admin
+  end
+
+  def content_owner?
+    has_role? :content_owner
   end
 
   def moderator?

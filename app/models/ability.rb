@@ -15,6 +15,7 @@ class Ability
     can :data_cleanup, :all if user.admin?
     can :view_admin, :all if user.admin? || user.moderator?
     can :admin_user, :all if user.admin?
+    can :edit_book_content, :all if user.content_owner? || user.admin?
          
     #
     # The first argument to `can` is the action you are giving the user permission to do.
