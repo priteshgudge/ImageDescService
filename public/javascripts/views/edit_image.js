@@ -61,7 +61,8 @@ define([
           image: editImage.model, 
           image_categories: editImage.imageCategories.models, 
           previousImage: editImage.previousImage,
-          nextImage: editImage.nextImage
+          nextImage: editImage.nextImage,
+          can_edit_content: $("#can_edit_content").val()
         });
       if (editImage.model.has("image_category_id") && $("#exampleModalBody" + editImage.model.get("image_category_id")).html().length > 0) {
         editImage.$(".view_sample").show();
