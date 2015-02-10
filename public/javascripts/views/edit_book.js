@@ -15,42 +15,45 @@ define([
     el: $('#edit_book'),
 
     render: function() {
-      var images = new DynamicImageCollection();
-      var q = images.fetch({ data: $.param({ book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val()}) });
-      var editBook = this;
-      q.done(function() {
-        editBook.renderSideBar(images);
-        //Load up the image_categories.
-        var imageCategories = new ImageCategoryCollection();
-        imageCategories.fetch().done(function() {
-          editBook.renderBookContent(images, imageCategories);
+      var editBookView = this;
 
-          //Load up examples for each category.
-          editBook.loadExamples(imageCategories);
-        });
+      editBookView.categories = new ImageCategoryCollection();
+      editBookView.categories.fetch({
+        success: function(categories, response, options) {
+          editBookView.loadExamples();
+          editBookView.images = new DynamicImageCollection();
+          editBookView.images.fetch({
+            data: {book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val()},
+            success: function(images, response, options) {
+              editBookView.renderSideBar();
+              editBookView.renderBookContent();
+            }
+          });
+        }
       });
-
       //add math cheat sheet.
       var mathCheatSheet = new MathCheatSheetView();
       $("body").append(mathCheatSheet.render().$el);
       MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     },
 
-    renderSideBar: function(images) {
+    renderSideBar: function() {
       var sideBarView = new SideBarView();
-      sideBarView.collection = images;
+      sideBarView.collection = this.images;
       sideBarView.render();
     },
     
-    renderBookContent: function(images, imageCategories) {
+    renderBookContent: function() {
+      var editBookView = this;
       var bookContentView = new BookContentView();
-      bookContentView.collection = images;
-      bookContentView.imageCategories = imageCategories;
+      bookContentView.collection = editBookView.images;
+      bookContentView.imageCategories = editBookView.categories;
       bookContentView.render();
     },
 
-    loadExamples: function(imageCategories) {
-      _.each(imageCategories.models, function(category) {
+    loadExamples: function() {
+      var editBookView = this;
+      _.each(editBookView.categories.models, function(category) {
         var modalView = new ExampleModalView();
         modalView.model = category;
         var template = modalView.render();
