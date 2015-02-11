@@ -6,10 +6,11 @@ define([
   'fancybox',
   'mespeak',
   '/javascripts/models/image.js',
+  '/javascripts/models/alt.js',
   '/javascripts/views/edit_image.js',
   '/javascripts/views/duplicate_image.js',
   '/javascripts/views/image.js'
-], function($, _, Backbone, fancybox, mespeak, ImageModel, EditImageView, DuplicateImageView, ImageView){
+], function($, _, Backbone, fancybox, mespeak, ImageModel, Alt, EditImageView, DuplicateImageView, ImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
 
@@ -49,7 +50,15 @@ define([
       var domImage = $("img[img-id='" + image.get("id") + "']:first");
       var editImage = new EditImageView();
       editImage.imageCategories = contentView.imageCategories;
-      image.set({path: image.get("image_source"), alt: domImage.attr("alt")});
+      image.set({path: image.get("image_source")});
+      if (image.has("current_alt") && typeof(image.get("current_alt") != "undefined")) {
+        image.set({alt: image.get("current_alt").alt});
+      } else {
+        image.set({alt: domImage.attr("alt")});
+        //Set a listener to create the source record if a new one is created.
+        editImage.sourceAlt = new Alt({alt: domImage.attr("alt"), dynamic_image_id: image.get("id"), from_source: true});
+      }
+      
       //See if the images parent div has a class of imggroup
       var parent = $(domImage).parent().eq(0);
       if ($(parent).hasClass("imggroup")) {
