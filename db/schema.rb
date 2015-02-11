@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150211133140) do
+ActiveRecord::Schema.define(:version => 20150211185352) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 20150211133140) do
     t.string   "alt",                                 :null => false
     t.integer  "submitter_id"
     t.integer  "dynamic_image_id"
-    t.boolean  "is_current",       :default => false, :null => false
+    t.boolean  "from_source",      :default => false
   end
 
   add_index "alts", ["dynamic_image_id"], :name => "alts_dynamic_image_id"

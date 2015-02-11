@@ -9,8 +9,9 @@ define([
   'mespeak',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
+  '/javascripts/models/alt.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -289,16 +290,25 @@ define([
     saveAlt: function(e) {
       e.preventDefault();
       var editView = this;
-      var dynamicDescription = new DynamicDescription();
-      dynamicDescription.save(
+      if (editView.sourceAlt) {
+        editView.sourceAlt.save();
+        delete editView.sourceAlt;
+      }
+      var alt = new Alt();
+      alt.save(
         {
-          "book_id": $("#book_id").val(), 
           "dynamic_image_id": editView.model.get("id"),
-          "alt": editView.$(".alt").val()
+          "alt": editView.$(".alt").val(),
+          "from_source": false
         }, 
         {
           success: function () {
-            alert ("Success");
+            editView.$(".altButton").text("Saved!");
+            editView.$("#alt-group").addClass("has-success");
+            setTimeout(function() {
+              editView.$(".altButton").text("Update");
+              editView.$("#alt-group").removeClass("has-success")
+            }, 500);
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
