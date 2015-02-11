@@ -29,12 +29,13 @@ define([
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
       "keyup .math-editor": "getMathML",
-      "click .save-additional-fields": "saveAddtionalFields",
+      "click .save-additional-fields": "saveAdditionalFields",
       "click .read-description": "readDescription",
       "click .add-description-button": "hideAddButton",
       "click .tab-link": "clearMessages",
       "click .math-toggle": "setSelectedMathEditor",
-      "click .image_description": "showDynamicDescriptionForm"
+      "click .image_description": "showDynamicDescriptionForm",
+      "click .altButton": "saveAlt"
     },
 
     jax: {},
@@ -246,7 +247,7 @@ define([
       editView.$(".simplified-language-description").ckeditor(editView.ckeditorConfig);
     },
 
-    saveAddtionalFields: function(e) {
+    saveAdditionalFields: function(e) {
       e.preventDefault();
       var editView = this;
       var dynamicDescription = new DynamicDescription();
@@ -277,6 +278,27 @@ define([
           success: function () {
             editView.$(".text-success").html("The description has been saved.");
             editView.$(".preview").trigger("click");
+          },
+          error: function (model, response) {
+            editView.$(".text-danger").html("There was an error saving this description.");
+          }
+        }
+      );
+    },
+
+    saveAlt: function(e) {
+      e.preventDefault();
+      var editView = this;
+      var dynamicDescription = new DynamicDescription();
+      dynamicDescription.save(
+        {
+          "book_id": $("#book_id").val(), 
+          "dynamic_image_id": editView.model.get("id"),
+          "alt": editView.$(".alt").val()
+        }, 
+        {
+          success: function () {
+            alert ("Success");
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
