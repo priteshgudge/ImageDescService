@@ -109,6 +109,7 @@ define([
     },
 
     hideAddButton: function(e) {
+      this.$(".image-category").show();
       $(e.currentTarget).hide();
     },
 
