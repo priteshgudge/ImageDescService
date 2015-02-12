@@ -49,7 +49,6 @@ define([
       //Handle the first one.
       var domImage = $("img[img-id='" + image.get("id") + "']:first");
       var editImage = new EditImageView();
-      editImage.imageCategories = contentView.imageCategories;
       image.set({path: image.get("image_source")});
       if (image.has("current_alt") && typeof(image.get("current_alt") != "undefined")) {
         image.set({alt: image.get("current_alt").alt});

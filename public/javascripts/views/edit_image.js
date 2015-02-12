@@ -61,7 +61,7 @@ define([
       var compiledTemplate = _.template( editImageTemplate, 
         { 
           image: editImage.model, 
-          image_categories: editImage.imageCategories.models, 
+          image_categories: App.categories.models, 
           previousImage: editImage.previousImage,
           nextImage: editImage.nextImage,
           can_edit_content: $("#can_edit_content").val()

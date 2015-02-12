@@ -23,6 +23,7 @@ class EditBookController < ApplicationController
   end
 
   def edit
+    @image_categories = ImageCategory.order(:order_to_display).all;
     response.headers['Access-Control-Allow-Origin'] = '*'
     error_redirect = 'edit_book/describe'
     book_id = params[:book_id]
