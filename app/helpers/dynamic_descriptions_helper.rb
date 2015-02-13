@@ -1,2 +1,0 @@
-module DynamicDescriptionsHelper
-end
