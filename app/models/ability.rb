@@ -5,8 +5,8 @@ class Ability
     # Define abilities for the passed in user here. For example:
     #
      user ||= User.new # guest user (not logged in) 
-    can :tag_images, :all if user.screener? || user.describer? || user.moderator? || user.admin?
-    can :describe_images, :all if user.screener? || user.describer? || user.moderator? || user.admin?
+    can :tag_images, :all if user.describer? || user.moderator? || user.admin? || user.content_owner?
+    can :describe_images, :all if user.describer? || user.moderator? || user.admin? || user.content_owner?
     can :tag_all_images, :all if user.moderator? || user.admin?
     can :review_images, :all if user.moderator? || user.admin?
     can :approve_book, :all if user.admin?

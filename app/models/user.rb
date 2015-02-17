@@ -64,10 +64,6 @@ class User < ActiveRecord::Base
      has_role? :describer
   end
   
-  def screener?
-     has_role? :screener
-  end
-  
   protected
   
    def self.find_for_database_authentication(warden_conditions)
