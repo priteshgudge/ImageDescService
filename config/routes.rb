@@ -1,4 +1,8 @@
 DiagramRailsApp::Application.routes.draw do
+  get "alt/:id", to: "alt#get"
+  get "alt/current/:dynamic_image_id", to: "alt#get_current"
+  post "alt", to: "alt#create"
+
   get "training/index"
   get "training/how_to_describe"
   get "training/when_to_describe"

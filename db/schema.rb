@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140425223131) do
+ActiveRecord::Schema.define(:version => 20150217131403) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(:version => 20140425223131) do
   add_index "active_admin_comments", ["author_type", "author_id"], :name => "index_active_admin_comments_on_author_type_and_author_id"
   add_index "active_admin_comments", ["namespace"], :name => "index_active_admin_comments_on_namespace"
   add_index "active_admin_comments", ["resource_type", "resource_id"], :name => "index_admin_notes_on_resource_type_and_resource_id"
+
+  create_table "alts", :force => true do |t|
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+    t.string   "alt",                                 :null => false
+    t.integer  "submitter_id"
+    t.integer  "dynamic_image_id"
+    t.boolean  "from_source",      :default => false
+  end
+
+  add_index "alts", ["dynamic_image_id"], :name => "alts_dynamic_image_id"
+  add_index "alts", ["submitter_id"], :name => "alts_submitter_id"
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"

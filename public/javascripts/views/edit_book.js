@@ -7,55 +7,41 @@ define([
   '/javascripts/views/book_content.js',
   '/javascripts/views/example_modal.js',
   '/javascripts/views/math_cheat_sheet.js',
+  '/javascripts/models/image_category.js',
   '/javascripts/collections/dynamic_image_collection.js',
   '/javascripts/collections/image_category_collection.js'
-], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, DynamicImageCollection, ImageCategoryCollection) {
+], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, Category, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     
     el: $('#edit_book'),
 
     render: function() {
-      var images = new DynamicImageCollection();
-      var q = images.fetch({ data: $.param({ book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val()}) });
-      var editBook = this;
-      q.done(function() {
-        editBook.renderSideBar(images);
-        //Load up the image_categories.
-        var imageCategories = new ImageCategoryCollection();
-        imageCategories.fetch().done(function() {
-          editBook.renderBookContent(images, imageCategories);
-
-          //Load up examples for each category.
-          editBook.loadExamples(imageCategories);
-        });
+      var editBookView = this;
+      editBookView.images = new DynamicImageCollection();
+      editBookView.images.fetch({
+        data: {book_id: $("#book_id").val(), book_fragment_id: $("#book_fragment_id").val()},
+        success: function(images, response, options) {
+          editBookView.renderSideBar();
+          editBookView.renderBookContent();
+        }
       });
-
       //add math cheat sheet.
       var mathCheatSheet = new MathCheatSheetView();
       $("body").append(mathCheatSheet.render().$el);
       MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
     },
 
-    renderSideBar: function(images) {
+    renderSideBar: function() {
       var sideBarView = new SideBarView();
-      sideBarView.collection = images;
+      sideBarView.collection = this.images;
       sideBarView.render();
     },
     
-    renderBookContent: function(images, imageCategories) {
+    renderBookContent: function() {
+      var editBookView = this;
       var bookContentView = new BookContentView();
-      bookContentView.collection = images;
-      bookContentView.imageCategories = imageCategories;
+      bookContentView.collection = editBookView.images;
       bookContentView.render();
-    },
-
-    loadExamples: function(imageCategories) {
-      _.each(imageCategories.models, function(category) {
-        var modalView = new ExampleModalView();
-        modalView.model = category;
-        var template = modalView.render();
-        $("body").append(template.$el);
-      });
     }
   });
   return EditBookView;

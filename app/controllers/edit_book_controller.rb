@@ -23,6 +23,7 @@ class EditBookController < ApplicationController
   end
 
   def edit
+    @image_categories = ImageCategory.order(:order_to_display).all;
     response.headers['Access-Control-Allow-Origin'] = '*'
     error_redirect = 'edit_book/describe'
     book_id = params[:book_id]
@@ -164,7 +165,7 @@ class EditBookController < ApplicationController
     end
     ActiveRecord::Base.include_root_in_json = false
     @host = @repository.get_host(request)
-    render :json => JSON.parse(@images.to_json(:host => @host, :include => :dynamic_description))
+    render :json => JSON.parse(@images.to_json(:host => @host, :include => [:dynamic_description, :current_alt]))
   end
 
   def top_bar

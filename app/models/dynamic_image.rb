@@ -11,6 +11,7 @@ class DynamicImage < ActiveRecord::Base
 
   belongs_to :book
   has_one :dynamic_description
+  has_many :alt
   has_one :image_category
 
   def as_json(options = {})
@@ -54,5 +55,9 @@ class DynamicImage < ActiveRecord::Base
       path = File.join(ENV['POET_LOCAL_STORAGE_DIR'], path)
     end
     path
+  end
+
+  def current_alt
+    return self.alt.where(:from_source => false).order("created_at DESC").first
   end
 end

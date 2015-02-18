@@ -57,8 +57,18 @@
 <input id="book_id" value="<%= book.id %>" type="hidden" />
 <input id="book_fragment_id" value="<%= book_fragment_id %>" type="hidden" />
 <input id="show_additional_fields" value="<%= can? :view_admin, @all %>" type="hidden" />
+<input id="can_edit_content" value="<%= can? :edit_book_content, @all %>" type="hidden" />
 
 <!-- Load the script "javascripts/edit_book/main.js" as our entry point -->
+<script>
+  var require = {
+    config: {
+      'app': {
+        'categories': <%= @image_categories.to_json(:only => [ :id, :name ], :include_root => false).html_safe %>
+      }
+    }
+  };
+</script>
 <script data-main="/javascripts/main" src="/javascripts/libs/require.js"></script>
 
 

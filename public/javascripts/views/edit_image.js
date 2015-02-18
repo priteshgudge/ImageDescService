@@ -9,8 +9,9 @@ define([
   'mespeak',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
+  '/javascripts/models/alt.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -29,12 +30,13 @@ define([
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
       "keyup .math-editor": "getMathML",
-      "click .save-additional-fields": "saveAddtionalFields",
+      "click .save-additional-fields": "saveAdditionalFields",
       "click .read-description": "readDescription",
       "click .add-description-button": "hideAddButton",
       "click .tab-link": "clearMessages",
       "click .math-toggle": "setSelectedMathEditor",
-      "click .image_description": "showDynamicDescriptionForm"
+      "click .image_description": "showDynamicDescriptionForm",
+      "click .altButton": "saveAlt"
     },
 
     jax: {},
@@ -59,9 +61,10 @@ define([
       var compiledTemplate = _.template( editImageTemplate, 
         { 
           image: editImage.model, 
-          image_categories: editImage.imageCategories.models, 
+          image_categories: App.categories.models, 
           previousImage: editImage.previousImage,
-          nextImage: editImage.nextImage
+          nextImage: editImage.nextImage,
+          can_edit_content: $("#can_edit_content").val()
         });
       if (editImage.model.has("image_category_id") && $("#exampleModalBody" + editImage.model.get("image_category_id")).html().length > 0) {
         editImage.$(".view_sample").show();
@@ -106,6 +109,7 @@ define([
     },
 
     hideAddButton: function(e) {
+      this.$(".image-category").show();
       $(e.currentTarget).hide();
     },
 
@@ -245,7 +249,7 @@ define([
       editView.$(".simplified-language-description").ckeditor(editView.ckeditorConfig);
     },
 
-    saveAddtionalFields: function(e) {
+    saveAdditionalFields: function(e) {
       e.preventDefault();
       var editView = this;
       var dynamicDescription = new DynamicDescription();
@@ -276,6 +280,36 @@ define([
           success: function () {
             editView.$(".text-success").html("The description has been saved.");
             editView.$(".preview").trigger("click");
+          },
+          error: function (model, response) {
+            editView.$(".text-danger").html("There was an error saving this description.");
+          }
+        }
+      );
+    },
+
+    saveAlt: function(e) {
+      e.preventDefault();
+      var editView = this;
+      if (editView.sourceAlt) {
+        editView.sourceAlt.save();
+        delete editView.sourceAlt;
+      }
+      var alt = new Alt();
+      alt.save(
+        {
+          "dynamic_image_id": editView.model.get("id"),
+          "alt": editView.$(".alt").val(),
+          "from_source": false
+        }, 
+        {
+          success: function () {
+            editView.$(".altButton").text("Saved!");
+            editView.$("#alt-group").addClass("has-success");
+            setTimeout(function() {
+              editView.$(".altButton").text("Update");
+              editView.$("#alt-group").removeClass("has-success")
+            }, 500);
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");

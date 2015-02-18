@@ -35,6 +35,7 @@ class User < ActiveRecord::Base
   validates_presence_of  :last_name
   
   before_save :populate_new_library, :delete_library_if_checked
+  before_create :populate_new_library, :add_user_roles
   before_validation :set_demo_library, :on => :create
   validates_acceptance_of :agreed_tos, :accept => true, :message => "To Sign up you must accept our Terms of Service", :if => lambda {|user| user.from_signup }
   validate :library_to_delete_not_linked
@@ -44,11 +45,15 @@ class User < ActiveRecord::Base
   end
  
   def has_role?(role_sym)
-    roles.any? { |r| r.name.underscore.to_sym == role_sym }
+    roles.any? { |r| r.name.parameterize.underscore.to_sym == role_sym }
   end
   
   def admin?
     has_role? :admin
+  end
+
+  def content_owner?
+    has_role? :content_owner
   end
 
   def moderator?
@@ -57,10 +62,6 @@ class User < ActiveRecord::Base
   
   def describer?
      has_role? :describer
-  end
-  
-  def screener?
-     has_role? :screener
   end
   
   protected
@@ -123,6 +124,11 @@ class User < ActiveRecord::Base
         end   
         self.libraries = [library]   
      end
+   end
+
+   def add_user_roles
+    describer = Role.where(:name => "Describer").first
+    self.roles = [describer]
    end
    
   def set_demo_library
