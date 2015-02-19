@@ -16,12 +16,12 @@ module DaisyBookHelper
         begin
           Zip::Archive.decrypt(book.path, password)
         rescue Zip::Error => e
-          ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+          Rails.logger.info "#{e.class}: #{e.message}"
           if e.message.include?("Wrong password")
-            ActiveRecord::Base.logger.info "Invalid Password for encyrpted zip"
+            Rails.logger.info "Invalid Password for encyrpted zip"
             flash[:alert] = "Please check your password and re-enter"
           else
-            ActiveRecord::Base.logger.info "Other problem with encrypted zip"
+            Rails.logger.info "Other problem with encrypted zip"
             flash[:alert] = "There is a problem with this zip file"
           end
           redirect_to :action => 'process'
@@ -38,12 +38,12 @@ module DaisyBookHelper
       begin
         get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
       rescue Zip::Error => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "#{e.class}: #{e.message}"
         if e.message.include?("File encrypted")
-          ActiveRecord::Base.logger.info "Password needed for zip"
+          Rails.logger.info "Password needed for zip"
           flash[:alert] = "Please enter a password for this book"
         else
-          ActiveRecord::Base.logger.info "Other problem with zip"
+          Rails.logger.info "Other problem with zip"
           flash[:alert] = "There is a problem with this zip file"
         end
 
@@ -63,7 +63,7 @@ module DaisyBookHelper
         xml = get_xml_contents_with_updated_descriptions(contents_filename, current_library)
         zip_filename = create_zip(daisy_file, relative_contents_path, xml)
         basename = File.basename(contents_filename)
-        ActiveRecord::Base.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
+        Rails.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
       
         # Store this file in S3, update the Job; change exit_params and the state
         random_uid = UUIDTools::UUID.random_create.to_s
@@ -84,23 +84,23 @@ module DaisyBookHelper
       begin
         xml = get_contents_with_updated_descriptions(xml_file, current_library)
       rescue NoImageDescriptions
-        ActiveRecord::Base.logger.info "No descriptions available #{contents_filename}"
+        Rails.logger.info "No descriptions available #{contents_filename}"
         raise ShowAlertAndGoBack.new("There are no image descriptions available for this book")
       rescue NonDaisyXMLException => e
-        ActiveRecord::Base.logger.info "Uploaded non-dtbook #{contents_filename}"
+        Rails.logger.info "Uploaded non-dtbook #{contents_filename}"
         raise ShowAlertAndGoBack.new("Uploaded file must be a valid Daisy book XML content file")
       rescue MissingBookUIDException => e
-        ActiveRecord::Base.logger.info "Uploaded dtbook without UID #{contents_filename}"
+        Rails.logger.info "Uploaded dtbook without UID #{contents_filename}"
         raise ShowAlertAndGoBack.new("Uploaded Daisy book XML content file must have a UID element")
       rescue Nokogiri::XML::XPath::SyntaxError => e
-        ActiveRecord::Base.logger.info "Uploaded invalid XML file #{contents_filename}"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+        Rails.logger.info "Uploaded invalid XML file #{contents_filename}"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
         raise ShowAlertAndGoBack.new("Uploaded file must be a valid Daisy book XML content file")
       rescue Exception => e
-        ActiveRecord::Base.logger.info "Unexpected exception processing #{contents_filename}:"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info e.backtrace.join("\n")
+        Rails.logger.info "Unexpected exception processing #{contents_filename}:"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info e.backtrace.join("\n")
         $stderr.puts e
         raise ShowAlertAndGoBack.new("An unexpected error has prevented processing that file")
       end
@@ -157,13 +157,13 @@ module DaisyBookHelper
 
         image_references = doc.xpath("//xmlns:img[@src='#{image_location}']")
         if image_references.size == 0
-          ActiveRecord::Base.logger.info "Missing img element for database description #{book_uid} #{image_location}"
+          Rails.logger.info "Missing img element for database description #{book_uid} #{image_location}"
           next
         end
 
         dynamic_description = dynamic_image.dynamic_description
         if(!dynamic_description)
-          ActiveRecord::Base.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
+          Rails.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
           next
         end
 
