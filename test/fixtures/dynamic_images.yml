@@ -9,3 +9,9 @@ two:
   id: 2
   book_id: 1
   image_location: img001.jpg
+
+three:
+  id: 3
+  book_id: 2
+  image_location: img003.jpg
+  

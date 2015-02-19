@@ -6,3 +6,12 @@ one:
   status: 3
   library_id: 1
   xml_file: foo
+  
+ushistory:
+  id: 2
+  uid: en-us-20100517111839
+  title: US History
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: bar
