@@ -139,10 +139,9 @@ module DaisyBookHelper
     def self.get_contents_with_updated_descriptions(file, current_library)
       doc = Nokogiri::XML file
 
-      root = doc.xpath(doc, ROOT_XPATH)
-      if root.size != 1
-        raise NonDaisyXMLException.new
-      end
+      # TODO: Do we really need this? If we're checking validity, there would
+      # be much more we would want to check
+      get_doc_root(doc)
 
       book_uid = DaisyUtils.extract_book_uid(doc)
 
@@ -161,46 +160,48 @@ module DaisyBookHelper
           next
         end
 
-        dynamic_description = dynamic_image.dynamic_description
-        if(!dynamic_description)
-          Rails.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
-          next
-        end
-
         image_references.each do |image|
+          # Attach any alt text modifications that might exist
+          if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
+            image['alt'] = dynamic_image.current_alt.alt
+          end
+
+          dynamic_description = dynamic_image.dynamic_description
+          if (!dynamic_description)
+            Rails.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
+            next
+          end
 
           # note that there's no guarantee this will be non-null
           image_id = image['id']
 
           # Attempt to find the parent imggroup
-          parent = image.at_xpath("..")
           imggroup = get_imggroup_parent_of(image)
 
           # Push down into an imggroup element if none already exists
-          if(!imggroup)
+          if (!imggroup)
             imggroup = Nokogiri::XML::Node.new "imggroup", doc
+            parent = image.at_xpath("..")
             # could result in an ID collision
             imggroup['id'] =  "imggroup_#{image_id}"
             imggroup.parent = parent
 
             parent.children.delete(image)
             image.parent = imggroup
-            parent = imggroup
           end
 
           # Attempt to locate prodnote that conforms to our ID naming convention 
           prodnotes = imggroup.xpath(".//xmlns:prodnote")
           our_prodnote = nil
           prodnotes.each do | prodnote |
-
-            if(prodnote['id'] == create_prodnote_id(image_id))
+            if (prodnote['id'] == create_prodnote_id(image_id))
               # Found a match, keep it
               our_prodnote = prodnote
             end
           end
 
           # If not found, create a new one
-          if(!our_prodnote)
+          if (!our_prodnote)
             our_prodnote = Nokogiri::XML::Node.new "prodnote", doc 
             imggroup.add_child our_prodnote 
           end
@@ -215,11 +216,6 @@ module DaisyBookHelper
           our_prodnote['imgref'] = image_id
           our_prodnote['id'] = create_prodnote_id(image_id)
           our_prodnote['showin'] = 'blp'
-          
-          # Attach any alt text modifications that might exist
-          if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
-            image['alt'] = dynamic_image.current_alt.alt
-          end
         end
       end
 
@@ -229,10 +225,10 @@ module DaisyBookHelper
     def create_prodnote_id(image_id)
       DaisyBookHelper::BatchHelper.create_prodnote_id(image_id)
     end
+
     def self.create_prodnote_id(image_id)
       "pnid_#{image_id}"
     end
-    
     
     def get_imggroup_parent_of(image_node)
       DaisyBookHelper::BatchHelper.get_imggroup_parent_of(image_node)
@@ -257,5 +253,13 @@ module DaisyBookHelper
       return nil
     end
     
+    private
+    def self.get_doc_root(doc)
+      root = doc.xpath(doc, ROOT_XPATH)
+      if root.size != 1
+        raise NonDaisyXMLException.new
+      end
+      return root
+    end
   end
 end
