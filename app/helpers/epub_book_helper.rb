@@ -167,6 +167,12 @@ module EpubBookHelper
           image_location =  img_node['src']
           matched_image = image_hash[image_location]
           unless matched_image == nil 
+            # Attach any alt text modifications that might exist
+            alt = matched_image.current_alt
+            if (alt && alt.alt)
+              img_node['alt'] = alt.alt
+            end
+            
             dynamic_description = matched_image.dynamic_description
             if(!dynamic_description || !dynamic_description.body || dynamic_description.body.strip.length == 0)
               ActiveRecord::Base.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
