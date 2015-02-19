@@ -215,6 +215,11 @@ module DaisyBookHelper
           our_prodnote['imgref'] = image_id
           our_prodnote['id'] = create_prodnote_id(image_id)
           our_prodnote['showin'] = 'blp'
+          
+          # Attach any alt text modifications that might exist
+          if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
+            image['alt'] = dynamic_image.current_alt.alt
+          end
         end
       end
 

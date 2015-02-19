@@ -47,7 +47,11 @@ class DynamicImage < ActiveRecord::Base
     ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/jpg'].join('').include?(physical_file.content_type)
   end
 
-  private
+  def current_alt
+    return self.alt.where(:from_source => false).order("created_at DESC").first
+  end
+
+private
 
   def path_by_book
     path = "#{book.uid}/:style/#{image_location}"
@@ -55,9 +59,5 @@ class DynamicImage < ActiveRecord::Base
       path = File.join(ENV['POET_LOCAL_STORAGE_DIR'], path)
     end
     path
-  end
-
-  def current_alt
-    return self.alt.where(:from_source => false).order("created_at DESC").first
   end
 end

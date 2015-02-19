@@ -10,7 +10,9 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     # Set up the data
     xml = File.read('features/fixtures/BookXMLWithImagesWithOurProdnotes.xml')
     
-    new_alt = Alt.create(:alt => "this is new alt text", :dynamic_image_id => 3)
+    new_alt = Alt.create(:alt => "this is new alt text", 
+            :dynamic_image_id => 3, 
+                 :from_source => false)
     
     # Run the test
     doc_string = @helper.get_contents_with_updated_descriptions(xml, @library)

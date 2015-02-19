@@ -13,5 +13,5 @@ two:
 three:
   id: 3
   book_id: 2
-  image_location: img003.jpg
+  image_location: images/image001.jpg
   
