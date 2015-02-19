@@ -15,3 +15,22 @@ three:
   book_id: 2
   image_location: images/image001.jpg
   
+magic_1:
+  id: 4
+  book_id: 3
+  image_location: images/osbo_9780375894213_epub_tp_r1.jpg
+  
+magic_2:
+  id: 5
+  book_id: 3
+  image_location: images/osbo_9780375894213_epub_cvi_r1.jpg
+
+magic_3:
+  id: 6
+  book_id: 3
+  image_location: images/osbo_9780375894213_epub_039_r1.jpg
+  
+magic_4:
+  id: 7
+  book_id: 3
+  image_location: images/osbo_9780375894213_epub_001_r1.jpg

@@ -21,3 +21,10 @@ three:
   date_approved: 2015-02-15 01:23:45
   dynamic_image_id: 3
   
+magic_1:
+  body: an interesting note
+  is_current: true
+  submitter: tester
+  date_approved: 2015-02-15 01:23:45
+  dynamic_image_id: 4
+  
