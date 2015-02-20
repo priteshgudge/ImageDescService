@@ -11,7 +11,7 @@ gem 'thin' # avoids massive memory consumption (as with webrick) on dev machine
 gem 'mysql2'
 gem 'uuidtools'
 gem 'test-unit'
-gem 'zipruby'
+#gem 'zipruby'
 gem 'aws-sdk'
 gem 'cancan'
 gem 'jquery-rails'
