@@ -147,7 +147,7 @@ h2.math-edit {
   margin-top: auto;
 }
 
-button.cancel {
+button.cancel, button.save-mathml {
   margin-right: 5px;
 }
 
