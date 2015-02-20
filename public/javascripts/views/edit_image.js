@@ -12,8 +12,9 @@ define([
   '/javascripts/models/alt.js',
   '/javascripts/models/equation.js',
   '/javascripts/models/mmlc_equation.js',
+  '/javascripts/collections/mmlc_component_collection.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -231,10 +232,12 @@ define([
       e.preventDefault();
       //get mathml.
       var equation = new MmlcEquation();
-      equation.save({math: editView.$(".math-editor").val()},
+      equation.save({math: editView.$(".math-editor").val(), mathType: "description"},
         {
           success: function(model, response, options) {
-            editView.$(".math-text-description").html(model.get("components")[0].source);
+            var components = new MmlcComponents(model.get("components"));
+            var description = components.findWhere({format: "description"});
+            editView.$(".math-text-description").html(description.get("source"));
             editView.$(".typeset-math").html("");
           }
         }
@@ -257,7 +260,6 @@ define([
     toggleDescriptionMathML: function(e) {
       var editImage = this;
       var image = editImage.model;
-      console.log(image);
       if (image.has("dynamic_description")) {
         if (editImage.hasMathML(image.get("dynamic_description").body)) {
           editImage.$(".math-text-description").html("");
@@ -360,18 +362,30 @@ define([
     saveEquation: function(e) {
       e.preventDefault();
       var editView = this;
-      var equation = new Equation();
-      equation.save(
+      //TODO verify mmlc integration is turned on.
+      var mmlcEquation = new MmlcEquation();
+      mmlcEquation.save({math: editView.$(".math-editor").val()},
         {
-          "dynamic_image_id": editView.model.get("id"),
-          "element": editView.jax.visual.root.toMathML()
-        }, 
-        {
-          success: function () {
-            //TODO What to do here?
-          },
-          error: function (model, response) {
-            editView.$(".text-danger").html("There was an error saving this description.");
+          success: function(model, response, options) {
+            var components = new MmlcComponents(model.get("components"));
+            var mathML = components.findWhere({format: "mml"})
+            var equation = new Equation();
+            equation.save(
+              {
+                "dynamic_image_id": editView.model.get("id"),
+                "element": mathML.get("source"),
+                "described_at": model.get("cloud_url")
+              }, 
+              {
+                success: function () {
+                  editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
+                  //TODO What to do here?
+                },
+                error: function (model, response) {
+                  editView.$(".text-danger").html("There was an error saving this description.");
+                }
+              }
+            );
           }
         }
       );
