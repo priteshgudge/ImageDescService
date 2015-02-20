@@ -64,4 +64,7 @@ DiagramRailsApp::Application.configure do
                                :s3_credentials => {:access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']},
                                :bucket => ENV['POET_ASSET_BUCKET']}
 
+  #MathML Cloud subscription key
+  MATHML_CLOUD_BASE_PATH = "api.staging.mathmlcloud.org"
+  MATHML_CLOUD_SUBSCRIPTION_KEY = "2dad839e04f2400eb3f96bbe3559044d"
 end
