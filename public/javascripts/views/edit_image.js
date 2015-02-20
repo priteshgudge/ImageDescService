@@ -10,8 +10,9 @@ define([
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
   '/javascripts/models/alt.js',
+  '/javascripts/models/equation.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -24,6 +25,7 @@ define([
       "click .cancel": "cancelEditor",
       "click .save-text": "saveTextDescription",
       "click .save-mathml": "saveMathML",
+      "click .save-mathml-text": "getAndSaveMathDescription",
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
       "click .additional-fields": "showAdditionalFields",
@@ -213,6 +215,20 @@ define([
       e.preventDefault();
       //get mathml.
       editView.saveDescription(editView.jax.visual.root.toMathML());
+    },
+
+    getAndSaveMathDescription: function(e) {
+      var editView = this;
+      e.preventDefault();
+      //get mathml.
+      var equation = new Equation();
+      equation.save({math: editView.$(".math-editor").val()},
+        {
+          success: function(model, response, options) {
+            editView.saveDescription(model.get("components")[0].source);
+          }
+        }
+      );
     },
 
     showSample: function(e) {
