@@ -3,6 +3,7 @@ DiagramRailsApp::Application.routes.draw do
   get "alt/current/:dynamic_image_id", to: "alt#get_current"
   post "alt", to: "alt#create"
   post "mmlc/equation", to: "mmlc#equation"
+  post "equation", to: "equation#create"
 
   get "training/index"
   get "training/how_to_describe"

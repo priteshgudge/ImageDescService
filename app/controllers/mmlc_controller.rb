@@ -2,7 +2,6 @@ require "net/http"
 class MmlcController < ApplicationController
   def equation
     #call MathML Cloud 
-    logger.info(MATHML_CLOUD_BASE_PATH);
     http = Net::HTTP.new(MATHML_CLOUD_BASE_PATH, 443)
     http.use_ssl = true
     postURI = "/equation?subscription-key=" + MATHML_CLOUD_SUBSCRIPTION_KEY

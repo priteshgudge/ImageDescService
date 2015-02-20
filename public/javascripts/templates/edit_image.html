@@ -123,15 +123,20 @@
 											<div class="panel-body">
 												<h2 class="math-preview">MathML Preview</h2>
 												<div class="typeset-math"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
+												<h2 class="math-preview">Text Description Preview</h2>
+												<div class="math-text-description"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
 												<h2 class="math-edit">MathML Editor</h2>
 												<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
 												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
+												<div class="buttons">
+													<button class="btn btn-primary pull-right math save-mathml-text">Generate Text Description</button>
+												</div>
 											</div>
 										</div>
 										<div>
-											<button class="btn btn-primary pull-right save-mathml-text">Generate Text Description</button>
-											<button class="btn btn-primary pull-right save-mathml">Save as MathML</button>
+											<button class="btn btn-primary pull-right save-mathml math">Save as Description</button>
+											<button class="btn btn-primary pull-right save-as-replacement math">Save MathML as Image Replacement</button>
 											<button class="btn btn-default pull-right cancel">Cancel</button>
 				  						</div>
 									  </div>

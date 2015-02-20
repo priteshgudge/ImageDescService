@@ -11,8 +11,9 @@ define([
   '/javascripts/models/dynamic_description.js',
   '/javascripts/models/alt.js',
   '/javascripts/models/equation.js',
+  '/javascripts/models/mmlc_equation.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, editImageTemplate){
+], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -32,6 +33,8 @@ define([
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
       "keyup .math-editor": "getMathML",
+      "click .math-tab a": "toggleDescriptionMathML",
+      "click .save-as-replacement": "saveEquation",
       "click .save-additional-fields": "saveAdditionalFields",
       "click .read-description": "readDescription",
       "click .add-description-button": "hideAddButton",
@@ -213,19 +216,26 @@ define([
     saveMathML: function(e) {
       var editView = this;
       e.preventDefault();
-      //get mathml.
-      editView.saveDescription(editView.jax.visual.root.toMathML());
+      if (editView.$(".typeset-math").html().length > 0 || editView.$(".math-text-description").html().length > 0) {
+        //get mathml.
+        if (editView.$(".typeset-math").html().length > 0) {
+          editView.saveDescription(editView.jax.visual.root.toMathML());
+        } else {
+          editView.saveDescription(editView.$(".math-text-description").html());
+        }
+      } 
     },
 
     getAndSaveMathDescription: function(e) {
       var editView = this;
       e.preventDefault();
       //get mathml.
-      var equation = new Equation();
+      var equation = new MmlcEquation();
       equation.save({math: editView.$(".math-editor").val()},
         {
           success: function(model, response, options) {
-            editView.saveDescription(model.get("components")[0].source);
+            editView.$(".math-text-description").html(model.get("components")[0].source);
+            editView.$(".typeset-math").html("");
           }
         }
       );
@@ -242,6 +252,19 @@ define([
       $("#descriptionHistoryBody").load(historyLink.attr("href") + " #descriptionHistory", function() {
         $("#descriptionHistoryModal").modal("show");
       });
+    },
+
+    toggleDescriptionMathML: function(e) {
+      var editImage = this;
+      var image = editImage.model;
+      console.log(image);
+      if (image.has("dynamic_description")) {
+        if (editImage.hasMathML(image.get("dynamic_description").body)) {
+          editImage.$(".math-text-description").html("");
+        } else {
+          editImage.$(".typeset-math").html("");
+        }
+      }
     },
 
     getMathML: function(e) {
@@ -326,6 +349,26 @@ define([
               editView.$(".altButton").text("Update");
               editView.$("#alt-group").removeClass("has-success")
             }, 500);
+          },
+          error: function (model, response) {
+            editView.$(".text-danger").html("There was an error saving this description.");
+          }
+        }
+      );
+    },
+
+    saveEquation: function(e) {
+      e.preventDefault();
+      var editView = this;
+      var equation = new Equation();
+      equation.save(
+        {
+          "dynamic_image_id": editView.model.get("id"),
+          "element": editView.jax.visual.root.toMathML()
+        }, 
+        {
+          success: function () {
+            //TODO What to do here?
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");

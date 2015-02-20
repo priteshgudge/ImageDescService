@@ -4,7 +4,7 @@ define([
   'backbone'
 ], function(_, Backbone){
   var Equation = Backbone.Model.extend({
-    urlRoot : '/mmlc/equation'
+    urlRoot : '/equation'
 
   });
   return Equation;
