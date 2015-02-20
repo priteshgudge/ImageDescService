@@ -18,12 +18,12 @@ module EpubBookHelper
         begin
           Zip::Archive.decrypt(book.path, password)
         rescue Zip::Error => e
-          ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+          Rails.logger.info "#{e.class}: #{e.message}"
           if e.message.include?("Wrong password")
-            ActiveRecord::Base.logger.info "Invalid Password for encrypted zip"
+            Rails.logger.info "Invalid Password for encrypted zip"
             flash[:alert] = "Please check your password and re-enter"
           else
-            ActiveRecord::Base.logger.info "Other problem with encrypted zip"
+            Rails.logger.info "Other problem with encrypted zip"
             flash[:alert] = "There is a problem with this zip file"
           end
           redirect_to :action => 'process'
@@ -40,12 +40,12 @@ module EpubBookHelper
       begin
         get_epub_with_descriptions zip_directory, book_directory, epub_file, job, current_library
       rescue Zip::Error => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "#{e.class}: #{e.message}"
         if e.message.include?("File encrypted")
-          ActiveRecord::Base.logger.info "Password needed for zip"
+          Rails.logger.info "Password needed for zip"
           flash[:alert] = "Please enter a password for this book"
         else
-          ActiveRecord::Base.logger.info "Other problem with zip"
+          Rails.logger.info "Other problem with zip"
           flash[:alert] = "There is a problem with this zip file"
         end
 
@@ -61,7 +61,7 @@ module EpubBookHelper
         content_documents = get_content_documents_with_updated_descriptions(book_directory, contents_filenames, current_library)
         zip_filename = create_zip(epub_file, content_documents)
         basename = File.basename(contents_filenames[0])
-        ActiveRecord::Base.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
+        Rails.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
       
         # Store this file in S3, update the Job; change exit_params and the state
         random_uid = UUIDTools::UUID.random_create.to_s
@@ -108,20 +108,20 @@ module EpubBookHelper
           content_documents[get_relative_path(book_directory, cf)] = EpubBookHelper::BatchHelper.get_contents_with_updated_descriptions(content_doc, File::basename(cf, '.xhtml'), matching_images_hash)
         end
       rescue NoImageDescriptions
-        ActiveRecord::Base.logger.info "No descriptions available #{contents_filenames}"
+        Rails.logger.info "No descriptions available #{contents_filenames}"
         raise ShowAlertAndGoBack.new("There are no image descriptions available for this book")
       rescue MissingBookUIDException => e
-        ActiveRecord::Base.logger.info "Uploaded EPUB without Publication ID #{contents_filenames}"
+        Rails.logger.info "Uploaded EPUB without Publication ID #{contents_filenames}"
         raise ShowAlertAndGoBack.new("Uploaded EPUB XML content file must have a Publication ID element")
       rescue Nokogiri::XML::XPath::SyntaxError => e
-        ActiveRecord::Base.logger.info "Uploaded file must contain a valid EPUB Content Document #{contents_filenames}"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+        Rails.logger.info "Uploaded file must contain a valid EPUB Content Document #{contents_filenames}"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
         raise ShowAlertAndGoBack.new("Uploaded file must contain a valid EPUB Content Document")
       rescue Exception => e
-        ActiveRecord::Base.logger.info "Unexpected exception processing #{contents_filenames}:"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info e.backtrace.join("\n")
+        Rails.logger.info "Unexpected exception processing #{contents_filenames}:"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info e.backtrace.join("\n")
         $stderr.puts e
         raise ShowAlertAndGoBack.new("An unexpected error has prevented processing that file")
       end
@@ -167,9 +167,15 @@ module EpubBookHelper
           image_location =  img_node['src']
           matched_image = image_hash[image_location]
           unless matched_image == nil 
+            # Attach any alt text modifications that might exist
+            alt = matched_image.current_alt
+            if (alt && alt.alt)
+              img_node['alt'] = alt.alt
+            end
+            
             dynamic_description = matched_image.dynamic_description
             if(!dynamic_description || !dynamic_description.body || dynamic_description.body.strip.length == 0)
-              ActiveRecord::Base.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
+              Rails.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
               next
             end
 

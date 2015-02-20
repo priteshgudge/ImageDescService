@@ -6,3 +6,21 @@ one:
   status: 3
   library_id: 1
   xml_file: foo
+  
+ushistory:
+  id: 2
+  uid: en-us-20100517111839
+  title: US History
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: bar
+
+magic_tree_house_abbrev:
+  id: 3
+  uid: 382575fe-a84b-4450-807a-98cd64fa58b3
+  title: Magic Tree House 4
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: baz
