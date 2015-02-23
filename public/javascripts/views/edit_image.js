@@ -167,10 +167,9 @@ define([
     showPreview: function(e) {
       var editView = this;
       editView.model.fetch({
-        success: function() {
-          editView.$(".image_description").html(editView.model.has("dynamic_description") ? 
-            editView.model.get("dynamic_description")["body"] : "");
-          editView.$(".author").html(editView.model.get("author"));
+        success: function (image, response, options) {
+          editView.$(".image_description").html(image.has("dynamic_description") ? image.get("dynamic_description")["body"] : "");
+          editView.$(".author").html(image.get("author"));
         }
       });
       
