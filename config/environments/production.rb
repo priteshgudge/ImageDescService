@@ -65,6 +65,6 @@ DiagramRailsApp::Application.configure do
                                :bucket => ENV['POET_ASSET_BUCKET']}
 
   #MathML Cloud subscription key
-  MATHML_CLOUD_BASE_PATH = "api.staging.mathmlcloud.org"
-  MATHML_CLOUD_SUBSCRIPTION_KEY = "2dad839e04f2400eb3f96bbe3559044d"
+  MATHML_CLOUD_BASE_PATH = "api.mathmlcloud.org"
+  MATHML_CLOUD_SUBSCRIPTION_KEY = "e1989f6a8bb14b338e0bb4584922a479"
 end
