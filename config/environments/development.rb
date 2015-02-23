@@ -44,7 +44,7 @@ DiagramRailsApp::Application.configure do
 
   #MathML Cloud subscription key
   MATHML_CLOUD_BASE_PATH = "api.staging.mathmlcloud.org"
-  MATHML_CLOUD_SUBSCRIPTION_KEY = "2dad839e04f2400eb3f96bbe3559044d"
+  MATHML_CLOUD_SUBSCRIPTION_KEY = "620eb80e0d8a4461b6f255d974735037"
 
   #PAPERCLIP_S3_STORAGE_OPTIONS = {}
 end

@@ -23,7 +23,9 @@ class EditBookController < ApplicationController
   end
 
   def edit
-    @image_categories = ImageCategory.order(:order_to_display).all;
+    @image_categories = ImageCategory.order(:order_to_display).all
+    @use_mmlc = !defined?(MATHML_CLOUD_BASE_PATH).nil?
+    
     response.headers['Access-Control-Allow-Origin'] = '*'
     error_redirect = 'edit_book/describe'
     book_id = params[:book_id]

@@ -129,9 +129,11 @@
 												<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
 												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
-												<div class="buttons">
-													<button class="btn btn-primary pull-right math save-mathml-text">Generate Text Description</button>
-												</div>
+												<% if ($("#use_mmlc").val() == "true") { %>
+													<div class="buttons">
+														<button class="btn btn-primary pull-right math save-mathml-text">Generate Text Description</button>
+													</div>
+												<% } %>
 											</div>
 										</div>
 										<div>
