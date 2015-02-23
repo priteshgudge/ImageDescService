@@ -56,6 +56,8 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     original_imgs = original_doc.xpath("//xmlns:img")
     assert_equal 1, original_imgs.size, "Image count in original file"
     
+    original_img_src = original_imgs.first["src"]
+    
     # Run the test
     doc_string = @helper.get_contents_with_updated_descriptions(@math_xml, @library)
     
@@ -69,7 +71,7 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     
     mathmls.each do | math |
       alt_img = math['altimg']
-      assert_not_empty alt_img, "Altimg content on #{math['id']}"
+      assert_equals original_img_src, alt_img, "Altimg content on #{math['id']}"
     end
   end
 end
