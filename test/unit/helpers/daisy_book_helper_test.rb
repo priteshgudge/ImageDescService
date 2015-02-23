@@ -67,5 +67,9 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     mathmls = doc.xpath("//xmlns:math")
     assert_equal 1, mathmls.size, "MathML count in test file"
     
+    mathmls.each do | math |
+      alt_img = math['altimg']
+      assert_not_empty alt_img, "Altimg content on #{math['id']}"
+    end
   end
 end
