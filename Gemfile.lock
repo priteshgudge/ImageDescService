@@ -215,7 +215,6 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
-    rubyzip (1.1.6)
     sass (3.3.5)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -284,7 +283,6 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   oink
-  page-object
   paperclip (~> 3.0)
   paperclip-aws
   parallel
