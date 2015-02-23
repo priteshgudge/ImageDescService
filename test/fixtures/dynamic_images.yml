@@ -34,3 +34,9 @@ magic_4:
   id: 7
   book_id: 3
   image_location: images/osbo_9780375894213_epub_001_r1.jpg
+
+math_1:
+  id: 8
+  book_id: 4
+  image_location: images/image001.jpg
+  

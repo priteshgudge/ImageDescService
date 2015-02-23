@@ -1,0 +1,35 @@
+one:
+  id: 1
+  dynamic_image_id: 8
+  element: "<mml:math xmlns:mml='http://www.w3.org/1998/Math/MathML' mode='display' overflow='scroll'>
+          <mml:mrow>
+            <mml:mi>f</mml:mi>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mi>x</mml:mi>
+              <mml:mo>)</mml:mo>
+            </mml:mrow>
+            <mml:mo>=</mml:mo>
+            <mml:mfrac>
+              <mml:mn>1</mml:mn>
+              <mml:msqrt>
+                <mml:mrow>
+                  <mml:mn>2</mml:mn>
+                  <mml:mi>π</mml:mi>
+                </mml:mrow>
+              </mml:msqrt>
+            </mml:mfrac>
+            <mml:mo form='prefix'>exp</mml:mo>
+            <mml:mrow>
+              <mml:mo>(</mml:mo>
+              <mml:mo>-</mml:mo>
+              <mml:msup>
+                <mml:mi>x</mml:mi>
+                <mml:mn>2</mml:mn>
+              </mml:msup>
+              <mml:mo>/2)</mml:mo>
+            </mml:mrow>
+          </mml:mrow>
+        </mml:math>"
+  described_at: 'https://api.staging.mathmlcloud.org/component/123456789'
+  

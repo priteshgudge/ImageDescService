@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/css" href="daisy.css" media="screen"?><?xml-stylesheet type="text/xsl" href="daisyTransform.xsl" media="screen"?><!DOCTYPE dtbook SYSTEM "dtbook-2005-3.dtd"><dtbook version='2005-2' xmlns='http://www.daisy.org/z3986/2005/dtbook/'>
+  <head>
+    <meta content='en-us-201310230123456' name='dtb:uid'/>
+    <meta content='Doing Data Science' name='dc:Title'/>
+    <meta content='Unknown' name='dc:Creator'/>
+    <meta content='OReilly' name='dc:Publisher'/>
+    <meta content='2013-10-23' name='dc:Date' scheme='yyyy-mm-dd'/>
+    <meta content='' name='dc:Format'/>
+    <meta content='' name='dc:Identifier'/>
+
+    <meta content='en' name='dc:Language' scheme='ISO 639'/>
+    <meta content='Doing Data Science' name='dc:Description'/>
+    <meta content='Bookshare' name='dc:Publisher'/>
+  </head>
+  <book id='book_15239038561' xml:space='preserve'>
+    <frontmatter id='frontmatter_000001'>
+      <doctitle id='doctitle_000001'>Doing Data Science</doctitle>
+      <docauthor id='docauthor_000001'>Cathy O'Neill</docauthor>
+    </frontmatter>
+
+    <bodymatter id='bodymatter_000001'>
+      <level1 id='level1_000001'>
+        <p class='MsoNormal' id='p_000001' smilref='Doing_Data_Science00001.smil#p_000001'>
+          
+        <imggroup><img alt='described in caption' id='mkme_0001' src='images/image001.jpg'/><prodnote id='pnid_mkme_0001' imgref='mkme_0001' render='optional' showin='blp'>This is an old note</prodnote></imggroup>
+		</p>
+        <level2 id='level2_000001'>
+          <p id='p_000002' smilref='Outline_of_U_S__History00001.smil#p_000002'>
+            <strong id='strong_000001'>Contents</strong>
+          </p>
+    </bodymatter>
+  </book>
+</dtbook>
+

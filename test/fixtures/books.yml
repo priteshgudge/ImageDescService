@@ -24,3 +24,13 @@ magic_tree_house_abbrev:
   status: 3
   library_id: 1
   xml_file: baz
+  
+math:
+  id: 4
+  uid: en-us-201310230123456
+  title: Doing Data Science
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: blah
+  
