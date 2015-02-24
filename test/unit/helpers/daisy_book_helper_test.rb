@@ -5,7 +5,7 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     @helper = DaisyBookHelper::BatchHelper.new
     @library = Library.find(1)
     @alt_xml = File.read('features/fixtures/BookXMLWithImagesWithOurProdnotes.xml')
-    @math_xml = File.read('features/fixtures/BookXMLWithMath.xml')
+    @math_image_xml = File.read('features/fixtures/BookXMLWithMathImage.xml')
   end
   
   def test_alt_insertion
@@ -52,14 +52,14 @@ class DaisyBookHelperTest < Test::Unit::TestCase
   
   def test_math_insertion
     # Set up the data
-    original_doc = Nokogiri::XML @math_xml
+    original_doc = Nokogiri::XML @math_image_xml
     original_imgs = original_doc.xpath("//xmlns:img")
     assert_equal 1, original_imgs.size, "Image count in original file"
     
     original_img_src = original_imgs.first["src"]
     
     # Run the test
-    doc_string = @helper.get_contents_with_updated_descriptions(@math_xml, @library)
+    doc_string = @helper.get_contents_with_updated_descriptions(@math_image_xml, @library)
     
     # Check the result
     doc = Nokogiri::XML doc_string
@@ -78,9 +78,10 @@ class DaisyBookHelperTest < Test::Unit::TestCase
   def test_opf_math
     # Set up the data
     original_opf = 'features/fixtures/Sample.opf'
+    math_content = Nokogiri::XML "foo"
     
     # Run the test
-    math_opf_string = @helper.get_opf_contents_for_math(original_opf)
+    math_opf_string = @helper.get_opf_contents_for_math(original_opf, math_content)
     
     # Check the results
     math_opf_doc = Nokogiri::XML math_opf_string

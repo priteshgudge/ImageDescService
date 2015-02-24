@@ -69,7 +69,7 @@ module DaisyBookHelper
         opf_filename = DaisyUtils.get_opf_name(book_directory)
         relative_opf_path = File.basename opf_filename
         
-        opf = get_opf_contents_for_math(opf_filename)
+        opf = get_opf_contents_for_math(opf_filename, xml)
         
         zip_filename = create_zip(daisy_file, relative_contents_path, xml, relative_opf_path, opf)
 
@@ -154,12 +154,12 @@ module DaisyBookHelper
       DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename)
     end
     
-    def self.get_opf_contents_for_math(filename)
+    def self.get_opf_contents_for_math(filename, contents_xml)
       file = File.new(filename)
       doc = Nokogiri::XML file
 
-      # TODO: Turn this on when IMG-819 is ready, and we know if Math is present
-      if false
+      math_elements = contents_xml.xpath('//m:math', 'm' => 'http://www.w3.org/1998/Math/MathML')
+      if math_elements.size > 0
         meta_elements = doc.xpath("//xmlns:meta")
         if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
           fallback = Nokogiri::XML::Node.new "meta", doc
