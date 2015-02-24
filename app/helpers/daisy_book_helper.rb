@@ -150,8 +150,8 @@ module DaisyBookHelper
           count
     end
     
-    def get_opf_contents_for_math(filename)
-      DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename)
+    def get_opf_contents_for_math(filename, contents_xml)
+      DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename, contents_xml)
     end
     
     def self.get_opf_contents_for_math(filename, contents_xml)
