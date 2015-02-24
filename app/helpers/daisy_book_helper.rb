@@ -157,24 +157,27 @@ module DaisyBookHelper
     def self.get_opf_contents_for_math(filename)
       file = File.new(filename)
       doc = Nokogiri::XML file
-      
-      meta_elements = doc.xpath("//xmlns:meta")
-      if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
-        fallback = Nokogiri::XML::Node.new "meta", doc
-        fallback['name'] = 'DTBook-XSLTFallback'
-        fallback['scheme'] = 'http://www.w3.org/1998/Math/MathML'
-        fallback['content'] = 'mathml-fallback.xslt'
+
+      # TODO: Turn this on when IMG-819 is ready, and we know if Math is present
+      if false
+        meta_elements = doc.xpath("//xmlns:meta")
+        if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
+          fallback = Nokogiri::XML::Node.new "meta", doc
+          fallback['name'] = 'DTBook-XSLTFallback'
+          fallback['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+          fallback['content'] = 'mathml-fallback.xslt'
         
-        meta_elements.first.parent.add_child fallback
-      end
+          meta_elements.first.parent.add_child fallback
+        end
       
-      if !meta_elements.any? { |elt| elt['name'] === 'z39-86-extension-version' }
-        extension = Nokogiri::XML::Node.new "meta", doc
-        extension['name'] = 'z39-86-extension-version'
-        extension['scheme'] = 'http://www.w3.org/1998/Math/MathML'
-        extension['content'] = '1.0'
+        if !meta_elements.any? { |elt| elt['name'] === 'z39-86-extension-version' }
+          extension = Nokogiri::XML::Node.new "meta", doc
+          extension['name'] = 'z39-86-extension-version'
+          extension['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+          extension['content'] = '1.0'
         
-        meta_elements.first.parent.add_child extension
+          meta_elements.first.parent.add_child extension
+        end
       end
     
       return doc.to_xml
