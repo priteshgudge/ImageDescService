@@ -54,8 +54,6 @@ class ImageBookController < ApplicationController
     end
     
     begin
-      @file_type = UnzipUtils.get_file_type book.original_filename
-    
       # Store file in S3
       repository = RepositoryChooser.choose
       random_uid = UUIDTools::UUID.random_create.to_s
@@ -63,7 +61,7 @@ class ImageBookController < ApplicationController
       @job = Job.new({:user_id => current_user.id, :enter_params => ({:random_uid => random_uid, :password => password, :book_name => book.original_filename, :content_type => book.content_type}).to_json})
       @job.save
     
-      @file_type = UnzipUtils.get_file_type book.original_filename
+      @file_type = get_file_type book.original_filename
       zip_directory, book_directory, file = accept_and_copy_book(book.path, @file_type)
       xml = get_xml_from_dir book_directory, @file_type
       doc = Nokogiri::XML xml
