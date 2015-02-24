@@ -45,6 +45,11 @@ module DaisyUtils
     return Dir.glob(File.join(book_directory, '*.xml'))[0]
   end
   
+  def self.get_opf_from_dir (book_directory)
+    opf_filename = Dir.glob(File.join(book_directory, '*.opf'))[0]
+    File.read(opf_filename)
+  end
+  
   def extract_images_prod_notes_for_daisy doc
       prodnotes = doc.xpath("//xmlns:imggroup//xmlns:prodnote")
       @prodnotes_hash = Hash.new()
