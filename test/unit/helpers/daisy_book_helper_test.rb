@@ -74,4 +74,24 @@ class DaisyBookHelperTest < Test::Unit::TestCase
       assert_equals original_img_src, alt_img, "Altimg content on #{math['id']}"
     end
   end
+  
+  def test_opf_math
+    # Set up the data
+    original_opf = File.read('features/fixtures/Sample.opf')
+    
+    # Run the test
+    math_opf_string = @helper.get_opf_contents_for_math(original_opf)
+    
+    # Check the results
+    math_opf_doc = Nokogiri::XML math_opf_string
+    meta_elements = math_opf_doc.xpath("//meta")
+    
+    assert_true meta_elements.any? { |elt|
+      elt['name'] === 'z39-86-extension-version'
+      }, "Updated extension meta element"
+
+    assert_true meta_elements.any? { |elt|
+      elt['name'] === 'DTBook-XSLTFallback'
+      }, "Updated fallback meta element"
+  end
 end
