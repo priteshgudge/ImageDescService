@@ -9,6 +9,7 @@ module DaisyBookHelper
       enter_params = job.json_enter_params
       password = enter_params['password']
       random_uid = enter_params['random_uid']
+      Rails.logger.info "Reading file from repository at #{random_uid}"
       random_uid_book_location = repository.read_file(random_uid, File.join( "", "tmp", "#{random_uid}.zip"))
       zip_directory, book_directory, daisy_file = UnzipUtils.accept_and_copy_book(random_uid_book_location, "Daisy")
       book = File.open daisy_file
@@ -60,15 +61,25 @@ module DaisyBookHelper
         if(relative_contents_path[0,1] == '/')
           relative_contents_path = relative_contents_path[1..-1]
         end
+        
+        Rails.logger.info "Getting XML contents with descriptions from #{book_directory}"
         xml = get_xml_contents_with_updated_descriptions(contents_filename, current_library)
-        zip_filename = create_zip(daisy_file, relative_contents_path, xml)
+
+        # If we added Math to this, the OPF needs to be updated
+        opf_filename = DaisyUtils.get_opf_name(book_directory)
+        relative_opf_path = File.basename opf_filename
+        
+        opf = get_opf_contents_for_math(opf_filename)
+        
+        zip_filename = create_zip(daisy_file, relative_contents_path, xml, relative_opf_path, opf)
+
         basename = File.basename(contents_filename)
         Rails.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
       
         # Store this file in S3, update the Job; change exit_params and the state
         random_uid = UUIDTools::UUID.random_create.to_s
         repository = RepositoryChooser.choose
-        repository.store_file(zip_filename, 'delayed', random_uid, nil) #store file in a directory
+        repository.store_file(zip_filename, 'delayed', random_uid, nil)
         job.update_attributes :state => 'complete', :exit_params => ({:basename => basename, :random_uid => random_uid}).to_json
       rescue ShowAlertAndGoBack => e
         flash[:alert] = e.message
@@ -108,15 +119,21 @@ module DaisyBookHelper
       return xml
     end
     
-    def self.create_zip(old_daisy_zip, contents_filename, new_xml_contents)
+    def self.create_zip(old_daisy_zip, contents_filename, new_xml_contents, 
+                      opf_filename, new_opf_contents)
+      Rails.logger.info "OPF: #{opf_filename}"
       new_daisy_zip = Tempfile.new('baked-daisy')
       new_daisy_zip.close
       FileUtils.cp(old_daisy_zip, new_daisy_zip.path)
       Zip::Archive.open(new_daisy_zip.path) do |zipfile|
         zipfile.num_files.times do |index|
-          if(zipfile.get_name(index) == contents_filename)
+          Rails.logger.info "ZIP entry name: #{zipfile.get_name(index)}"
+          if (zipfile.get_name(index) == contents_filename)
             zipfile.replace_buffer(index, new_xml_contents)
-            break
+          end
+          if (zipfile.get_name(index) == opf_filename)
+            Rails.logger.info "**** Replacing OPF contents! ****"
+            zipfile.replace_buffer(index, new_opf_contents)
           end
         end
       end
@@ -131,6 +148,36 @@ module DaisyBookHelper
           joins(:book).
           where(:books => {:uid => book_uid, :library_id => current_library.id}).
           count
+    end
+    
+    def get_opf_contents_for_math(filename)
+      DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename)
+    end
+    
+    def self.get_opf_contents_for_math(filename)
+      file = File.new(filename)
+      doc = Nokogiri::XML file
+      
+      meta_elements = doc.xpath("//xmlns:meta")
+      if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
+        fallback = Nokogiri::XML::Node.new "meta", doc
+        fallback['name'] = 'DTBook-XSLTFallback'
+        fallback['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+        fallback['content'] = 'mathml-fallback.xslt'
+        
+        meta_elements.first.parent.add_child fallback
+      end
+      
+      if !meta_elements.any? { |elt| elt['name'] === 'z39-86-extension-version' }
+        extension = Nokogiri::XML::Node.new "meta", doc
+        extension['name'] = 'z39-86-extension-version'
+        extension['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+        extension['content'] = '1.0'
+        
+        meta_elements.first.parent.add_child extension
+      end
+    
+      return doc.to_xml
     end
     
     def get_contents_with_updated_descriptions(file, current_library)

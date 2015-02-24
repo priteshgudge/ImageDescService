@@ -77,14 +77,14 @@ class DaisyBookHelperTest < Test::Unit::TestCase
   
   def test_opf_math
     # Set up the data
-    original_opf = File.read('features/fixtures/Sample.opf')
+    original_opf = 'features/fixtures/Sample.opf'
     
     # Run the test
     math_opf_string = @helper.get_opf_contents_for_math(original_opf)
     
     # Check the results
     math_opf_doc = Nokogiri::XML math_opf_string
-    meta_elements = math_opf_doc.xpath("//meta")
+    meta_elements = math_opf_doc.xpath("//xmlns:meta")
     
     assert_true meta_elements.any? { |elt|
       elt['name'] === 'z39-86-extension-version'
