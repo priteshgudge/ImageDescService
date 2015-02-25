@@ -67,12 +67,12 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     imgs = doc.xpath("//xmlns:img")
     assert_equal 0, imgs.size, "Image count in test file"
     
-    mathmls = doc.xpath("//xmlns:math")
+    mathmls = doc.xpath("//mml:math", "mml" => "http://www.w3.org/1998/Math/MathML")
     assert_equal 1, mathmls.size, "MathML count in test file"
     
     mathmls.each do | math |
       alt_img = math['altimg']
-      assert_equals original_img_src, alt_img, "Altimg content on #{math['id']}"
+      assert_equal original_img_src, alt_img, "Altimg content on math element"
     end
   end
   

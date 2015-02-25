@@ -218,6 +218,16 @@ module DaisyBookHelper
           if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
             image['alt'] = dynamic_image.current_alt.alt
           end
+          
+          # Replace the image if there is an equation
+          if (dynamic_image.current_equation && dynamic_image.current_equation.element)
+            math_element = create_math_element(dynamic_image.current_equation)
+            replace_node(image, math_element)
+            math_element['altimg'] = image_location
+            # TODO: update DTD reference
+            Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
+            next
+          end
 
           dynamic_description = dynamic_image.dynamic_description
           if (!dynamic_description)
@@ -313,6 +323,16 @@ module DaisyBookHelper
         raise NonDaisyXMLException.new
       end
       return root
+    end
+    
+    def self.create_math_element(equation)
+      fragment = Nokogiri::XML.fragment equation.element
+      return fragment.children.first
+    end
+    
+    def self.replace_node(old_node, new_node)
+      new_node.parent = old_node.parent
+      old_node.unlink
     end
   end
 end
