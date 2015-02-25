@@ -1,6 +1,9 @@
 module DaisyBookHelper
   class BatchHelper
     ROOT_XPATH = "/xmlns:dtbook"
+    MATHML_NS = 'http://www.w3.org/1998/Math/MathML'
+    MATHML_EXTENSION = 'z39-86-extension-version'
+    MATHML_FALLBACK = 'DTBook-XSLTFallback'
 
     def self.batch_add_descriptions_to_book job_id, current_library 
       job = Job.where(:id => job_id).first
@@ -158,25 +161,25 @@ module DaisyBookHelper
       file = File.new(filename)
       doc = Nokogiri::XML file
 
-      math_elements = contents_xml.xpath('//m:math', 'm' => 'http://www.w3.org/1998/Math/MathML')
+      math_elements = contents_xml.xpath('//m:math', 'm' => MATHML_NS)
       if math_elements.size > 0
         meta_elements = doc.xpath("//xmlns:meta")
-        if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
+        if !meta_elements.any? { |elt| elt['name'] === MATHML_FALLBACK}
           fallback = Nokogiri::XML::Node.new "meta", doc
-          fallback['name'] = 'DTBook-XSLTFallback'
-          fallback['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+          fallback['name'] = MATHML_FALLBACK
+          fallback['scheme'] = MATHML_NS
           fallback['content'] = 'mathml-fallback.xslt'
         
-          meta_elements.first.parent.add_child fallback
+          meta_elements.first.add_next_sibling fallback
         end
       
-        if !meta_elements.any? { |elt| elt['name'] === 'z39-86-extension-version' }
+        if !meta_elements.any? { |elt| elt['name'] === MATHML_EXTENSION }
           extension = Nokogiri::XML::Node.new "meta", doc
-          extension['name'] = 'z39-86-extension-version'
-          extension['scheme'] = 'http://www.w3.org/1998/Math/MathML'
+          extension['name'] = MATHML_EXTENSION
+          extension['scheme'] = MATHML_NS
           extension['content'] = '1.0'
         
-          meta_elements.first.parent.add_child extension
+          meta_elements.first.add_next_sibling extension
         end
       end
     
