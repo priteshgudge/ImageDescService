@@ -11,8 +11,9 @@ class DynamicImage < ActiveRecord::Base
 
   belongs_to :book
   has_one :dynamic_description
-  has_many :alt
   has_one :image_category
+  has_many :alt
+  has_many :equation
 
   def as_json(options = {})
     json = super(options)
@@ -49,6 +50,10 @@ class DynamicImage < ActiveRecord::Base
 
   def current_alt
     return self.alt.where(:from_source => false).order("created_at DESC").first
+  end
+
+  def current_equation
+    return self.equation.order("created_at DESC").first
   end
 
 private
