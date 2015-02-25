@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150220155657) do
+ActiveRecord::Schema.define(:version => 20150225193010) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -204,10 +204,11 @@ ActiveRecord::Schema.define(:version => 20150220155657) do
   create_table "equations", :force => true do |t|
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.string   "element",          :null => false
+    t.text     "element",          :null => false
     t.integer  "submitter_id"
     t.integer  "dynamic_image_id"
     t.string   "described_at"
+    t.binary   "source"
   end
 
   add_index "equations", ["dynamic_image_id"], :name => "equations_dynamic_image_id"
