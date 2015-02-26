@@ -11,8 +11,10 @@ module DaisyBookHelper
       random_uid = enter_params['random_uid']
       Rails.logger.info "Reading file from repository at #{random_uid}"
       random_uid_book_location = repository.read_file(random_uid, File.join( "", "tmp", "#{random_uid}.zip"))
+
       zip_directory, book_directory, daisy_file = UnzipUtils.accept_and_copy_book(random_uid_book_location, "Daisy")
       book = File.open daisy_file
+
       unless password.blank?
         begin
           Zip::Archive.decrypt(book.path, password)
@@ -121,20 +123,21 @@ module DaisyBookHelper
     
     def self.create_zip(old_daisy_zip, contents_filename, new_xml_contents, 
                       opf_filename, new_opf_contents)
-      Rails.logger.info "OPF: #{opf_filename}"
       new_daisy_zip = Tempfile.new('baked-daisy')
       new_daisy_zip.close
       FileUtils.cp(old_daisy_zip, new_daisy_zip.path)
       Zip::Archive.open(new_daisy_zip.path) do |zipfile|
         zipfile.num_files.times do |index|
-          Rails.logger.info "ZIP entry name: #{zipfile.get_name(index)}"
           if (zipfile.get_name(index) == contents_filename)
             zipfile.replace_buffer(index, new_xml_contents)
           end
           if (zipfile.get_name(index) == opf_filename)
-            Rails.logger.info "**** Replacing OPF contents! ****"
             zipfile.replace_buffer(index, new_opf_contents)
           end
+        end
+        
+        if MathHelper.contains_math(new_xml_contents)
+          zipfile.add_file(MathHelper::MATHML_FALLBACK_FILE, "public/#{MathHelper::MATHML_FALLBACK_FILE}")
         end
       end
       return new_daisy_zip.path

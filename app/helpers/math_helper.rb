@@ -2,6 +2,7 @@ module MathHelper
   MATHML_NS = 'http://www.w3.org/1998/Math/MathML'
   MATHML_EXTENSION = 'z39-86-extension-version'
   MATHML_FALLBACK = 'DTBook-XSLTFallback'
+  MATHML_FALLBACK_FILE = 'mathml-fallback.xslt'
 
   MATHML_COMMON_ATTRIB = <<-END_OF_STRING
     xlink:href    CDATA       #IMPLIED
@@ -31,16 +32,16 @@ module MathHelper
     math_elements = contents_xml.xpath('//m:math', 'm' => MATHML_NS)
     if math_elements.size > 0
       meta_elements = doc.xpath("//xmlns:meta")
-      if !meta_elements.any? { |elt| elt['name'] === MATHML_FALLBACK}
+      if meta_elements.none? { |elt| elt['name'] === MATHML_FALLBACK}
         fallback = Nokogiri::XML::Node.new "meta", doc
         fallback['name'] = MATHML_FALLBACK
         fallback['scheme'] = MATHML_NS
-        fallback['content'] = 'mathml-fallback.xslt'
+        fallback['content'] = MATHML_FALLBACK_FILE
       
         meta_elements.first.add_next_sibling fallback
       end
     
-      if !meta_elements.any? { |elt| elt['name'] === MATHML_EXTENSION }
+      if meta_elements.none? { |elt| elt['name'] === MATHML_EXTENSION }
         extension = Nokogiri::XML::Node.new "meta", doc
         extension['name'] = MATHML_EXTENSION
         extension['scheme'] = MATHML_NS
@@ -75,5 +76,10 @@ module MathHelper
       Nokogiri::XML::EntityDecl.new("externalNamespaces", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "| m:math")
     end
     return doc
+  end
+  
+  def self.contains_math(content_string)
+    doc = Nokogiri::XML content_string
+    return doc.xpath('//m:math', 'm' => MATHML_NS).size > 0
   end
 end
