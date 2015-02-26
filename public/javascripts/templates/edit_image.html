@@ -59,7 +59,7 @@
 				  				</div>
 				  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
 				  			</div>
-				  			<div class="form-group image-category" <%= !image.has("image_category_id") && !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
+				  			<div class="form-group image-category" <%= image.get("should_be_described") == false ? "style=\"display: none;\"" : "" %>>
 				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
 				  				<div class="col-sm-6">
 				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
@@ -71,6 +71,19 @@
 				  				<div class="col-sm-3">
 				  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
 				  				</div>
+				  			</div>
+				  			<% if (image.has("current_equation")) { %>
+				  				<span class="col-sm-3 control-label mathML">MathML</span>
+				    			<div class="col-sm-6">
+				      				<p class="form-control-static replacementMathml">
+				      					<%= image.get("current_equation").source %>
+				      				</p>
+				    			</div>
+				    			<% if (can_edit_content == "true") { %>
+				    				<div class="col-sm-3"><button class="btn btn-primary open-edit-view edit-mathml">Edit</button></div>
+				    			<% } %>
+				    		<% } %>
+				  			<div class="form-group equation">
 				  			</div>
 				  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
 				  				<div class="form-group">
@@ -112,7 +125,7 @@
 										<div class="buttons fluid-content">
 											<p class="text-success update-message pull-left"></p>
 											<a class="read-description pull-right" href="#"><img src="/images/listen.jpg" alt="Listen to description" style="height: 10%;"/></a>
-											<button class="btn btn-primary open-edit-view pull-right">Edit</button>
+											<button class="btn btn-primary open-edit-view edit-math-ml pull-right">Edit</button>
 										</div>
 										<div class="clearfix"></div>
 										<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
@@ -121,25 +134,32 @@
 									  <div class="tab-pane" id="math-<%=image.get("id") %>">
 									  	<div class="panel panel-default">
 											<div class="panel-body">
-												<h2 class="math-preview">MathML Preview</h2>
-												<div class="typeset-math"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
-												<h2 class="math-preview">Text Description Preview</h2>
-												<div class="math-text-description"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></div>
 												<h2 class="math-edit">MathML Editor</h2>
 												<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
 												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
-												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"></textarea>
-												<% if ($("#use_mmlc").val() == "true") { %>
+												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"><%= image.has("current_equation") ? image.get("current_equation").source : ""%></textarea>
+												<div class="clearfix"></div>
+												<h2 class="math-preview">MathML Preview</h2>
+												<div class="typeset-math"><%= image.has("current_equation") ? image.get("current_equation").element : ""%></div>
+												<div class="buttons save-math" style="display: none;">
+													<p class="text-success equation-updated"></p>
+													<% if ($("#use_mmlc").val() == "true") { %>
+														<button class="btn btn-primary math save-mathml-text">Generate Text Description</button>
+													<% } %>
+													<button class="btn btn-primary save-as-replacement math">Save MathML as Image Replacement</button>
+
+												</div>
+												<div class="description-preview" style="display: none;">
+													<div class="clearfix"></div>
+													<h2 class="math-preview">Text Description Preview</h2>
+													<div class="math-text-description"></div>
 													<div class="buttons">
-														<button class="btn btn-primary pull-right math save-mathml-text">Generate Text Description</button>
+														<button class="btn btn-primary save-math-description math">Save as Long Description</button>
 													</div>
-												<% } %>
+												</div>
 											</div>
 										</div>
 										<div>
-											<p class="text-success equation-updated"></p>
-											<button class="btn btn-primary pull-right save-mathml math">Save as Description</button>
-											<button class="btn btn-primary pull-right save-as-replacement math">Save MathML as Image Replacement</button>
 											<button class="btn btn-default pull-right cancel">Cancel</button>
 				  						</div>
 									  </div>
@@ -164,7 +184,7 @@
 														<textarea id="annotation-<%=image.get("id") %>" name="annotation-<%=image.get("id") %>" class="form-control annotation"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").annotation : ""%></textarea>
 													</div>
 												</div>
-												<h2 class="math-edit">Target Age & Grade</h2>
+												<h2 class="math-edit">Target Age &amp; Grade</h2>
 												<div class="form-group">
 													<div class="row">
 														<label class="col-sm-3 control-label" for="from-age-<%=image.get("id") %>">From Age:</label>

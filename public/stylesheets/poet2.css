@@ -176,6 +176,10 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
 #book_title , #book_title h1{
   font-style: italic;
   font-size: 105%;
+},
+
+.altText, .mathML {
+  font-weight: bold;
 }
 
 
