@@ -26,8 +26,8 @@ define([
       "click .open-edit-view": "openEditor",
       "click .cancel": "cancelEditor",
       "click .save-text": "saveTextDescription",
-      "click .save-mathml": "saveMathML",
-      "click .save-mathml-text": "getAndSaveMathDescription",
+      "click .save-math-description": "saveMathDescription",
+      "click .save-mathml-text": "getMathDescription",
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
       "click .additional-fields": "showAdditionalFields",
@@ -70,7 +70,8 @@ define([
           image_categories: App.categories.models, 
           previousImage: editImage.previousImage,
           nextImage: editImage.nextImage,
-          can_edit_content: $("#can_edit_content").val()
+          can_edit_content: $("#can_edit_content").val(),
+          use_mmlc: $("#use_mmlc").val()
         });
       if (editImage.model.has("image_category_id") && $("#exampleModalBody" + editImage.model.get("image_category_id")).html().length > 0) {
         editImage.$(".view_sample").show();
@@ -86,7 +87,7 @@ define([
       var imageCategory = $(e.currentTarget).val();
       //Save.
       imageView.model.save({"image_category_id": imageCategory});
-      this.showDynamicDescriptionForm();
+      this.showDynamicDescriptionForm(e);
       if (!$("#exampleModalBody" + imageCategory).html().length > 0) {
         imageView.$(".view_sample").hide();
       } else {
@@ -111,15 +112,15 @@ define([
 
     openEditor: function(e) {
       e.preventDefault(e);
-      this.showDynamicDescriptionForm();
+      this.showDynamicDescriptionForm(e);
     },
 
     hideAddButton: function(e) {
-      this.$(".image-category").show();
       $(e.currentTarget).hide();
     },
 
-    showDynamicDescriptionForm: function() {
+    showDynamicDescriptionForm: function(e) {
+      var buttonClicked = $(e.currentTarget);
       var editView = this;
       editView.clearMessages();
       
@@ -145,11 +146,16 @@ define([
           
           //make sure that the description is up to date.
           longDescription.show();
-          //Show edit tab.
-          $("#edit-tab-" + editView.model["id"]).tab('show');
-          //hide math tab for non-math equations.
-          if (editView.$(".image_category").val() != "10") {
-            editView.$(".math-tab").hide();
+          if ($(buttonClicked).hasClass("edit-mathml")) {
+            //Show edit tab.
+            $(".math-tab a").tab('show');  
+          } else {
+            //Show edit tab.
+            $("#edit-tab-" + editView.model["id"]).tab('show');  
+            //hide math tab for non-math equations.
+            if (editView.$(".image_category").val() != "10") {
+              editView.$(".math-tab").hide();
+            }
           }
         }    
       });
@@ -213,20 +219,13 @@ define([
       });
     },
 
-    saveMathML: function(e) {
+    saveMathDescription: function(e) {
       var editView = this;
       e.preventDefault();
-      if (editView.$(".typeset-math").html().length > 0 || editView.$(".math-text-description").html().length > 0) {
-        //get mathml.
-        if (editView.$(".typeset-math").html().length > 0) {
-          editView.saveDescription(editView.jax.visual.root.toMathML());
-        } else {
-          editView.saveDescription(editView.$(".math-text-description").html());
-        }
-      } 
+      editView.saveDescription(editView.$(".math-text-description").html());
     },
 
-    getAndSaveMathDescription: function(e) {
+    getMathDescription: function(e) {
       var editView = this;
       e.preventDefault();
       //get mathml.
@@ -237,7 +236,7 @@ define([
             var components = new MmlcComponents(model.get("components"));
             var description = components.findWhere({format: "description"});
             editView.$(".math-text-description").html(description.get("source"));
-            editView.$(".typeset-math").html("");
+            editView.$(".description-preview").show();
           }
         }
       );
@@ -258,6 +257,7 @@ define([
 
     toggleDescriptionMathML: function(e) {
       var editImage = this;
+      editImage.$(".text-success").html("");
       var image = editImage.model;
       if (image.has("dynamic_description")) {
         if (editImage.hasMathML(image.get("dynamic_description").body)) {
@@ -265,7 +265,7 @@ define([
         } else {
           editImage.$(".typeset-math").html("");
         }
-      }
+      } 
     },
 
     getMathML: function(e) {
@@ -276,6 +276,9 @@ define([
         ["Typeset", MathJax.Hub, editImage.$(".typeset-math")[0]],
         [function() { editImage.jax.visual = MathJax.Hub.getAllJax(editImage.$(".typeset-math")[0])[0]; }],
         [function() { editImage.$(".math-editor").html(editImage.sanitizeMathML(editImage.jax.visual.root.toMathML()));}]);
+      if ($("#can_edit_content").val() == "true") {
+        editImage.$(".save-math").show();  
+      }
     },
 
     sanitizeMathML: function(s) {
@@ -384,6 +387,7 @@ define([
         {
           "dynamic_image_id": editView.model.get("id"),
           "element": element,
+          "source": editView.$(".math-editor").val(),
           "described_at": described_at
         }, 
         {
@@ -411,7 +415,6 @@ define([
       e.preventDefault();
       this.$(".math-editor").addClass("selectedMathEditor");
     }
-
 
   });
   return EditImageView;
