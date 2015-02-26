@@ -66,12 +66,14 @@ module MathHelper
   
   def self.attach_math_extensions(doc)
     # For description of DTD extensions, see http://www.daisy.org/projects/mathml/mathml-in-daisy-spec.html#h_23
-    Nokogiri::XML::EntityDecl.new("MATHML.prefixed", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "INCLUDE")
-    Nokogiri::XML::EntityDecl.new("MATHML.prefix", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "m")
-    Nokogiri::XML::EntityDecl.new("MATHML.C.attrib", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, MATHML_COMMON_ATTRIB)
-    Nokogiri::XML::EntityDecl.new("mathML2", doc, DTD_ENTITY_DECL_TYPE, MATHML_2_EXTERNAL_ID, MATHML_2_SYSTEM_ID)
-    Nokogiri::XML::EntityDecl.new("externalFlow", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "| m:math")
-    Nokogiri::XML::EntityDecl.new("externalNamespaces", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "| m:math")
+    if (doc.internal_subset.children.none? { |elt| elt.name == "MATHML.prefixed" })
+      Nokogiri::XML::EntityDecl.new("MATHML.prefixed", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "INCLUDE")
+      Nokogiri::XML::EntityDecl.new("MATHML.prefix", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "m")
+      Nokogiri::XML::EntityDecl.new("MATHML.C.attrib", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, MATHML_COMMON_ATTRIB)
+      Nokogiri::XML::EntityDecl.new("mathML2", doc, DTD_ENTITY_DECL_TYPE, MATHML_2_EXTERNAL_ID, MATHML_2_SYSTEM_ID)
+      Nokogiri::XML::EntityDecl.new("externalFlow", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "| m:math")
+      Nokogiri::XML::EntityDecl.new("externalNamespaces", doc, MATHML_ENTITY_DECL_TYPE, nil, nil, "| m:math")
+    end
     return doc
   end
 end

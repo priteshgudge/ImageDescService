@@ -188,7 +188,7 @@ module DaisyBookHelper
           if (dynamic_image.current_equation && dynamic_image.current_equation.element)
             math_element = MathHelper.create_math_element(dynamic_image.current_equation)
             MathHelper.replace_math_image(image, math_element)
-            # TODO: update DTD reference
+            MathHelper.attach_math_extensions(doc)
             Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
             next
           end
