@@ -64,58 +64,15 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     
     # Check the result
     doc = Nokogiri::XML doc_string
-    imgs = doc.xpath("//xmlns:img")
-    assert_equal 0, imgs.size, "Image count in test file"
+    assert_equal 0, doc.xpath("//xmlns:img").size, "Image count in test file"
+    assert_equal 0, doc.xpath("//xmlns:imggroup").size, "Image group count in test file"
     
-    mathmls = doc.xpath("//xmlns:math")
+    mathmls = doc.xpath("//mml:math", "mml" => "http://www.w3.org/1998/Math/MathML")
     assert_equal 1, mathmls.size, "MathML count in test file"
     
     mathmls.each do | math |
       alt_img = math['altimg']
-      assert_equals original_img_src, alt_img, "Altimg content on #{math['id']}"
+      assert_equal original_img_src, alt_img, "Altimg content on math element"
     end
-  end
-  
-  def test_opf_math
-    # Set up the data
-    original_opf = 'features/fixtures/Sample.opf'
-    math_content = Nokogiri::XML @math_xml
-    
-    # Run the test
-    math_opf_string = @helper.get_opf_contents_for_math(original_opf, math_content)
-    
-    # Check the results
-    math_opf_doc = Nokogiri::XML math_opf_string
-    meta_elements = math_opf_doc.xpath("//xmlns:meta")
-    
-    assert_true meta_elements.any? { |elt|
-      elt['name'] === 'z39-86-extension-version'
-      }, "Updated extension meta element"
-
-    assert_true meta_elements.any? { |elt|
-      elt['name'] === 'DTBook-XSLTFallback'
-      }, "Updated fallback meta element"
-  end
-  
-  def test_opf_no_math
-    # Set up the data
-    original_opf = 'features/fixtures/Sample.opf'
-    math_content = Nokogiri::XML @math_image_xml
-    
-    # Run the test
-    math_opf_string = @helper.get_opf_contents_for_math(original_opf, math_content)
-    
-    # Check the results
-    math_opf_doc = Nokogiri::XML math_opf_string
-    meta_elements = math_opf_doc.xpath("//xmlns:meta")
-    
-    # If there was no MathML, we shouldn't have any math meta elements
-    assert_false meta_elements.any? { |elt|
-      elt['name'] === 'z39-86-extension-version'
-      }, "Updated extension meta element"
-
-    assert_false meta_elements.any? { |elt|
-      elt['name'] === 'DTBook-XSLTFallback'
-      }, "Updated fallback meta element"
   end
 end

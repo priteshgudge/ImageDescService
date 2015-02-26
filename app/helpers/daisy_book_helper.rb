@@ -69,7 +69,7 @@ module DaisyBookHelper
         opf_filename = DaisyUtils.get_opf_name(book_directory)
         relative_opf_path = File.basename opf_filename
         
-        opf = get_opf_contents_for_math(opf_filename, xml)
+        opf = MathHelper.get_opf_contents_for_math(opf_filename, xml)
         
         zip_filename = create_zip(daisy_file, relative_contents_path, xml, relative_opf_path, opf)
 
@@ -150,42 +150,10 @@ module DaisyBookHelper
           count
     end
     
-    def get_opf_contents_for_math(filename, contents_xml)
-      DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename, contents_xml)
-    end
-    
-    def self.get_opf_contents_for_math(filename, contents_xml)
-      file = File.new(filename)
-      doc = Nokogiri::XML file
-
-      math_elements = contents_xml.xpath('//m:math', 'm' => 'http://www.w3.org/1998/Math/MathML')
-      if math_elements.size > 0
-        meta_elements = doc.xpath("//xmlns:meta")
-        if !meta_elements.any? { |elt| elt['name'] === 'DTBook-XSLTFallback'}
-          fallback = Nokogiri::XML::Node.new "meta", doc
-          fallback['name'] = 'DTBook-XSLTFallback'
-          fallback['scheme'] = 'http://www.w3.org/1998/Math/MathML'
-          fallback['content'] = 'mathml-fallback.xslt'
-        
-          meta_elements.first.parent.add_child fallback
-        end
-      
-        if !meta_elements.any? { |elt| elt['name'] === 'z39-86-extension-version' }
-          extension = Nokogiri::XML::Node.new "meta", doc
-          extension['name'] = 'z39-86-extension-version'
-          extension['scheme'] = 'http://www.w3.org/1998/Math/MathML'
-          extension['content'] = '1.0'
-        
-          meta_elements.first.parent.add_child extension
-        end
-      end
-    
-      return doc.to_xml
-    end
-    
     def get_contents_with_updated_descriptions(file, current_library)
       DaisyBookHelper::BatchHelper.get_contents_with_updated_descriptions(file, current_library)
     end
+
     def self.get_contents_with_updated_descriptions(file, current_library)
       doc = Nokogiri::XML file
 
@@ -215,6 +183,19 @@ module DaisyBookHelper
           if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
             image['alt'] = dynamic_image.current_alt.alt
           end
+          
+          # Attempt to find the parent imggroup
+          imggroup = get_imggroup_parent_of(image)
+
+          # Replace the image if there is an equation
+          if (dynamic_image.current_equation && dynamic_image.current_equation.element)
+            math_element = MathHelper.create_math_element(dynamic_image.current_equation)
+            image_element = imggroup ? imggroup : image
+            MathHelper.replace_math_image(image_element, math_element, image['src'])
+            MathHelper.attach_math_extensions(doc)
+            Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
+            next
+          end
 
           dynamic_description = dynamic_image.dynamic_description
           if (!dynamic_description)
@@ -224,9 +205,6 @@ module DaisyBookHelper
 
           # note that there's no guarantee this will be non-null
           image_id = image['id']
-
-          # Attempt to find the parent imggroup
-          imggroup = get_imggroup_parent_of(image)
 
           # Push down into an imggroup element if none already exists
           if (!imggroup)
@@ -310,6 +288,16 @@ module DaisyBookHelper
         raise NonDaisyXMLException.new
       end
       return root
+    end
+    
+    def self.create_math_element(equation)
+      fragment = Nokogiri::XML.fragment equation.element
+      return fragment.children.first
+    end
+    
+    def self.replace_node(old_node, new_node)
+      new_node.parent = old_node.parent
+      old_node.unlink
     end
   end
 end
