@@ -1,9 +1,6 @@
 module DaisyBookHelper
   class BatchHelper
     ROOT_XPATH = "/xmlns:dtbook"
-    MATHML_NS = 'http://www.w3.org/1998/Math/MathML'
-    MATHML_EXTENSION = 'z39-86-extension-version'
-    MATHML_FALLBACK = 'DTBook-XSLTFallback'
 
     def self.batch_add_descriptions_to_book job_id, current_library 
       job = Job.where(:id => job_id).first
@@ -72,7 +69,7 @@ module DaisyBookHelper
         opf_filename = DaisyUtils.get_opf_name(book_directory)
         relative_opf_path = File.basename opf_filename
         
-        opf = get_opf_contents_for_math(opf_filename, xml)
+        opf = MathHelper.get_opf_contents_for_math(opf_filename, xml)
         
         zip_filename = create_zip(daisy_file, relative_contents_path, xml, relative_opf_path, opf)
 
@@ -153,42 +150,10 @@ module DaisyBookHelper
           count
     end
     
-    def get_opf_contents_for_math(filename, contents_xml)
-      DaisyBookHelper::BatchHelper.get_opf_contents_for_math(filename, contents_xml)
-    end
-    
-    def self.get_opf_contents_for_math(filename, contents_xml)
-      file = File.new(filename)
-      doc = Nokogiri::XML file
-
-      math_elements = contents_xml.xpath('//m:math', 'm' => MATHML_NS)
-      if math_elements.size > 0
-        meta_elements = doc.xpath("//xmlns:meta")
-        if !meta_elements.any? { |elt| elt['name'] === MATHML_FALLBACK}
-          fallback = Nokogiri::XML::Node.new "meta", doc
-          fallback['name'] = MATHML_FALLBACK
-          fallback['scheme'] = MATHML_NS
-          fallback['content'] = 'mathml-fallback.xslt'
-        
-          meta_elements.first.add_next_sibling fallback
-        end
-      
-        if !meta_elements.any? { |elt| elt['name'] === MATHML_EXTENSION }
-          extension = Nokogiri::XML::Node.new "meta", doc
-          extension['name'] = MATHML_EXTENSION
-          extension['scheme'] = MATHML_NS
-          extension['content'] = '1.0'
-        
-          meta_elements.first.add_next_sibling extension
-        end
-      end
-    
-      return doc.to_xml
-    end
-    
     def get_contents_with_updated_descriptions(file, current_library)
       DaisyBookHelper::BatchHelper.get_contents_with_updated_descriptions(file, current_library)
     end
+
     def self.get_contents_with_updated_descriptions(file, current_library)
       doc = Nokogiri::XML file
 
@@ -221,9 +186,8 @@ module DaisyBookHelper
           
           # Replace the image if there is an equation
           if (dynamic_image.current_equation && dynamic_image.current_equation.element)
-            math_element = create_math_element(dynamic_image.current_equation)
-            replace_node(image, math_element)
-            math_element['altimg'] = image_location
+            math_element = MathHelper.create_math_element(dynamic_image.current_equation)
+            MathHelper.replace_math_image(image, math_element)
             # TODO: update DTD reference
             Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
             next
