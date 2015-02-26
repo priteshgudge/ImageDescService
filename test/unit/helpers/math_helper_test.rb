@@ -49,4 +49,16 @@ class MathHelperTest < Test::Unit::TestCase
       elt['name'] === 'DTBook-XSLTFallback'
       }, "Updated fallback meta element"
   end
+  
+  def test_dtd_extension
+    # Set up the data
+    math_content = Nokogiri::XML @math_xml
+    assert_equal 0, math_content.internal_subset.children.size, "Starting entity count"
+    
+    # Run the test
+    new_doc = MathHelper.attach_math_extensions(math_content)
+    
+    # Check the results
+    assert_equal 6, new_doc.internal_subset.children.size, "Starting entity count"
+  end
 end
