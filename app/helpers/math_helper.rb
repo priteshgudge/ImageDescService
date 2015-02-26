@@ -32,8 +32,9 @@ module MathHelper
   def self.get_opf_contents_for_math(filename, contents_xml)
     file = File.new(filename)
     doc = Nokogiri::XML file
+    math_doc = Nokogiri::XML contents_xml
 
-    math_elements = contents_xml.xpath('//m:math', 'm' => MATHML_NS)
+    math_elements = math_doc.xpath('//m:math', 'm' => MATHML_NS)
     if math_elements.size > 0
       meta_elements = doc.xpath("//xmlns:meta")
       if meta_elements.none? { |elt| elt['name'] === MATHML_FALLBACK}

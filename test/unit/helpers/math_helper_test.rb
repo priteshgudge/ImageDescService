@@ -10,10 +10,9 @@ class MathHelperTest < Test::Unit::TestCase
   def test_opf_math
     # Set up the data
     original_opf = 'features/fixtures/Sample.opf'
-    math_content = Nokogiri::XML @math_xml
     
     # Run the test
-    math_opf_string = MathHelper.get_opf_contents_for_math(original_opf, math_content)
+    math_opf_string = MathHelper.get_opf_contents_for_math(original_opf, @math_xml)
     
     # Check the results
     math_opf_doc = Nokogiri::XML math_opf_string
@@ -31,10 +30,9 @@ class MathHelperTest < Test::Unit::TestCase
   def test_opf_no_math
     # Set up the data
     original_opf = 'features/fixtures/Sample.opf'
-    math_content = Nokogiri::XML @math_image_xml
     
     # Run the test
-    math_opf_string = MathHelper.get_opf_contents_for_math(original_opf, math_content)
+    math_opf_string = MathHelper.get_opf_contents_for_math(original_opf, @math_image_xml)
     
     # Check the results
     math_opf_doc = Nokogiri::XML math_opf_string
