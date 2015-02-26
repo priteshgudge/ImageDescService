@@ -49,6 +49,10 @@ module DaisyUtils
     return Dir.glob(File.join(book_directory, '*.opf'))[0]
   end
   
+  def get_opf_from_dir(book_directory)
+    DaisyUtils.get_opf_from_dir(book_directory)
+  end
+  
   def self.get_opf_from_dir (book_directory)
     opf_filename = get_opf_name(book_directory)
     File.read(opf_filename)
