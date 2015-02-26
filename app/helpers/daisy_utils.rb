@@ -41,6 +41,10 @@ module DaisyUtils
     return "#{request.remote_addr}"
   end
 
+  def get_contents_xml_name(book_directory) 
+    DaisyUtils.get_contents_xml_name(book_directory)
+  end
+  
   def self.get_contents_xml_name(book_directory) 
     return Dir.glob(File.join(book_directory, '*.xml'))[0]
   end
