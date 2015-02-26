@@ -58,10 +58,10 @@ module MathHelper
     return fragment.children.first
   end
   
-  def self.replace_math_image(image_element, math_element)
+  def self.replace_math_image(image_element, math_element, image_source)
     math_element.parent = image_element.parent
     image_element.unlink
-    math_element['altimg'] = image_element['src']
+    math_element['altimg'] = image_source
   end
   
   def self.attach_math_extensions(doc)

@@ -184,10 +184,14 @@ module DaisyBookHelper
             image['alt'] = dynamic_image.current_alt.alt
           end
           
+          # Attempt to find the parent imggroup
+          imggroup = get_imggroup_parent_of(image)
+
           # Replace the image if there is an equation
           if (dynamic_image.current_equation && dynamic_image.current_equation.element)
             math_element = MathHelper.create_math_element(dynamic_image.current_equation)
-            MathHelper.replace_math_image(image, math_element)
+            image_element = imggroup ? imggroup : image
+            MathHelper.replace_math_image(image_element, math_element, image['src'])
             MathHelper.attach_math_extensions(doc)
             Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
             next
@@ -201,9 +205,6 @@ module DaisyBookHelper
 
           # note that there's no guarantee this will be non-null
           image_id = image['id']
-
-          # Attempt to find the parent imggroup
-          imggroup = get_imggroup_parent_of(image)
 
           # Push down into an imggroup element if none already exists
           if (!imggroup)

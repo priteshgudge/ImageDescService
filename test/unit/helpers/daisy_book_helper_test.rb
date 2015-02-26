@@ -64,8 +64,8 @@ class DaisyBookHelperTest < Test::Unit::TestCase
     
     # Check the result
     doc = Nokogiri::XML doc_string
-    imgs = doc.xpath("//xmlns:img")
-    assert_equal 0, imgs.size, "Image count in test file"
+    assert_equal 0, doc.xpath("//xmlns:img").size, "Image count in test file"
+    assert_equal 0, doc.xpath("//xmlns:imggroup").size, "Image group count in test file"
     
     mathmls = doc.xpath("//mml:math", "mml" => "http://www.w3.org/1998/Math/MathML")
     assert_equal 1, mathmls.size, "MathML count in test file"
