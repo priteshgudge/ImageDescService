@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20150225193010) do
     t.integer  "submitter_id"
     t.integer  "dynamic_image_id"
     t.string   "described_at"
-    t.binary   "source"
+    t.text     "source"
   end
 
   add_index "equations", ["dynamic_image_id"], :name => "equations_dynamic_image_id"
