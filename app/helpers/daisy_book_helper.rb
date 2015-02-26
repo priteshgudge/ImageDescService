@@ -264,6 +264,7 @@ module DaisyBookHelper
     def get_imggroup_parent_of(image_node)
       DaisyBookHelper::BatchHelper.get_imggroup_parent_of(image_node)
     end
+
     def self.get_imggroup_parent_of(image_node)
       node = image_node
       prevent_infinite_loop = 100
@@ -291,16 +292,6 @@ module DaisyBookHelper
         raise NonDaisyXMLException.new
       end
       return root
-    end
-    
-    def self.create_math_element(equation)
-      fragment = Nokogiri::XML.fragment equation.element
-      return fragment.children.first
-    end
-    
-    def self.replace_node(old_node, new_node)
-      new_node.parent = old_node.parent
-      old_node.unlink
     end
   end
 end
