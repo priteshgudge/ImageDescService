@@ -75,6 +75,10 @@ html, body {
   border-right: 4px solid #D4D4D4;
 }
 
+#toggle a {
+  padding: 0;
+}
+
 #right {
   position: absolute;
   top: 41px;
@@ -111,10 +115,6 @@ html, body {
   transform-origin: left top 0;
 }
 
-#expand img {
-  margin-right: 7px;
-  margin-left: 5px;
-}
 
 h2.math-preview, h2.math-edit {
   color: #ffffff;

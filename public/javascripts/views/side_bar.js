@@ -42,20 +42,24 @@ define([
       $("#right").scrollTo($(e.currentTarget).attr("href"));
     },
 
-    closeNav: function() {
+    closeNav: function(e) {
+      e.preventDefault();
       $("#left").removeClass("col-md-2");
       $("#right").removeClass("col-md-10");
       $("#right").addClass("col-md-12");
+      $("#right").css("right", "-15px");
       $(".offcanvas").hide();
       $("#close-nav").hide();
       $("#expand").show();
       $("#left").css("background-color", "#D4D4D4");
     },
 
-    openNav: function() {
+    openNav: function(e) {
+      e.preventDefault();
       $("#left").addClass("col-md-2");
       $("#right").addClass("col-md-10");
       $("#right").removeClass("col-md-12");
+      $("#right").css("right", "0");
       $(".offcanvas").show();
       $("#expand").hide();
       $("#close-nav").show();
