@@ -276,8 +276,9 @@ define([
         ["Typeset", MathJax.Hub, editImage.$(".typeset-math")[0]],
         [function() { editImage.jax.visual = MathJax.Hub.getAllJax(editImage.$(".typeset-math")[0])[0]; }],
         [function() { editImage.$(".math-editor").html(editImage.sanitizeMathML(editImage.jax.visual.root.toMathML()));}]);
+      editImage.$(".save-math").show();
       if ($("#can_edit_content").val() == "true") {
-        editImage.$(".save-math").show();  
+        editImage.$(".save-as-replacement").show();  
       }
     },
 
