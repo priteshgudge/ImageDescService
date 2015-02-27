@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'scrollTo',
   '/javascripts/collections/dynamic_image_collection.js',
   'text!/javascripts/templates/side_bar.html',
   '/javascripts/views/edit_book.js'
-], function($, _, Backbone, DynamicImageCollection, sideBarTemplate, EditBookView){
+], function($, _, Backbone, scrollTo, DynamicImageCollection, sideBarTemplate, EditBookView){
   var SideBarView = Backbone.View.extend({
     el: $('#left'),
 
@@ -15,7 +16,7 @@ define([
       "click #expand": "openNav",
       "change #fragment": "loadFragment",
       "change #filter": "filterNavImages",
-      "click navLink": "setFocusOnImage",
+      "click .navLink": "scrollToImage",
       "click #goToImage": "goToImage",
       "submit #filterForm": "goToImage"
     },
@@ -34,6 +35,11 @@ define([
       } else {
         alert("That image is not in this section of the book");
       }
+    },
+
+    scrollToImage: function(e) {
+      e.preventDefault();
+      $("#right").scrollTo($(e.currentTarget).attr("href"));
     },
 
     closeNav: function() {

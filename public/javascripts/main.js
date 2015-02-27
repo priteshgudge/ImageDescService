@@ -38,6 +38,10 @@ require.config({
     },
     mespeak: {
       exports: "mespeak"
+    },
+    scrollTo: {
+      deps: ['jquery'],
+      exports: ['scrollTo']
     }
   },
   paths: {
@@ -50,7 +54,8 @@ require.config({
     'ckeditor': 'libs/ckeditor/adapters/jquery',
     'bootstrap': 'libs/bootstrap',
     'fancybox': 'libs/fancybox/jquery.fancybox',
-    'mespeak': 'libs/mespeak/mespeak.min'
+    'mespeak': 'libs/mespeak/mespeak.min',
+    'scrollTo': 'libs/jquery/jquery.scrollTo.min'
   },
   mainConfigFile: '/javascripts/main.js',
   waitSeconds: 120
