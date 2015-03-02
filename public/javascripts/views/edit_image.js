@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'MathJax',
   'ckeditor',
   'bootstrap/modal',
   'bootstrap/tab',
@@ -14,7 +15,7 @@ define([
   '/javascripts/models/mmlc_equation.js',
   '/javascripts/collections/mmlc_component_collection.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
+], function($, _, Backbone, MathJax, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -41,6 +42,7 @@ define([
       "click .add-description-button": "hideAddButton",
       "click .tab-link": "clearMessages",
       "click .math-toggle": "setSelectedMathEditor",
+      "click .jswaves-toggle": "showJSWaves",
       "click .image_description": "showDynamicDescriptionForm",
       "click .altButton": "saveAlt"
     },
@@ -270,12 +272,11 @@ define([
 
     getMathML: function(e) {
       var editImage = this;
-      var s = $(e.currentTarget).val();
+      var s = editImage.$(".math-editor").val();
       editImage.$(".typeset-math").text("`" + s + "`");
       MathJax.Callback.Queue(
         ["Typeset", MathJax.Hub, editImage.$(".typeset-math")[0]],
-        [function() { editImage.jax.visual = MathJax.Hub.getAllJax(editImage.$(".typeset-math")[0])[0]; }],
-        [function() { editImage.$(".math-editor").html(editImage.sanitizeMathML(editImage.jax.visual.root.toMathML()));}]);
+        [function() { editImage.jax.visual = MathJax.Hub.getAllJax(editImage.$(".typeset-math")[0])[0]; }]);
       editImage.$(".save-math").show();
       if ($("#can_edit_content").val() == "true") {
         editImage.$(".save-as-replacement").show();  
@@ -415,6 +416,18 @@ define([
     setSelectedMathEditor: function(e) {
       e.preventDefault();
       this.$(".math-editor").addClass("selectedMathEditor");
+    },
+
+    showJSWaves: function(e) {
+      e.preventDefault();
+      $("#waves-toolbar").show();
+      var editImage = this;
+      $("#waves-done").on("click", function(e) {
+        setTimeout( function () {
+          editImage.$(".math-editor").val($(".waves-input").html());
+          editImage.$(".math-editor").trigger("keyup");
+        }, 200);
+      });
     }
 
   });

@@ -3,6 +3,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'MathJax',
+  'JSWAVES',
   '/javascripts/views/side_bar.js',
   '/javascripts/views/book_content.js',
   '/javascripts/views/example_modal.js',
@@ -10,7 +12,7 @@ define([
   '/javascripts/models/image_category.js',
   '/javascripts/collections/dynamic_image_collection.js',
   '/javascripts/collections/image_category_collection.js'
-], function($, _, Backbone, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, Category, DynamicImageCollection, ImageCategoryCollection) {
+], function($, _, Backbone, MathJax, JSWAVES, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, Category, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     
     el: $('#edit_book'),

@@ -182,5 +182,8 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
   font-weight: bold;
 }
 
+.waves-output, .waves-input {
+  display: none;
+}
 
 

@@ -137,7 +137,10 @@
 									  	<div class="panel panel-default">
 											<div class="panel-body">
 												<h2 class="math-edit">MathML Editor</h2>
-												<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a><br />
+												<div class="buttons">
+													<a href="#" class="math-toggle btn btn-default" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a>
+													<a href="#" class="jswaves-toggle btn btn-default">JS Waves</a>
+												</div><br>
 												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"><%= image.has("current_equation") ? image.get("current_equation").source : ""%></textarea>
 												<div class="clearfix"></div>
