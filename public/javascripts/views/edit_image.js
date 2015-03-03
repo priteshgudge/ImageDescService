@@ -262,14 +262,6 @@ define([
     toggleDescriptionMathML: function(e) {
       var editImage = this;
       editImage.$(".text-success").html("");
-      var image = editImage.model;
-      if (image.has("dynamic_description")) {
-        if (editImage.hasMathML(image.get("dynamic_description").body)) {
-          editImage.$(".math-text-description").html("");
-        } else {
-          editImage.$(".typeset-math").html("");
-        }
-      } 
     },
 
     getMathML: function(e) {
