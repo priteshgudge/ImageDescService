@@ -19,8 +19,10 @@
             <% end %>
 	          <li><%= link_to "Training", training_index_path %> </li>
 	          <li><%= link_to "Help", edit_book_help_path %> </li>
-	          <% if can? :view_admin, @all %>
+	          <% if can? :reports, @all %>
 	          	 <li><%= link_to "Reports", admin_reports_path %> </li>
+            <%  end %>
+            <% if can? :view_admin, @all %>
 	          	 <li class="dropdown">
 		          	 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 	                 	Books <span class="caret"></span>
@@ -31,6 +33,8 @@
 	                  	<li><%= link_to "Deleted Books", admin_deleted_books_path %></li>
 	                 </ul>
 	             </li>
+            <%  end %>
+            <% if can? :edit_users, @all %>
 	             <li class="dropdown">
 		          	 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
 	                 	Users <span class="caret"></span>
@@ -40,7 +44,7 @@
 	                  	<li><%= link_to "Deleted Users", admin_deleted_users_path %></li>
 	                 </ul>
 	             </li>
-	          <%  end %>
+	          <% end %>
 	          <% if current_user %>
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
