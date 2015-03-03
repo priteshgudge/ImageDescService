@@ -8,6 +8,7 @@ define([
   'bootstrap/modal',
   'bootstrap/tab',
   'mespeak',
+  'scrollTo',
   '/javascripts/models/dynamic_image.js',
   '/javascripts/models/dynamic_description.js',
   '/javascripts/models/alt.js',
@@ -15,7 +16,7 @@ define([
   '/javascripts/models/mmlc_equation.js',
   '/javascripts/collections/mmlc_component_collection.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, MathJax, ckeditor, modal, tab, mespeak, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
+], function($, _, Backbone, MathJax, ckeditor, modal, tab, mespeak, scrollTo, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -28,7 +29,7 @@ define([
       "click .cancel": "cancelEditor",
       "click .save-text": "saveTextDescription",
       "click .save-math-description": "saveMathDescription",
-      "click .save-mathml-text": "getMathDescription",
+      "click .save-mathml-text": "getMathDescription",  
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
       "click .additional-fields": "showAdditionalFields",
@@ -44,7 +45,8 @@ define([
       "click .math-toggle": "setSelectedMathEditor",
       "click .jswaves-toggle": "showJSWaves",
       "click .image_description": "showDynamicDescriptionForm",
-      "click .altButton": "saveAlt"
+      "click .altButton": "saveAlt",
+      "click .arrow": "scrollToImage"
     },
 
     jax: {},
@@ -428,6 +430,11 @@ define([
           editImage.$(".math-editor").trigger("keyup");
         }, 200);
       });
+    },
+
+    scrollToImage: function(e) {
+      e.preventDefault();
+      $("#right").scrollTo($(e.currentTarget).attr("href"));
     }
 
   });
