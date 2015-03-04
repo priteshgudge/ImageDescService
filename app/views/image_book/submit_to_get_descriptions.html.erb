@@ -23,7 +23,7 @@
 <script type="text/javascript">
   function doPoll(){
     $.get('<%= poll_file_with_descriptions_path(:job_id => @job.id) %>', function(data) {
-      if (typeof(data.job) != "undefined") {
+      if (typeof(data.job) != "undefined" && !data.job.state in ['complete', 'error']) {
         if(data.job.state == 'complete') {
           $('.download_link').html("<h3>Download your book</h3><p>Click the provided link to download your updated book.</p><p><a href='<%= download_with_descriptions_path(:job_id => @job.id, :file_type => @file_type) %>'><strong><%= @book_title %></strong></a>");
         }
@@ -31,7 +31,7 @@
           $('.download_link').html("<h3>Sorry!</h3><p>" + data.job.error_explanation);
         }
       } else {
-        setTimeout(doPoll, 500);
+        setTimeout(doPoll, 5000);
       }
     });
   }
