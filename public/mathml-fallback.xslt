@@ -20,7 +20,7 @@
   <xsl:template match="processing-instruction() | comment()">
  	<xsl:copy-of select="."/>
   </xsl:template>
-  <xsl:template match="m:math">
+  <xsl:template match="math">
  	<xsl:variable name="img_id" select="concat('img_',generate-id())"/>
  	<xsl:variable name="group_id" select="concat('imggroup_',generate-id())"/>
 	
