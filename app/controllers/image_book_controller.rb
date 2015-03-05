@@ -106,7 +106,7 @@ class ImageBookController < ApplicationController
 
   def poll_file_with_descriptions
     job = Job.where(:id => params[:job_id], :user_id => current_user.id).first
-    render json: job
+    render :json => JSON.parse(job.to_json())
   end
   
   def download_with_descriptions
