@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150225193010) do
+ActiveRecord::Schema.define(:version => 20150306165627) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -139,16 +139,6 @@ ActiveRecord::Schema.define(:version => 20150225193010) do
     t.string   "queue"
   end
 
-  create_table "descriptions", :force => true do |t|
-    t.string   "description",   :limit => 16384,                          :null => false
-    t.boolean  "is_current",                     :default => false,       :null => false
-    t.string   "submitter",                      :default => "anonymous", :null => false
-    t.datetime "date_approved"
-    t.integer  "image_id",                                                :null => false
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
-  end
-
   create_table "dynamic_descriptions", :force => true do |t|
     t.string   "body",                            :limit => 16384,                          :null => false
     t.boolean  "is_current",                                       :default => false,       :null => false
@@ -220,19 +210,6 @@ ActiveRecord::Schema.define(:version => 20150225193010) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "order_to_display"
-  end
-
-  create_table "images", :force => true do |t|
-    t.integer  "book_id",                         :null => false
-    t.string   "image_id",                        :null => false
-    t.string   "isbn",            :limit => 13
-    t.integer  "page_number"
-    t.integer  "sequence_number"
-    t.string   "caption",         :limit => 8192
-    t.string   "url"
-    t.integer  "library_id"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
   end
 
   create_table "jobs", :force => true do |t|
