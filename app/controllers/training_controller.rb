@@ -10,9 +10,6 @@ class TrainingController < ApplicationController
     render :json => JSON.parse(File.read("#{Rails.root}/public/DecisionTreeImages.json"))['gallery']['images']
   end
 
-  def tools_and_exapmles
-  end
-
   def when_to_describe
   end
 
