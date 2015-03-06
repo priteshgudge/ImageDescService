@@ -1,5 +1,5 @@
 class EditBookController < ApplicationController
-  before_filter :authenticate_user!, :except => [:help, :description_guidance]
+  before_filter :authenticate_user!, :except => [:help]
   include RepositoryChooser
 
   def initialize
@@ -179,10 +179,6 @@ class EditBookController < ApplicationController
  def help
  end
  
- def description_guidance
-   render :layout =>'guidelines_layout'
- end
-
  def image_categories
   render :json => JSON.parse(ImageCategory.order(:order_to_display).all.to_json);
  end 
