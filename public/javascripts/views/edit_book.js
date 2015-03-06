@@ -3,6 +3,7 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'mespeak',
   'MathJax',
   'JSWAVES',
   '/javascripts/views/side_bar.js',
@@ -12,10 +13,16 @@ define([
   '/javascripts/models/image_category.js',
   '/javascripts/collections/dynamic_image_collection.js',
   '/javascripts/collections/image_category_collection.js'
-], function($, _, Backbone, MathJax, JSWAVES, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, Category, DynamicImageCollection, ImageCategoryCollection) {
+], function($, _, Backbone, mespeak, MathJax, JSWAVES, SideBarView, BookContentView, ExampleModalView, MathCheatSheetView, Category, DynamicImageCollection, ImageCategoryCollection) {
   var EditBookView = Backbone.View.extend({
     
     el: $('#edit_book'),
+
+    initialize: function() {
+      //initialize meSpeak
+      meSpeak.loadConfig("/javascripts/libs/mespeak/mespeak_config.json"); 
+      meSpeak.loadVoice('/javascripts/libs/mespeak/voices/en/en-us.json'); 
+    },
 
     render: function() {
       var editBookView = this;
