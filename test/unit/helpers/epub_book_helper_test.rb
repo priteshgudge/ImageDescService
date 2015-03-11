@@ -73,8 +73,8 @@ class EpubBookHelperTest < Test::Unit::TestCase
     assert_equal 1, content_documents.values.size, "Output content documents"
     
     doc = Nokogiri::XML content_documents.values.shift
-    imgs = doc.xpath("//xmlns:img")
-    assert_equal 1, imgs.size, "Image count in test file"
+    assert_equal 1, doc.xpath("//xmlns:img").size, "Image count in test file"
+    assert_equal 1, doc.xpath("//xmlns:div[contains(@id, 'imggroup')]").size, "Image group div count in test file"
     
     mathmls = doc.xpath("//mml:math", "mml" => "http://www.w3.org/1998/Math/MathML")
     assert_equal 1, mathmls.size, "MathML count in test file"

@@ -105,7 +105,7 @@ module EpubBookHelper
         contents_filenames.each do |cf|
           content_file = File.read(cf)
           content_doc = Nokogiri::XML content_file
-          content_documents[get_relative_path(book_directory, cf)] = EpubBookHelper::BatchHelper.get_contents_with_updated_descriptions(content_doc, File::basename(cf, '.xhtml'), matching_images_hash)
+          content_documents[get_relative_path(book_directory, cf)] = get_contents_with_updated_descriptions(content_doc, File::basename(cf, '.xhtml'), matching_images_hash)
         end
       rescue NoImageDescriptions
         Rails.logger.info "No descriptions available #{contents_filenames}"
@@ -153,7 +153,6 @@ module EpubBookHelper
     end
     
     def self.get_contents_with_updated_descriptions(doc, filename, image_hash)
-      
       # brute-force: remove aria-describedby attributes that reference Poet-injected elements
       doc.css('img[aria-describedby^="' + ASIDE_PREFIX + '"]').remove_attr('aria-describedby')
 
@@ -172,11 +171,15 @@ module EpubBookHelper
             if (alt && alt.alt)
               img_node['alt'] = alt.alt
             end
+
+            # Attempt to find the parent container of the image node
+            imggroup = get_imggroup_parent_of(img_node)
             
             # Replace the image if there is an equation
             if (matched_image.current_equation && matched_image.current_equation.element)
               math_element = MathHelper.create_math_element(matched_image.current_equation)
-              MathHelper.replace_math_image(img_node, math_element, image_location)
+              image_element = imggroup ? imggroup : img_node
+              MathHelper.replace_math_image(image_element, math_element, image_location)
               Rails.logger.info "Image #{image_location} was removed in favor or equation #{matched_image.current_equation.id}"
               next
             end
@@ -204,35 +207,21 @@ module EpubBookHelper
       return doc.to_xml
     end
     
+    def self.get_imggroup_parent_of(image_node)
+      parent = image_node.parent
+      if (!parent || parent.node_name != 'div')
+        return nil
+      end 
+      
+      return parent
+    end
+    
     def self.get_relative_path(root_dir, path)
       rp = path[root_dir.length..-1]
       if (rp[0] == File::SEPARATOR)
         rp = rp[1..-1]
       end
       return rp
-    end
-    
-    def get_imggroup_parent_of(image_node)
-      DaisyBookHelper::BatchHelper.get_imggroup_parent_of(image_node)
-    end
-    def self.get_imggroup_parent_of(image_node)
-      node = image_node
-      prevent_infinite_loop = 100
-      while(node)
-        if(node.node_name == "imggroup")
-          return node
-        end
-        parent = node.at_xpath("..")
-        if(!parent || parent == node || parent.node_name == "dtbook")
-          break
-        end
-        node = parent
-        prevent_infinite_loop -= 1
-        if(prevent_infinite_loop < 0)
-          raise "XML file image was nested more than 100 levels deep"
-        end
-      end
-      return nil
     end
     
   end
