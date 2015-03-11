@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf"
+         prefix="dc: http://purl.org/dc/elements/1.1/"
+         unique-identifier="pub-id"
+         version="3.0">
+   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:f="http://www.daisy.org/ns/pipeline/internal-functions">
+      <dc:identifier id="pub-id">382575fe-a84b-4450-807a-98cd64fa58b4</dc:identifier>
+      <meta property="dcterms:modified">2013-10-23T00:22:14Z</meta>
+      <meta scheme="xsd:string" property="identifier-type" refines="#pub-id">uuid</meta>
+      <dc:title id="d30288e17">Magic Tree House #4: Pirates Past Noon</dc:title>
+      <meta property="title-type" refines="#d30288e17">main</meta>
+      <dc:language>en</dc:language>
+      <dc:language>eng</dc:language>
+      <link rel="mods-record" href="zedai-mods.xml"/>
+      <meta property="dc:date">2013-10-23T00:22:08Z</meta>
+      <meta property="dcterms:title">Magic Tree House #4: Pirates Past Noon</meta>
+      <meta property="dcterms:creator">Sal Murdocca, Mary Pope Osborne</meta>
+      <meta property="dcterms:description">Jack and Annie are ready for their next fantasy adventure in the bestselling middle-grade series--the Magic Tree House!  It's a treasure trove of trouble!</meta>
+      <meta property="dcterms:publisher">Bookshare</meta>
+      <meta property="dcterms:date">1994-01-01</meta>
+      <meta property="dcterms:format">ANSI/NISO Z39.86-2005</meta>
+      <meta property="dcterms:language">en</meta>
+      <meta property="dcterms:rights">Copyright © 1994 by Mary Pope Osborne</meta>
+   </metadata>
+   <manifest>
+      <item id="item_1"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_cvi_r1.jpg"/>
+      <item id="item_2"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_tp_r1.jpg"/>
+      <item id="item_3"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_039_r1.jpg"/>
+      <item id="item_4"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_001_r1.jpg"/>
+      <item media-type="application/xhtml+xml" 
+            id="item_37"   
+            href="Magic_Tree_House__4__Pirates-1.xhtml"/> 
+      <item properties="nav"
+            media-type="application/xhtml+xml"
+            id="item_50"
+            href="toc.xhtml"/>
+   </manifest>
+   <spine>
+      <itemref idref="item_37" id="itemref_1"/>
+   </spine>
+</package>
+
