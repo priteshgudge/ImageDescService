@@ -173,6 +173,14 @@ module EpubBookHelper
               img_node['alt'] = alt.alt
             end
             
+            # Replace the image if there is an equation
+            if (matched_image.current_equation && matched_image.current_equation.element)
+              math_element = MathHelper.create_math_element(matched_image.current_equation)
+              MathHelper.replace_math_image(img_node, math_element, image_location)
+              Rails.logger.info "Image #{image_location} was removed in favor or equation #{matched_image.current_equation.id}"
+              next
+            end
+            
             dynamic_description = matched_image.dynamic_description
             if(!dynamic_description || !dynamic_description.body || dynamic_description.body.strip.length == 0)
               Rails.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
