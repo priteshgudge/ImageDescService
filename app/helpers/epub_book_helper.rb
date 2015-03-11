@@ -164,10 +164,10 @@ module EpubBookHelper
       doc.css('img').each do |img_node|
         unless (img_node['src']).blank?
           image_location =  img_node['src']
-          matched_image = image_hash[image_location]
-          unless matched_image == nil 
+          dynamic_image = image_hash[image_location]
+          unless dynamic_image == nil 
             # Attach any alt text modifications that might exist
-            alt = matched_image.current_alt
+            alt = dynamic_image.current_alt
             if (alt && alt.alt)
               img_node['alt'] = alt.alt
             end
@@ -176,15 +176,15 @@ module EpubBookHelper
             imggroup = get_imggroup_parent_of(img_node)
             
             # Replace the image if there is an equation
-            if (matched_image.current_equation && matched_image.current_equation.element)
-              math_element = MathHelper.create_math_element(matched_image.current_equation)
+            if (dynamic_image.current_equation && dynamic_image.current_equation.element)
+              math_element = MathHelper.create_math_element(dynamic_image.current_equation)
               image_element = imggroup ? imggroup : img_node
               MathHelper.replace_math_image(image_element, math_element, image_location)
-              Rails.logger.info "Image #{image_location} was removed in favor or equation #{matched_image.current_equation.id}"
+              Rails.logger.info "Image #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
               next
             end
             
-            dynamic_description = matched_image.dynamic_description
+            dynamic_description = dynamic_image.dynamic_description
             if(!dynamic_description || !dynamic_description.body || dynamic_description.body.strip.length == 0)
               Rails.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
               next

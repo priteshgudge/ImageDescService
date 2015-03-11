@@ -181,20 +181,20 @@ module DaisyBookHelper
           next
         end
 
-        image_references.each do |image|
+        image_references.each do |img_node|
           # Attach any alt text modifications that might exist
           if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
-            image['alt'] = dynamic_image.current_alt.alt
+            img_node['alt'] = dynamic_image.current_alt.alt
           end
           
           # Attempt to find the parent imggroup
-          imggroup = get_imggroup_parent_of(image)
+          imggroup = get_imggroup_parent_of(img_node)
 
           # Replace the image if there is an equation
           if (dynamic_image.current_equation && dynamic_image.current_equation.element)
             math_element = MathHelper.create_math_element(dynamic_image.current_equation)
             image_element = imggroup ? imggroup : image
-            MathHelper.replace_math_image(image_element, math_element, image['src'])
+            MathHelper.replace_math_image(image_element, math_element, img_node['src'])
             MathHelper.attach_math_extensions(doc)
             Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
             next
@@ -207,17 +207,17 @@ module DaisyBookHelper
           end
 
           # note that there's no guarantee this will be non-null
-          image_id = image['id']
+          image_id = img_node['id']
 
           # Push down into an imggroup element if none already exists
           if (!imggroup)
             imggroup = Nokogiri::XML::Node.new "imggroup", doc
-            parent = image.at_xpath("..")
+            parent = img_node.parent
             # could result in an ID collision
             imggroup['id'] =  "imggroup_#{image_id}"
             imggroup.parent = parent
 
-            parent.children.delete(image)
+            parent.children.delete(img_node)
             image.parent = imggroup
           end
 
