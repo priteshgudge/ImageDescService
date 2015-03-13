@@ -20,21 +20,19 @@ FactoryGirl.define do
     first_name {Sham.first_name}
     last_name {Sham.last_name}
     password '123456'
-    libraries { |lib|
-      [ 
-        Factory(:library)
-      #  FactoryGirl.create(:library, name: 'Eureka Library')  
-      ]  
-    }
+    before_create do |user, evaluator|
+      FactoryGirl.create_list(:library, 1)
+      FactoryGirl.create_list(:user_role, 1)
+    end
   end
 
   factory :role do 
-    name 'writer'
+    name 'Describer'
   end  
   
-  factory :user_role do |ur|
-    ur.association :user
-    ur.association :role
+  factory :user_role do
+    user
+    role
   end
   
   factory :book do
@@ -45,7 +43,7 @@ FactoryGirl.define do
   end
   
   factory :library do
-    name 'San Francisco Public Library'
+    sequence(:name) {|n| 'Bookshare#{n}'}
   end
 
   factory :user_library do |u_lib|
