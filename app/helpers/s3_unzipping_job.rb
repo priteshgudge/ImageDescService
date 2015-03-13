@@ -88,17 +88,6 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
    
   end
 
-  def extract_book_uid(doc)
-    xpath_uid = "//xmlns:meta[@name='dtb:uid']"
-    matches = doc.xpath(doc, xpath_uid)
-    if matches.size != 1
-      raise MissingBookUIDException.new
-    end
-    node = matches.first
-    node.attributes['content'].content
-  end
-
-
   def get_image_size(image_file)
     width, height = 20
 
