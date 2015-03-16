@@ -16,43 +16,14 @@ module DaisyBookHelper
       book = File.open daisy_file
 
       unless password.blank?
-        begin
-          Zip::Archive.decrypt(book.path, password)
-        rescue Zip::Error => e
-          Rails.logger.info "#{e.class}: #{e.message}"
-          if e.message.include?("Wrong password")
-            Rails.logger.info "Invalid Password for encyrpted zip"
-            flash[:alert] = "Please check your password and re-enter"
-          else
-            Rails.logger.info "Other problem with encrypted zip"
-            flash[:alert] = "There is a problem with this zip file"
-          end
-          redirect_to :action => 'process'
-          return
-        end
+        Zip::Archive.decrypt(book.path, password)
       end
 
       if !DaisyUtils.valid_daisy_zip?(book.path)
-        flash[:alert] = "Not a valid DAISY book"
-        redirect_to :action => 'process'
-        return
+        Exception.new "Not a valid DAISY book"
       end
       
-      begin
-        get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
-      rescue Zip::Error => e
-        Rails.logger.info "#{e.class}: #{e.message}"
-        if e.message.include?("File encrypted")
-          Rails.logger.info "Password needed for zip"
-          flash[:alert] = "Please enter a password for this book"
-        else
-          Rails.logger.info "Other problem with zip"
-          flash[:alert] = "There is a problem with this zip file"
-        end
-
-        redirect_to :action => 'process'
-        return
-      end
+      get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
     end
     
   
@@ -83,10 +54,9 @@ module DaisyBookHelper
         repository = RepositoryChooser.choose
         repository.store_file(zip_filename, 'delayed', random_uid, nil)
         job.update_attributes :state => 'complete', :exit_params => ({:basename => basename, :random_uid => random_uid}).to_json
-      rescue ShowAlertAndGoBack => e
-        flash[:alert] = e.message
-        job.update_attributes :state => 'error', :error_explanation => 'Unable to process this book at this time.  Please contact your Poet administrator.'
-        redirect_to :action => 'process'
+      rescue ShowAlertAndGoBack, Exception => e
+        Rails.logger.info "#{e.class}: #{e.message}"
+        job.update_attributes :state => 'error', :error_explanation => e.message
         return
       end
     end
@@ -137,7 +107,7 @@ module DaisyBookHelper
         end
         
         if MathHelper.contains_math(new_xml_contents)
-          zipfile.add_file(MathHelper::MATHML_FALLBACK_FILE, "public/#{MathHelper::MATHML_FALLBACK_FILE}")
+          zipfile.add_or_replace_file(MathHelper::MATHML_FALLBACK_FILE, "public/#{MathHelper::MATHML_FALLBACK_FILE}")
         end
       end
       return new_daisy_zip.path

@@ -52,6 +52,17 @@ class ImageBookController < ApplicationController
       redirect_to :action => 'process'
       return
     end
+
+    if valid_daisy_zip?(book.path)
+      @file_type = "Daisy"
+    elsif valid_epub_zip?(book.path)
+      # to do - when turning on the upload for EPUB files we need to check the deleted_at flag
+      @file_type = "Epub"
+    else  
+      flash[:alert] = "Please specify a DAISY or Epub book to process"
+      redirect_to :action => 'process'
+      return
+    end
     
     begin
       # Store file in S3
@@ -61,7 +72,6 @@ class ImageBookController < ApplicationController
       @job = Job.new({:user_id => current_user.id, :enter_params => ({:random_uid => random_uid, :password => password, :book_name => book.original_filename, :content_type => book.content_type}).to_json})
       @job.save
     
-      @file_type = get_file_type book.original_filename
       zip_directory, book_directory, file = accept_and_copy_book(book.path, @file_type)
       xml = get_xml_from_dir book_directory, @file_type
       doc = Nokogiri::XML xml

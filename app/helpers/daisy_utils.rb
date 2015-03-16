@@ -88,6 +88,14 @@ module DaisyUtils
         end
       end
       images = nil;
+
+      maths = doc.xpath("//xmlns:math")
+      @num_maths = maths.size()
+      @maths_hash = Hash.new()
+      maths.each_with_index do |node, index|
+        @maths_hash[index] = node
+      end
+      maths = nil;
   end
   
 end
