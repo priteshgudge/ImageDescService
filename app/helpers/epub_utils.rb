@@ -77,12 +77,14 @@ module EpubUtils
      @alt_text_hash = Hash.new()
      @longdesc_hash = Hash.new()
      @figcaption_hash = Hash.new()
+     @maths_hash = Hash.new()
 
      book_uid = EpubUtils.extract_book_uid doc
      book = Book.where(:uid => book_uid, :deleted_at => nil).first
      file_names = EpubUtils.get_epub_book_xml_file_names(book_directory)
 
      @num_images = 0;
+     @num_maths = 0;
      file_names.each do |file_name|
       doc = Nokogiri::XML File.read(file_name)
       doc.css('img').each do |img_node| 
@@ -118,6 +120,10 @@ module EpubUtils
           end  
           @num_images += 1;       
         end
+      end
+      maths = doc.xpath('//mathml:math', 'mathml' => 'http://www.w3.org/1998/Math/MathML')
+      maths.each_with_index do |node, index|
+        @maths_hash[index] = node.to_s
       end
     end
   end
