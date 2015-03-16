@@ -205,6 +205,7 @@ define([
             editView.$(".text-success").html("Your image description has been " + (hasDescription ? "updated" : "created") + ".");
             editView.$(".preview-tab").show();
             editView.$(".preview").trigger("click");
+            $("#right").scrollTo(editView.$("#edit-image-" + editView.model.get("id")));
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
@@ -327,6 +328,7 @@ define([
           success: function () {
             editView.$(".text-success").html("The description has been saved.");
             editView.$(".preview").trigger("click");
+            $("#right").scrollTo(editView.$("#edit-image-" + editView.model.get("id")));
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
