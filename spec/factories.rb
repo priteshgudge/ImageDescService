@@ -1,11 +1,4 @@
 require 'factory_girl'
-require 'factory_girl/syntax/sham'
-
-Sham.name        { "Name" }
-Sham.email {|n| "somebody#{n}@example.com" }
-Sham.username("FOO") { |c| "User-#{c}" }
-Sham.first_name { "John" }
-Sham.last_name { "Smith" }
 
 FactoryGirl.define do
   
@@ -15,14 +8,14 @@ FactoryGirl.define do
   end
 
   factory :user do 
-    email {Sham.email}
-    username {Sham.username}
-    first_name {Sham.first_name}
-    last_name {Sham.last_name}
+    sequence(:email) {|n| 'somebody#{n}@example.com'}
+    sequence(:username) {|n| "User-#{n}"}
+    first_name "John"
+    last_name "Smith"
     password '123456'
-    before_create do |user, evaluator|
-      FactoryGirl.create_list(:library, 1)
-      FactoryGirl.create_list(:user_role, 1)
+    before(:create) do |user, evaluator|
+      create_list(:library, 1)
+      create_list(:user_role, 1)
     end
   end
 
@@ -43,7 +36,7 @@ FactoryGirl.define do
   end
   
   factory :library do
-    sequence(:name) {|n| 'Bookshare#{n}'}
+    sequence(:name) {|n| 'Test#{n}'}
   end
 
   factory :user_library do |u_lib|

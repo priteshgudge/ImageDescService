@@ -63,5 +63,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'foreman'
   gem 'oink'
-  gem 'factory_girl_rails', '1.2.0'
+  gem 'factory_girl_rails', '~> 4.0'
 end
