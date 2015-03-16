@@ -14,18 +14,15 @@ FactoryGirl.define do
     last_name "Smith"
     password '123456'
     before(:create) do |user, evaluator|
-      create_list(:library, 1)
-      create_list(:user_role, 1)
+      # Wire up has_many using the current user and defined role and library
+      user.user_libraries = [ UserLibrary.new(:user => user, :library => Library.new(:id => 2)) ]
+      user.user_roles = [ UserRole.new(:user => user, :role => Role.new(:id => 3)) ]
     end
   end
 
-  factory :role do 
-    name 'Describer'
-  end  
-  
   factory :user_role do
     user
-    role
+    role { Role.new(:id => 3) }
   end
   
   factory :book do
@@ -37,11 +34,12 @@ FactoryGirl.define do
   
   factory :library do
     sequence(:name) {|n| 'Test#{n}'}
+    #name { "Test#{rand(1000).to_s}"}
   end
 
-  factory :user_library do |u_lib|
-       u_lib.association :user
-       u_lib.association :library
+  factory :user_library do
+    user
+    library
   end
 
   factory :dynamic_image do
