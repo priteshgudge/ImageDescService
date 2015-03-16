@@ -8,6 +8,11 @@ Sham.first_name { "John" }
 Sham.last_name { "Smith" }
 
 FactoryGirl.define do
+  
+  factory :alt do
+    alt "A description of the image"
+    dynamic_image
+  end
 
   factory :user do 
     email {Sham.email}
@@ -32,8 +37,15 @@ FactoryGirl.define do
     ur.association :role
   end
   
-  factory :library do |lib|
-       lib.name 'San Francisco Public Library'
+  factory :book do
+    uid "123456"
+    isbn "1234567890123"
+    xml_file "foo.xml"
+    library
+  end
+  
+  factory :library do
+    name 'San Francisco Public Library'
   end
 
   factory :user_library do |u_lib|
@@ -41,8 +53,9 @@ FactoryGirl.define do
        u_lib.association :library
   end
 
-  factory :dynamic_image do |i|
-    i.image_location 'images/first.jpg'
+  factory :dynamic_image do
+    image_location 'images/first.jpg'
+    book
   end
 
   factory :dynamic_description do |desc|

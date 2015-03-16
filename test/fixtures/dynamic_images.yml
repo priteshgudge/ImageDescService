@@ -40,3 +40,13 @@ math_1:
   book_id: 4
   image_location: images/image001.jpg
   
+magic_math_1:
+  id: 9
+  book_id: 5
+  image_location: images/osbo_9780375894213_epub_tp_r1.jpg
+  
+magic_math_2:
+  id: 10
+  book_id: 5
+  image_location: images/osbo_9780375894213_epub_001_r1.jpg
+  
