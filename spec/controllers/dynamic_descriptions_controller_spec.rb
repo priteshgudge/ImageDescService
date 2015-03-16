@@ -3,8 +3,8 @@ require 'spec_helper'
 describe DynamicDescriptionsController do
 
   before (:each) do
-    @user = Factory(:user)
-    sign_in @user
+    #@user = FactoryGirl(:user)
+    #sign_in @user
   end
 
   describe "should get new" do

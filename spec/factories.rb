@@ -8,6 +8,10 @@ FactoryGirl.define do
   end
 
   factory :user do 
+    transient do
+      demo_library Library.new(:id => 2)
+    end
+    
     sequence(:email) {|n| 'somebody#{n}@example.com'}
     sequence(:username) {|n| "User-#{n}"}
     first_name "John"
@@ -15,8 +19,9 @@ FactoryGirl.define do
     password '123456'
     before(:create) do |user, evaluator|
       # Wire up has_many using the current user and defined role and library
-      user.user_libraries = [ UserLibrary.new(:user => user, :library => Library.new(:id => 2)) ]
+      user.user_libraries = [ UserLibrary.new(:user => user, :library => demo_library) ]
       user.user_roles = [ UserRole.new(:user => user, :role => Role.new(:id => 3)) ]
+      user.libraries = [ demo_library ]
     end
   end
 
