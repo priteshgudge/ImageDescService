@@ -188,6 +188,27 @@
               </tbody>
             </table>
           <% end %>
+          <% if @maths_hash %>
+            <h4 id="math">MathML</h4> 
+            <table class="table table-bordered table-striped">
+              <thead><th>Equation</th></tr></thead>
+              <tbody>
+                <% @maths_hash.keys.each do |key| %>
+                  <tr>
+                    <td>
+                      <% value = @maths_hash[key]%>
+                      <div class='description-scroller'>
+                        <%= value.html_safe %> 
+                      </div>
+                    </td> 
+                  </tr>
+                <% end %>
+                <% if (@maths_hash.keys.size == 0) %>
+                  <tr><td>No MathML</td><td></td></tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
         </div>
         <div class="col-md-3">
           <table class="table table-bordered">
@@ -235,10 +256,28 @@
               <td><%= @longdesc_hash.size %></td>
             </tr>
             <% end %>   
+            <% if @maths_hash %>
+            <tr>
+              <td>Total <a href="#math">mathML</a></td>
+              <td><%= @maths_hash.size %></td>
+            </tr>
+            <% end %>   
           </table>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/AsciiMath", "input/MathML", "input/TeX", "output/SVG", "output/NativeMML"],
+      extensions: ["asciimath2jax.js", "tex2jax.js", "MathMenu.js", "MathZoom.js", "toMathML.js"],
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 

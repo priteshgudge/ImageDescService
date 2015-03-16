@@ -163,7 +163,7 @@ module DaisyBookHelper
           # Replace the image if there is an equation
           if (dynamic_image.current_equation && dynamic_image.current_equation.element)
             math_element = MathHelper.create_math_element(dynamic_image.current_equation)
-            image_element = imggroup ? imggroup : image
+            image_element = imggroup ? imggroup : img_node
             MathHelper.replace_math_image(image_element, math_element, img_node['src'])
             MathHelper.attach_math_extensions(doc)
             Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
@@ -188,7 +188,7 @@ module DaisyBookHelper
             imggroup.parent = parent
 
             parent.children.delete(img_node)
-            image.parent = imggroup
+            img_node.parent = imggroup
           end
 
           # Attempt to locate prodnote that conforms to our ID naming convention 

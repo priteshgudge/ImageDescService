@@ -89,11 +89,12 @@ module DaisyUtils
       end
       images = nil;
 
-      maths = doc.xpath("//xmlns:math")
+      maths = doc.xpath('//mathml:math', 'mathml' => 'http://www.w3.org/1998/Math/MathML')
+      #maths = doc.css("math")
       @num_maths = maths.size()
       @maths_hash = Hash.new()
       maths.each_with_index do |node, index|
-        @maths_hash[index] = node
+        @maths_hash[index] = node.to_s
       end
       maths = nil;
   end
