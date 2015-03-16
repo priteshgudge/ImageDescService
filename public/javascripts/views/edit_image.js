@@ -161,6 +161,10 @@ define([
               editView.$(".math-tab").hide();
             }
           }
+          //Make sure that fields that can't be used yet are disabled.
+          if (currentDescription == "") {
+            editView.$("#additional-fields-" + editView.model.get("id") + " :input").prop("disabled", true);
+          }
         }    
       });
     },
@@ -208,7 +212,11 @@ define([
         }
       );
       if ($("#show_additional_fields").val() == "true") {
-        editView.$(".additional-fields-tab").show();
+        var summaryEditorName = editView.$(".summary").attr("name");
+        var simplifiedLanguageDescriptionName = editView.$(".simplified-language-description").attr("name");
+        editView.$("#additional-fields-" + editView.model.get("id") + " :input").prop("disabled", false);
+        CKEDITOR.instances[summaryEditorName].setReadOnly(false);
+        CKEDITOR.instances[simplifiedLanguageDescriptionName].setReadOnly(false);
       }
     },
 
