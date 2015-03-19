@@ -72,6 +72,7 @@ ActiveAdmin.register BookStats, :as => "Reports" do
     end
   end
 
+  filter :book_library_name, as: :select, collection: proc { Library.all.collect {|lib| [lib.name, lib.name]} }
   filter :percent_essential_described
   filter :book_title, as: :string
   filter :book_uid, as: :string
