@@ -1,6 +1,5 @@
 ActiveAdmin.register BookStats, :as => "Reports" do
   menu :if => proc{ can? :admin_user, @all }
-  scope_to :current_library, :association_method => :related_book_stats
   
   actions :index
   
@@ -10,6 +9,9 @@ ActiveAdmin.register BookStats, :as => "Reports" do
     end  
     column "Title" do |book_stats| 
        book_stats.book.title
+    end
+    column "Library" do |book_stats|
+      Library.joins(:books).where(books: {:id => book_stats.book_id}).first.name
     end
     column :total_images
     column :total_essential_images
@@ -35,6 +37,9 @@ ActiveAdmin.register BookStats, :as => "Reports" do
     column "Title" do |book_stats| 
        link_to book_stats.book.title, edit_book_edit_path(:book_id => book_stats.book_id)
     end
+    column "Library" do |book_stats|
+      Library.joins(:books).where(books: {:id => book_stats.book_id}).first.name
+    end
     column :total_images
     column :total_essential_images
     column "% Essential" do |book_stats|
@@ -54,7 +59,7 @@ ActiveAdmin.register BookStats, :as => "Reports" do
   
   sidebar "Totals" do
     div do
-      render 'image_totals' 
+      render 'image_totals'
     end
   end
 
