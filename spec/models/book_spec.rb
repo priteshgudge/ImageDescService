@@ -21,19 +21,28 @@ describe Book do
     FactoryGirl.build(:book, status: 3).status_to_english.should eq "Ready"
   end
   
-  xit "creates book statistics when approved" do
+  it "creates book statistics when approved" do
     book = FactoryGirl.create(:book)
     image = FactoryGirl.create(:dynamic_image, book: book)
     description = FactoryGirl.create(:dynamic_description, dynamic_image: image)
-    book.images.add image
-    book.dynamic_descriptions.add description
+    
+    BookStats.where(:book_id => book.id).should_not exist
     
     book.mark_approved
     
     BookStats.where(:book_id => book.id).should exist
   end
   
-  it "returns only current image descriptions"
-  
-  it "returns submitters of current image descriptions"
+  it "returns only current image descriptions" do
+    book = FactoryGirl.create(:book)
+    image = FactoryGirl.create(:dynamic_image, book: book)
+    description = FactoryGirl.create(:dynamic_description, dynamic_image: image)
+    
+    book.current_images_and_descriptions.all.count.should eq 1
+    
+    description.is_current = 0
+    description.save
+    
+    book.current_images_and_descriptions.all.count.should eq 0
+  end
 end

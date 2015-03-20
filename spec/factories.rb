@@ -10,6 +10,7 @@ FactoryGirl.define do
   factory :user do 
     transient do
       demo_library Library.new(:id => 2, :name => 'Demo')
+      describer_role Role.new(:id => 3, :name => 'Describer')
     end
     
     sequence(:email) {|n| 'somebody#{n}@example.com'}
@@ -17,8 +18,8 @@ FactoryGirl.define do
     first_name "John"
     last_name "Smith"
     password '123456'
-    use_new_library 1
-    new_library 'Demo'
+    libraries { [ demo_library ]}
+    roles { [ describer_role ]}
     after(:build) do |user, evaluator|
       # Wire up has_many using the current user and defined role and library
       user.user_libraries = [ UserLibrary.new(:user => user, :library => evaluator.demo_library) ]
@@ -54,6 +55,7 @@ FactoryGirl.define do
 
   factory :dynamic_description do
     body 'sample description'
+    is_current 1
     association :submitter, factory: :user
   end
 
