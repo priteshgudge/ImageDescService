@@ -6,6 +6,11 @@ FactoryGirl.define do
     alt "A description of the image"
     dynamic_image
   end
+  
+  factory :equation do
+    element "a + b = 3"
+    dynamic_image
+  end
 
   factory :user do 
     transient do
