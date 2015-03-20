@@ -62,6 +62,7 @@ FactoryGirl.define do
     body 'sample description'
     is_current 1
     association :submitter, factory: :user
+    dynamic_image
   end
 
 end
