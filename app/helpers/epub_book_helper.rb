@@ -163,7 +163,7 @@ module EpubBookHelper
 
       doc.css('img').each do |img_node|
         unless (img_node['src']).blank?
-          image_location =  img_node['src']
+          image_location = EpubUtils.sanitize_image_location(img_node['src'])
           dynamic_image = image_hash[image_location]
           unless dynamic_image == nil 
             # Attach any alt text modifications that might exist
@@ -179,7 +179,7 @@ module EpubBookHelper
             if (dynamic_image.current_equation && dynamic_image.current_equation.element)
               math_element = MathHelper.create_math_element(dynamic_image.current_equation)
               image_element = imggroup ? imggroup : img_node
-              MathHelper.replace_math_image(image_element, math_element, image_location)
+              MathHelper.replace_math_image(image_element, math_element, img_node['src'])
               Rails.logger.info "Image #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
               next
             end

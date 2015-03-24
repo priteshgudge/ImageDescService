@@ -44,7 +44,7 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
   
   def create_images_in_database(book, fragment, book_directory, doc)
      each_image(doc) do | image_node |
-      image_location = sanitize_image_location(image_node['src'])
+      image_location = EpubUtils.sanitize_image_location(image_node['src'])
       xml_id = image_node['id']
 
       # if src exists

@@ -128,8 +128,8 @@ module EpubUtils
     end
   end
  
-  #  def caller_info
-  #    return "#{request.remote_addr}"
-  #  end
+  def self.sanitize_image_location(image_location)
+    image_location.gsub("../", "")
+  end
 
 end
