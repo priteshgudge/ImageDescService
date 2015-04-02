@@ -186,4 +186,14 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
   display: none;
 }
 
+.upload-book legend {
+  font-weight: bold;
+  border-style: none;
+  font-size: 100%;
+}
+
+.upload-book label {
+  font-weight: normal;
+}
+
 

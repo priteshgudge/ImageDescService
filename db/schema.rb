@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150306165627) do
+ActiveRecord::Schema.define(:version => 20150402170906) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -83,15 +83,15 @@ ActiveRecord::Schema.define(:version => 20150306165627) do
   add_index "book_stats", ["book_id"], :name => "book_stats_book_id"
 
   create_table "books", :force => true do |t|
-    t.string   "uid",                                              :null => false
+    t.string   "uid",                                                        :null => false
     t.string   "title"
-    t.string   "isbn",           :limit => 13
+    t.string   "isbn",                     :limit => 13
     t.integer  "status"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
-    t.string   "xml_file",                     :default => "none", :null => false
+    t.datetime "created_at",                                                 :null => false
+    t.datetime "updated_at",                                                 :null => false
+    t.string   "xml_file",                               :default => "none", :null => false
     t.datetime "last_approved"
-    t.integer  "library_id",                                       :null => false
+    t.integer  "library_id",                                                 :null => false
     t.integer  "user_id"
     t.string   "publisher"
     t.date     "publisher_date"
@@ -99,10 +99,12 @@ ActiveRecord::Schema.define(:version => 20150306165627) do
     t.string   "authors"
     t.string   "description"
     t.datetime "deleted_at"
+    t.integer  "math_replacement_mode_id"
   end
 
   add_index "books", ["isbn"], :name => "index_books_on_isbn"
   add_index "books", ["library_id"], :name => "books_library_id"
+  add_index "books", ["math_replacement_mode_id"], :name => "books_math_replacement_mode_id"
   add_index "books", ["title"], :name => "index_books_on_title"
 
   create_table "content_models", :force => true do |t|
@@ -232,6 +234,12 @@ ActiveRecord::Schema.define(:version => 20150306165627) do
   end
 
   add_index "libraries", ["name"], :name => "idx_library_name_unique", :unique => true
+
+  create_table "math_replacement_modes", :force => true do |t|
+    t.string   "mode",       :limit => 128, :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"
