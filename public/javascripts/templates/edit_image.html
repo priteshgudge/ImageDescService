@@ -33,9 +33,9 @@
 					  			<div class="form-group" id="alt-group">
 					    			<label class="col-sm-3 control-label">Alt Text</label>
 					    			<div class="col-sm-6">
-					      				<input type="text" class="alt form-control" value="<%= image.get("alt") %>" />
+					      				<input type="text" class="alt form-control" value="<%= image.has("current_equation") ? 'replaced with auto-generated description' : image.get("alt") %>" <%= image.has("current_equation") ? "disabled" : "" %>/>
 					    			</div>
-					    			<div class="col-sm-3"><button class="btn btn-primary altButton">Update</button></div>
+					    			<div class="col-sm-3"><button class="btn btn-primary altButton" <%= image.has("current_equation") ? "disabled" : "" %>>Update</button></div>
 					  			</div>
 					  		<% } %>
 				  			<% if (image.has("caption")) { %>

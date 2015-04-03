@@ -399,7 +399,8 @@ define([
         {
           success: function () {
             editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
-            //TODO What to do here?
+            editView.$(".alt").prop("disabled", "disabled").val("replaced with auto-generated description");
+            editView.$(".altButton").prop("disabled", "disabled");
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");

@@ -80,7 +80,8 @@ require.config({
     'JSWAVES': 'libs/JSWAVES/waves.js?config=/javascripts/libs/JSWAVES/defaults/config.json'
   },
   mainConfigFile: '/javascripts/main.js',
-  waitSeconds: 120
+  waitSeconds: 120,
+  urlArgs: "bust=" + (new Date()).getTime()
 });
 
 require([
