@@ -28,14 +28,13 @@ define([
       "click .open-edit-view": "openEditor",
       "click .cancel": "cancelEditor",
       "click .save-text": "saveTextDescription",
-      "click .save-math-description": "saveMathDescription",
-      "click .save-mathml-text": "getMathDescription",  
+      "click .save-math": "saveMath",
+      "click .generate-math": "getMMLCEquation",  
       "click .edit": "showDynamicDescriptionForm",
       "click .preview": "showPreview",
       "click .additional-fields": "showAdditionalFields",
       "click .view_sample": "showSample",
       "click .history_link": "showDescriptionHistory",
-      "keyup .math-editor": "getMathML",
       "click .math-tab a": "toggleDescriptionMathML",
       "click .save-as-replacement": "getEquation",
       "click .save-additional-fields": "saveAdditionalFields",
@@ -232,24 +231,28 @@ define([
       });
     },
 
-    saveMathDescription: function(e) {
+    saveMath: function(e) {
       var editView = this;
       e.preventDefault();
-      editView.saveDescription(editView.$(".math-text-description").html());
+      editView.saveEquation();
+      if ($("#math_replacement_mode").val() == "") {
+        editView.saveDescription(editView.$(".math-text-description").val());
+      }
     },
 
-    getMathDescription: function(e) {
+    getMMLCEquation: function(e) {
       var editView = this;
       e.preventDefault();
       //get mathml.
       var equation = new MmlcEquation();
-      equation.save({math: editView.$(".math-editor").val(), mathType: "description"},
+      equation.save({math: editView.$(".math-editor").val()},
         {
           success: function(model, response, options) {
             var components = new MmlcComponents(model.get("components"));
             var description = components.findWhere({format: "description"});
             editView.$(".math-text-description").html(description.get("source"));
             editView.$(".description-preview").show();
+            editView.mmlcEquation = model;
           }
         }
       );
@@ -271,23 +274,6 @@ define([
     toggleDescriptionMathML: function(e) {
       var editImage = this;
       editImage.$(".text-success").html("");
-    },
-
-    getMathML: function(e) {
-      var editImage = this;
-      var s = editImage.$(".math-editor").val();
-      editImage.$(".typeset-math").text("`" + s + "`");
-      MathJax.Callback.Queue(
-        ["Typeset", MathJax.Hub, editImage.$(".typeset-math")[0]],
-        [function() { editImage.jax.visual = MathJax.Hub.getAllJax(editImage.$(".typeset-math")[0])[0]; }]);
-      editImage.$(".save-math").show();
-      if ($("#can_edit_content").val() == "true") {
-        editImage.$(".save-as-replacement").show();  
-      }
-    },
-
-    sanitizeMathML: function(s) {
-      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     },
 
     showAdditionalFields: function(e) {
@@ -370,37 +356,40 @@ define([
     getEquation: function(e) {
       e.preventDefault();
       var editView = this;
-      if ($("#use_mmlc").val() == "true") {
-        var mmlcEquation = new MmlcEquation();
-        mmlcEquation.save({math: editView.$(".math-editor").val()},
-          {
-            success: function(model, response, options) {
-              var components = new MmlcComponents(model.get("components"));
-              var mathML = components.findWhere({format: "mml"});
-              editView.saveEquation(mathML.get("source"), model.get("cloud_url"));
-            }
+      var mmlcEquation = new MmlcEquation();
+      mmlcEquation.save({math: editView.$(".math-editor").val()},
+        {
+          success: function(model, response, options) {
+            var components = new MmlcComponents(model.get("components"));
+            var mathML = components.findWhere({format: "mml"});
+            editView.saveEquation(mathML.get("source"), model.get("cloud_url"));
           }
-        );
-      } else {
-        editView.saveEquation(editView.jax.visual.root.toMathML());
-      }
+        }
+      );
     },
 
-    saveEquation: function(element, described_at) {
+    saveEquation: function() {
       var editView = this;
+      var components = new MmlcComponents(editView.mmlcEquation.get("components"));
+      var mathML = components.findWhere({format: "mml"}).get("source");
+      var description = components.findWhere({format: "description"}).get("source");
+      var described_at = editView.mmlcEquation.get("cloudUrl");
       var equation = new Equation();
       equation.save(
         {
           "dynamic_image_id": editView.model.get("id"),
-          "element": element,
+          "element": mathML,
           "source": editView.$(".math-editor").val(),
-          "described_at": described_at
-        }, 
+          "described_at": described_at,
+          "description": description
+        },
         {
           success: function () {
-            editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
-            editView.$(".alt").prop("disabled", "disabled").val("replaced with auto-generated description");
-            editView.$(".altButton").prop("disabled", "disabled");
+            if ($("#math_replacement_mode").val() != "") {
+              editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
+              editView.$(".alt").prop("disabled", "disabled").val("replaced with auto-generated description");
+              editView.$(".altButton").prop("disabled", "disabled");
+            }
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
