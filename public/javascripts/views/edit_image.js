@@ -179,12 +179,17 @@ define([
 
     showPreview: function(e) {
       var editView = this;
-      editView.model.fetch({
-        success: function (image, response, options) {
-          editView.$(".image_description").html(image.has("dynamic_description") ? image.get("dynamic_description")["body"] : "");
-          editView.$(".author").html(image.get("author"));
-        }
-      });
+      editView.$(".preview-tab").show();
+      $("#right").scrollTo(editView.$("#edit-image-" + editView.model.get("id")));
+
+      if ($("#math_replacement_mode").val() == "" || editView.model.get("image_category_id") != "10") {
+        editView.model.fetch({
+          success: function (image, response, options) {
+            editView.$(".image_description").html(image.has("dynamic_description") ? image.get("dynamic_description")["body"] : "");
+            editView.$(".author").html(image.get("author"));
+          }
+        });
+      } //TODO equation.
       
     },
 
@@ -202,9 +207,7 @@ define([
           success: function () {
             editView.$(".image_description").html(description);
             editView.$(".text-success").html("Your image description has been " + (hasDescription ? "updated" : "created") + ".");
-            editView.$(".preview-tab").show();
             editView.$(".preview").trigger("click");
-            $("#right").scrollTo(editView.$("#edit-image-" + editView.model.get("id")));
           },
           error: function (model, response) {
             editView.$(".text-danger").html("There was an error saving this description.");
@@ -212,11 +215,15 @@ define([
         }
       );
       if ($("#show_additional_fields").val() == "true") {
+        editView.$(".summary").prop("disabled", false);
+        editView.$(".simplified-language-description").prop("disabled", false);
         var summaryEditorName = editView.$(".summary").attr("name");
         var simplifiedLanguageDescriptionName = editView.$(".simplified-language-description").attr("name");
         editView.$("#additional-fields-" + editView.model.get("id") + " :input").prop("disabled", false);
-        CKEDITOR.instances[summaryEditorName].setReadOnly(false);
-        CKEDITOR.instances[simplifiedLanguageDescriptionName].setReadOnly(false);
+        if (CKEDITOR.instances[summaryEditorName]) {
+          CKEDITOR.instances[summaryEditorName].setReadOnly(false);
+          CKEDITOR.instances[simplifiedLanguageDescriptionName].setReadOnly(false);
+        }
       }
     },
 
@@ -237,7 +244,7 @@ define([
       editView.saveEquation();
       if ($("#math_replacement_mode").val() == "") {
         editView.saveDescription(editView.$(".math-text-description").val());
-      }
+      } 
     },
 
     getMMLCEquation: function(e) {
@@ -394,6 +401,11 @@ define([
               editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
               editView.$(".alt").prop("disabled", "disabled").val("replaced with auto-generated description");
               editView.$(".altButton").prop("disabled", "disabled");
+              console.log(editView.$(".image_description"));
+              editView.$(".image_description").html(mathML);
+              MathJax.Hub.Queue(["Typeset",MathJax.Hub,"image-description-" + editView.model.get("id")]);
+              editView.$(".text-success").html("Your equation has been created.");
+              editView.$(".preview").trigger("click");  
             }
           },
           error: function (model, response) {

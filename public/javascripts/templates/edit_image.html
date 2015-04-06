@@ -1,4 +1,4 @@
-
+<% var replaceMath = $("#math_replacement_mode").val() != ""; %>
 <div id="edit-image-<%= image.get("id") %>">
 	<% if (typeof(previousImage) !== "undefined") { %>
 		<div class="fluid-container upArrow">
@@ -33,9 +33,9 @@
 					  			<div class="form-group" id="alt-group">
 					    			<label class="col-sm-3 control-label">Alt Text</label>
 					    			<div class="col-sm-6">
-					      				<input type="text" class="alt form-control" value="<%= image.has("current_equation") ? 'replaced with auto-generated description' : image.get("alt") %>" <%= image.has("current_equation") ? "disabled" : "" %>/>
+					      				<input type="text" class="alt form-control" value="<%= (replaceMath && image.has("current_equation")) ? 'replaced with auto-generated description' : image.get("alt") %>" <%= (replaceMath && image.has("current_equation")) ? "disabled" : "" %>/>
 					    			</div>
-					    			<div class="col-sm-3"><button class="btn btn-primary altButton" <%= image.has("current_equation") ? "disabled" : "" %>>Update</button></div>
+					    			<div class="col-sm-3"><button class="btn btn-primary altButton" <%= (replaceMath && image.has("current_equation")) ? "disabled" : "" %>>Update</button></div>
 					  			</div>
 					  		<% } %>
 				  			<% if (image.has("caption")) { %>
@@ -72,17 +72,6 @@
 				  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
 				  				</div>
 				  			</div>
-				  			<% if (image.has("current_equation")) { %>
-				  				<span class="col-sm-3 control-label mathML">MathML</span>
-				    			<div class="col-sm-6">
-				      				<p class="form-control-static replacementMathml">
-				      					<%= image.get("current_equation").source %>
-				      				</p>
-				    			</div>
-				    			<% if (can_edit_content == "true") { %>
-				    				<div class="col-sm-3"><button class="btn btn-primary open-edit-view edit-mathml">Edit</button></div>
-				    			<% } %>
-				    		<% } %>
 				  			<div class="form-group equation">
 				  			</div>
 				  			<% if (image.get("should_be_described") == true && typeof(image.get("dynamic_description")) == "undefined") { %>
@@ -92,20 +81,24 @@
 				  					</div>
 				  				</div>
 				  			<% } %>
-				  			<div class="long-description" <%= !image.has("dynamic_description") ? "style=\"display: none;\"" : "" %>>
+				  			<div class="long-description" <%= (!image.has("dynamic_description") && !image.has("current_equation")) ? "style=\"display: none;\"" : "" %>>
 					  			<div class="form-group container-fluid">
-					  				<label for="long-description-<%= image.get("id") %>">Long Description*</label>
+					  				<% if (image.get("image_category_id") != "10") { %>
+					  					<label for="long-description-<%= image.get("id") %>">Long Description*</label>
+					  				<% } else { %>
+					  					<label for="math-editor-<%=image.get("id") %>"><%= replaceMath ? "MathML*" : "Long Description*" %></label>
+					  				<% } %>	
 					  				<ul class="nav nav-tabs" role="tablist">
-	  									<li class="preview-tab <% if (image.has("dynamic_description")) { %> active <% } %>" <% if (!image.has("dynamic_description")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
+	  									<li class="preview-tab <% if (image.has("dynamic_description") || image.has("current_equation")) { %> active <% } %>" <% if (!image.has("dynamic_description") && !image.has("current_equation")) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
 	  									<% if (image.get("image_category_id") != "10" || $("#use_mmlc").val() != "true") { %>
-	  										<li class="edit-tab <% if (!image.has("dynamic_description")) { %> active <% } %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
+	  										<li class="edit-tab <%= !image.has("dynamic_description") ? "active" : "" %>"><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
 	  									<% } else { %>
-	  										<li class="math-tab"><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link"><%= $("#math_replacement_mode").val() == "" ? "Text" : "Math" %> Editor</a></li>
+	  										<li class="math-tab <%= !image.has("current_equation") ? "active" : "" %>"><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link"><%= !replaceMath ? "Text" : "Math" %> Editor</a></li>
 	  									<% } %>
 	  									<li class="additional-fields-tab" <% if ($("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
 									</ul>
 									<div class="tab-content">
-									  <div class="tab-pane <% if (!image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
+									  <div class="tab-pane <% if (!image.has("dynamic_description") && image.get("image_category_id") != "10") { %> active <% } %>" id="edit-<%=image.get("id") %>">
 									  	<div class="panel panel-default">
 											<div class="panel-body">
 									  			<textarea rows="3" cols="20" id="long-description-<%= image.get("id") %>" name="long-description-<%= image.get("id") %>" class="dynamic-description form-control"><%= typeof(image.get("dynamic_description")) != "undefined" ? image.get("dynamic_description").body : ""%></textarea>
@@ -117,11 +110,15 @@
 						  					<button class="btn btn-default pull-right cancel">Cancel</button>
 						  				</div>
 									  </div>
-									  <div class="tab-pane <% if (image.has("dynamic_description")) { %> active <% } %>" id="preview-<%=image.get("id") %>">
+									  <div class="tab-pane <% if (image.has("dynamic_description") || image.has("current_equation")) { %> active <% } %>" id="preview-<%=image.get("id") %>">
 									  	<div class="panel panel-default">
 											<div class="panel-body">
-												<div class="image_description">
-													<%= typeof(image.get("dynamic_description")) !== "undefined" ? image.get("dynamic_description").body : "" %>
+												<div class="image_description" id="image-description-<%= image.get("id") %>">
+													<% if (image.has("dynamic_description")) { %>
+														<%= image.get("dynamic_description").body %>
+													<% } else if (image.has("current_equation")) { %>
+														<%= image.get("current_equation").element %>
+													<% } %>
 												</div>
 											</div>
 										</div>
@@ -152,18 +149,17 @@
 														<a href="#" class="jswaves-toggle">JS Waves</a>
 													</label>
 												</div><br>
-												<label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII Math</label>
 												<textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"><%= image.has("current_equation") ? image.get("current_equation").source : ""%></textarea>
 												<div class="buttons">
-													<button class="btn btn-primary math generate-math pull-right">Generate <%= $("#math_replacement_mode").val() == "" ? "Description" : "Math" %></button>
+													<button class="btn btn-primary math generate-math pull-right">Generate <%= !replaceMath ? "Description" : "Math" %></button>
 												</div>
 												<div class="clearfix"></div>
 												<h2 class="math-preview">MathML Preview</h2>
 												<div class="typeset-math" id="typeset-math-<%= image.get("id") %>"><%= image.has("current_equation") ? image.get("current_equation").element : ""%></div>
 												<div class="clearfix"></div>
 												<div class="description-preview">
-													<h2 class="math-preview">Text Description <%= $("#math_replacement_mode").val() != "" ? "Preview" : "" %></h2>
-													<% if ($("#math_replacement_mode").val() == "") { %>
+													<h2 class="math-preview">Text Description <%= !replaceMath ? "Preview" : "" %></h2>
+													<% if (!replaceMath) { %>
 														<textarea class="math-text-description form-control"><%= image.has("current_equation") ? image.get("current_equation").description : ""%></textarea>
 													<% } else { %>
 														<div class="math-text-description"><%= image.has("current_equation") ? image.get("current_equation").description : ""%></div>
