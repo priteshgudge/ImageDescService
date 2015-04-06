@@ -140,15 +140,15 @@
 												<h2 class="math-edit">Transcribe Math</h2>
 												<div class="buttons">
 													<label class="radio-inline">
-														<input type="radio" name="math-input-type-<%= image.get("id") %>" value="ascii" checked>
-														<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal">ASCII Math Cheat Sheet</a>
+														<input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="AsciiMath" checked>
+														<a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal" <%= (!image.has("current_equation") || image.get("current_equation").math_type == "AsciiMath" ? "checked" : "") %>>ASCII Math Cheat Sheet</a>
 													</label>
 													<label class="radio-inline">
-														<input type="radio" name="math-input-type-<%= image.get("id") %>" value="latex">
+														<input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="TeX" <%= (image.has("current_equation") && image.get("current_equation").math_type == "TeX" ? "checked" : "") %>>
 														LaTex
 													</label>
 													<label class="radio-inline">
-														<input type="radio" name="math-input-type-<%= image.get("id") %>" value="jswaves">
+														<input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="AsciiMath">
 														<a href="#" class="jswaves-toggle">JS Waves</a>
 													</label>
 												</div><br>
@@ -159,7 +159,7 @@
 												</div>
 												<div class="clearfix"></div>
 												<h2 class="math-preview">MathML Preview</h2>
-												<div class="typeset-math"><%= image.has("current_equation") ? image.get("current_equation").element : ""%></div>
+												<div class="typeset-math" id="typeset-math-<%= image.get("id") %>"><%= image.has("current_equation") ? image.get("current_equation").element : ""%></div>
 												<div class="clearfix"></div>
 												<div class="description-preview">
 													<h2 class="math-preview">Text Description <%= $("#math_replacement_mode").val() != "" ? "Preview" : "" %></h2>

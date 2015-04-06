@@ -245,13 +245,16 @@ define([
       e.preventDefault();
       //get mathml.
       var equation = new MmlcEquation();
-      equation.save({math: editView.$(".math-editor").val()},
+      equation.save({math: editView.$(".math-editor").val(), math_type: editView.$(".math-type:checked").val()},
         {
           success: function(model, response, options) {
             var components = new MmlcComponents(model.get("components"));
             var description = components.findWhere({format: "description"});
+            var mml = components.findWhere({format: "mml"});
             editView.$(".math-text-description").html(description.get("source"));
+            editView.$(".typeset-math").html(mml.get("source"));
             editView.$(".description-preview").show();
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub,"typeset-math-" + editView.model.get("id")]);
             editView.mmlcEquation = model;
           }
         }
@@ -374,6 +377,7 @@ define([
       var mathML = components.findWhere({format: "mml"}).get("source");
       var description = components.findWhere({format: "description"}).get("source");
       var described_at = editView.mmlcEquation.get("cloudUrl");
+      var math_type = editView.mmlcEquation.get("mathType");
       var equation = new Equation();
       equation.save(
         {
@@ -381,7 +385,8 @@ define([
           "element": mathML,
           "source": editView.$(".math-editor").val(),
           "described_at": described_at,
-          "description": description
+          "description": description,
+          "math_type": math_type
         },
         {
           success: function () {
