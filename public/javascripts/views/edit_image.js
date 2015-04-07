@@ -46,7 +46,8 @@ define([
       "click .jswaves-toggle": "showJSWaves",
       "click .image_description": "showDynamicDescriptionForm",
       "click .altButton": "saveAlt",
-      "click .arrow": "scrollToImage"
+      "click .arrow": "scrollToImage",
+      "keyup .math-editor": "enableGenerateButton"
     },
 
     jax: {},
@@ -446,6 +447,10 @@ define([
     scrollToImage: function(e) {
       e.preventDefault();
       $("#right").scrollTo($(e.currentTarget).attr("href"));
+    },
+
+    enableGenerateButton: function(e) {
+      this.$(".generate-math").prop("disabled", false);
     }
 
   });
