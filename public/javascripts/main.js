@@ -32,6 +32,10 @@ require.config({
       deps: ['jquery'], 
       exports: '$.fn.tab' 
     },
+    'bootstrap/popover': { 
+      deps: ['jquery'], 
+      exports: '$.fn.popover' 
+    },
     fancybox: {
       deps: ["jquery"],
       exports: "fancybox"

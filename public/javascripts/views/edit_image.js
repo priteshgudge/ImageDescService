@@ -7,6 +7,7 @@ define([
   'ckeditor',
   'bootstrap/modal',
   'bootstrap/tab',
+  'bootstrap/popover',
   'mespeak',
   'scrollTo',
   '/javascripts/models/dynamic_image.js',
@@ -16,7 +17,7 @@ define([
   '/javascripts/models/mmlc_equation.js',
   '/javascripts/collections/mmlc_component_collection.js',
   'text!/javascripts/templates/edit_image.html'
-], function($, _, Backbone, MathJax, ckeditor, modal, tab, mespeak, scrollTo, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
+], function($, _, Backbone, MathJax, ckeditor, modal, tab, popover, mespeak, scrollTo, DynamicImage, DynamicDescription, Alt, Equation, MmlcEquation, MmlcComponents, editImageTemplate){
   var EditImageView = Backbone.View.extend({
     
     //div.
@@ -82,6 +83,7 @@ define([
         editImage.$(".view_sample").hide();
       }
       this.$el.html(compiledTemplate);
+      this.$(".help").popover();
       return this;
     },
 
