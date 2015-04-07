@@ -35,7 +35,10 @@
 					    			<div class="col-sm-6">
 					      				<input type="text" class="alt form-control" value="<%= (replaceMath && image.has("current_equation")) ? 'replaced with auto-generated description' : image.get("alt") %>" <%= (replaceMath && image.has("current_equation")) ? "disabled" : "" %>/>
 					    			</div>
-					    			<div class="col-sm-3"><button class="btn btn-primary altButton" <%= (replaceMath && image.has("current_equation")) ? "disabled" : "" %>>Update</button></div>
+					    			<div class="col-sm-3">
+					    				<button class="btn btn-primary altButton" <%= (replaceMath && image.has("current_equation")) ? "disabled" : "" %>>Update</button>
+					    				<span><a tabindex="0" data-trigger="focus" data-toggle="popover" title="Math Input Type Help" data-content="The alt attribute is designed to be a brief, alternative text description for images. Reading systems generally do not support alt-descriptions exceeding 255 characters. (Some systems are less.) Please consider shortening your description before saving." href="#" class="help" data-placement="auto"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><span class="sr-only">Math Input Type Help</a></span>
+									</div>
 					  			</div>
 					  		<% } %>
 				  			<% if (image.has("caption")) { %>
@@ -69,7 +72,7 @@
 									</select>
 				  				</div>
 				  				<div class="col-sm-3">
-				  					<a class="view_sample" data-container="body" data-toggle="popover" data-placement="bottom" data-html="true" href="#" data-trigger="focus" tabindex="0">View Sample</a>
+				  					<a class="view_sample" href="#">View Sample</a>
 				  				</div>
 				  			</div>
 				  			<div class="form-group equation">
@@ -121,7 +124,7 @@
 											<button class="btn btn-primary open-edit-view edit-math-ml pull-right">Edit</button>
 										</div>
 										<div class="clearfix"></div>
-										<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link" data-container="body" data-toggle="popover" data-placement="left" data-html="true" data-trigger="focus" tabindex="0">View Description History</a></p>
+										<p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link">View Description History</a></p>
 										<p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
 									  </div>
 									  <div class="tab-pane" id="math-<%=image.get("id") %>">
@@ -142,7 +145,7 @@
 														<a href="#" class="jswaves-toggle">JS Waves</a>
 													</label>
 													<span>
-														<a tabindex="0" data-toggle="popover" title="Math Input Type Help" data-content="Select your preferred input method for transcribing math. Use the provided links to bring up additional authoring tools or type directly into the Math Editor text field." href="#" class="help" data-placement="top"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><span class="sr-only">Math Input Type Help</a>
+														<a tabindex="0" data-trigger="focus" data-toggle="popover" title="Math Input Type Help" data-content="Select your preferred input method for transcribing math. Use the provided links to bring up additional authoring tools or type directly into the Math Editor text field." href="#" class="help" data-placement="top"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><span class="sr-only">Math Input Type Help</a>
 													</span>
 												</div>
 												<div class="clearfix"></div>
