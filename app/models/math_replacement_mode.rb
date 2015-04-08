@@ -5,4 +5,8 @@ class MathReplacementMode < ActiveRecord::Base
     json['mode'] = self.mode
     json
   end
+
+  def self.MathMLMode
+    MathReplacementMode.where(:mode => 'MathML').first
+  end
 end

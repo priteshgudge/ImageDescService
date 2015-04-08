@@ -1,6 +1,6 @@
 <% 
-    var replaceMath = $("#math_replacement_mode").val() != "";
-    var isMathImage = image.get("image_category_id") == "10";
+    var replaceMath = $("#math_replacement_mode").val() !== "";
+    var isMathImage = image.get("image_category_id") == $("#math_category").val();
 %>
 <div class="form-group container-fluid">
     <% if (!isMathImage) { %>

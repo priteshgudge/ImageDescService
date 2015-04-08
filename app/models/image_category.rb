@@ -5,4 +5,8 @@ class ImageCategory < ActiveRecord::Base
     json['name'] = self.name
     json
   end
+
+  def self.MathEquations
+    ImageCategory.where(:name => 'Math Equations').first
+  end
 end

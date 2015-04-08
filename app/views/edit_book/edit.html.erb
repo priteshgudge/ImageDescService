@@ -60,6 +60,7 @@
 <input id="can_edit_content" value="<%= can? :edit_book_content, @all %>" type="hidden" />
 <input id="use_mmlc" value="<%= @use_mmlc %>" type="hidden" />
 <input id="math_replacement_mode" value="<%= book.math_replacement_mode_id %>" type="hidden" />
+<input id="math_category" value="<%= ImageCategory.MathEquations.id %>" type="hidden" />
 
 <!-- Load the script "javascripts/edit_book/main.js" as our entry point -->
 <script>
