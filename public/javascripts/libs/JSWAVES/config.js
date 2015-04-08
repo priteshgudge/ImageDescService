@@ -11,7 +11,7 @@ WAVES.config = { "defaultPath": "defaults/test.json" };
 	// Load the config file into WAVES.config.
 	$.getJSON( WAVES.query.config || ( WAVES.dir + WAVES.config.defaultPath ), function ( config ) {
 		WAVES.config = config;
-		WAVES.config.ready = true
+		WAVES.config.ready = true;
 	} );
 
 	

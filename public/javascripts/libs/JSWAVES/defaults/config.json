@@ -3,7 +3,7 @@
 	
 	"actionOrder": [ "cluster", "collapse", "expand", "done" ],
 	
-	"initialLevel": 2,
+	"initialLevel": 4,
 	
 	"buttons": {
 		"tokens": [

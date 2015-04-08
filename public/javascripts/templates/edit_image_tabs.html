@@ -3,16 +3,14 @@
     var isMathImage = image.get("image_category_id") == $("#math_category").val();
 %>
 <div class="form-group container-fluid">
-    <% if (!isMathImage) { %>
+    <% if (!isMathImage || !replaceMath) { %>
         <label for="long-description-<%= image.get("id") %>">Long Description*</label>
-    <% } else { %>
-        <label for="math-editor-<%=image.get("id") %>"><%= replaceMath ? "MathML*" : "Long Description*" %></label>
     <% } %> 
     <ul class="nav nav-tabs" role="tablist">
         <li class="preview-tab <% if (image.has("dynamic_description") || image.has("current_equation")) { %> active <% } %>" <% if ((!isMathImage && !image.has("dynamic_description")) || (isMathImage && !image.has("current_equation"))) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
         <li class="edit-tab <%= !image.has("dynamic_description") ? "active" : "" %>" <%= (isMathImage || !use_mmlc) ? "style='display: none;'" : "" %>><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
         <li class="math-tab <%= (isMathImage && !image.has("current_equation")) ? "active" : "" %>" <%= (!isMathImage || !use_mmlc) ? "style='display: none;'" : "" %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link"><%= !replaceMath ? "Text" : "Math" %> Editor</a></li>
-        <li class="additional-fields-tab" <% if ($("#show_additional_fields").val() !== "true" || isMathImage) { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
+        <li class="additional-fields-tab" <% if ($("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
     </ul>
     <div class="tab-content">
       <div class="tab-pane <% if (!isMathImage && !image.has("dynamic_description")) { %> active <% } %>" id="edit-<%=image.get("id") %>">
@@ -31,10 +29,18 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="image_description" id="image-description-<%= image.get("id") %>">
-                    <% if (image.has("dynamic_description")) { %>
-                        <%= image.get("dynamic_description").body %>
-                    <% } else if (image.has("current_equation")) { %>
-                        <%= image.get("current_equation").element %>
+                    <% if (isMathImage && image.has("current_equation")) { %>
+                        <div><%= image.get("current_equation").element %></div>
+                        <% if (replaceMath) { %>
+                            <h2 class="math-preview">Text Description</h2>
+                            <div><%= image.get("current_equation").description %></div>
+                        <% } %>
+                    <% } %> 
+                    <% if (!replaceMath && image.has("dynamic_description")) { %>
+                        <% if (isMathImage) { %>
+                            <h2 class="math-preview">Text Description</h2>
+                            <% } %>
+                        <div><%= image.get("dynamic_description").body %></div>
                     <% } %>
                 </div>
             </div>
@@ -58,18 +64,19 @@
                         <a href="#" class="math-toggle" data-toggle="modal" data-target="#mathCheatSheetModal" <%= (!image.has("current_equation") || image.get("current_equation").math_type == "AsciiMath" ? "checked" : "") %>>ASCII Math Cheat Sheet</a>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="TeX" <%= (image.has("current_equation") && image.get("current_equation").math_type == "TeX" ? "checked" : "") %>>
-                        LaTex
+                        <input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="AsciiMath">
+                        <a href="#" class="jswaves-toggle">Math Keyboard</a>
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="AsciiMath">
-                        <a href="#" class="jswaves-toggle">JS Waves</a>
+                        <input type="radio" class="math-type" name="math-input-type-<%= image.get("id") %>" value="TeX" <%= (image.has("current_equation") && image.get("current_equation").math_type == "TeX" ? "checked" : "") %>>
+                        LaTex
                     </label>
                     <span>
                         <a tabindex="0" data-trigger="focus" data-toggle="popover" title="Math Input Type Help" data-content="Select your preferred input method for transcribing math. Use the provided links to bring up additional authoring tools or type directly into the Math Editor text field." href="#" class="help" data-placement="top"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><span class="sr-only">Math Input Type Help</a>
                     </span>
                 </div>
                 <div class="clearfix"></div>
+                <label for="math-editor-<%=image.get("id") %>" class="sr-only">ASCII or LaTex Math:</label>
                 <textarea id="math-editor-<%=image.get("id") %>" class="math-editor form-control"><%= image.has("current_equation") ? image.get("current_equation").source : ""%></textarea>
                 <div class="buttons">
                     <button class="btn btn-primary math generate-math pull-right" disabled>Generate <%= !replaceMath ? "Description" : "Math" %></button>
@@ -78,21 +85,19 @@
                 <div class="equation-preview" <%= (!isMathImage || !image.has("current_equation")) ? "style='display:none;'" : "" %>>
                     <h2 class="math-preview">MathML Preview</h2>
                     <div class="typeset-math" id="typeset-math-<%= image.get("id") %>"><%= image.has("current_equation") ? image.get("current_equation").element : ""%></div>
-                    <div class="clearfix"></div>
-                    <div class="description-preview">
-                        <h2 class="math-preview">Text Description <%= !replaceMath ? "Preview" : "" %></h2>
-                        <% if (!replaceMath) { %>
+                    <% if (!replaceMath) { %>
+                        <div class="clearfix"></div>
+                        <div class="description-preview">
+                            <h2 class="math-preview">Text Description</h2>
                             <textarea class="math-text-description form-control"><%= image.has("current_equation") ? image.get("current_equation").description : ""%></textarea>
-                        <% } else { %>
-                            <div class="math-text-description"><%= image.has("current_equation") ? image.get("current_equation").description : ""%></div>
-                        <% } %>
-                    </div>
+                        </div>
+                    <% } %>
                 </div>
             </div>
         </div>
         <div>
             <p class="text-danger update-message pull-left"></p>
-            <button class="btn btn-primary save-math math pull-right">Save</button>
+            <button class="btn btn-primary save-math math pull-right" disabled>Save</button>
             <button class="btn btn-default pull-right cancel">Cancel</button>
         </div>
       </div>

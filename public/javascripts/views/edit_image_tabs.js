@@ -39,7 +39,9 @@ define([
       "click .math-toggle": "setSelectedMathEditor",
       "click .jswaves-toggle": "showJSWaves",
       "click .image_description": "showDynamicDescriptionForm",
-      "keyup .math-editor": "enableGenerateButton"
+      "keyup .math-editor": "enableGenerateButton",
+      "change .math-type": "clearMathEditor",
+      "keyup .math-text-description": "enableSaveMathButton"
     },
 
     jax: {},
@@ -114,7 +116,7 @@ define([
       var editView = this;
       editView.$(".preview-tab").show();
       
-      if ($("#math_replacement_mode").val() == "" || editView.model.get("image_category_id") != "10") {
+      if ($("#math_replacement_mode").val() == "" || editView.model.get("image_category_id") != $("#math_category").val()) {
         editView.model.fetch({
           success: function (image, response, options) {
             editView.$(".image_description").html(image.has("dynamic_description") ? image.get("dynamic_description")["body"] : "");
@@ -174,7 +176,9 @@ define([
     saveMath: function(e) {
       var editView = this;
       e.preventDefault();
-      editView.saveEquation();
+      if (editView.mmlcEquation) {
+        editView.saveEquation();  
+      }
       if ($("#math_replacement_mode").val() == "") {
         editView.saveDescription(editView.$(".math-text-description").val());
       } 
@@ -183,6 +187,11 @@ define([
     getMMLCEquation: function(e) {
       var editView = this;
       e.preventDefault();
+      if(editView.warnUser) {
+        if (!confirm("You have manually modified the text description. If you generate the description again, your modifications will be lost.\n\n Are you sure you want to generate a new description?")) {
+          return false;
+        }
+      }
       //get mathml.
       var equation = new MmlcEquation();
       equation.save({math: editView.$(".math-editor").val(), math_type: editView.$(".math-type:checked").val()},
@@ -191,12 +200,13 @@ define([
             var components = new MmlcComponents(model.get("components"));
             var description = components.findWhere({format: "description"});
             var mml = components.findWhere({format: "mml"});
-            editView.$(".math-text-description").html(description.get("source"));
+            editView.$(".math-text-description").val(description.get("source"));
             editView.$(".typeset-math").html(mml.get("source"));
             editView.$(".description-preview").show();
             MathJax.Hub.Queue(["Typeset",MathJax.Hub,"typeset-math-" + editView.model.get("id")]);
             editView.mmlcEquation = model;
             editView.$(".equation-preview").show();
+            editView.$(".save-math").prop("disabled", false);
           }
         }
       );
@@ -303,6 +313,7 @@ define([
     },
 
     saveEquation: function() {
+      $("#waves-toolbar").hide();
       var editView = this;
       var components = new MmlcComponents(editView.mmlcEquation.get("components"));
       var mathML = components.findWhere({format: "mml"}).get("source");
@@ -347,7 +358,7 @@ define([
     readDescription: function(e) {
       e.preventDefault();
       var speak = "";
-      if (this.model.get("image_category_id") == "10" && this.model.has("current_equation")) {
+      if (this.model.get("image_category_id") === $("#math_category").val() && this.model.has("current_equation")) {
         speak = this.model.get("current_equation").description;
       } else {
         speak = this.$(".image_description").text();
@@ -379,6 +390,16 @@ define([
 
     enableGenerateButton: function(e) {
       this.$(".generate-math").prop("disabled", false);
+    },
+
+    clearMathEditor: function() {
+      this.$(".math-editor").val("");
+      this.$(".equation-preview").hide();
+    },
+
+    enableSaveMathButton: function() {
+      this.$(".save-math").prop("disabled", false);
+      this.warnUser = true;
     }
 
   });

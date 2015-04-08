@@ -1,6 +1,7 @@
 <% 
-	var replaceMath = $("#math_replacement_mode").val() !== "";
-	var isMathImage = image.get("image_category_id") === $("#math_category").val();
+	var replaceMath = $("#math_replacement_mode").val() != "";
+	var isMathImage = image.get("image_category_id") == $("#math_category").val();
+	console.log(isMathImage);
 %>
 <div id="edit-image-<%= image.get("id") %>">
 	<% if (typeof(previousImage) !== "undefined") { %>
@@ -39,8 +40,8 @@
 					      				<input type="text" class="alt form-control" value="<%= (isMathImage && replaceMath && image.has("current_equation")) ? 'replaced with auto-generated description' : image.get("alt") %>" <%= (isMathImage && replaceMath && image.has("current_equation")) ? "disabled" : "" %>/>
 					    			</div>
 					    			<div class="col-sm-3">
-					    				<button class="btn btn-primary altButton" <%= (isMathImage && replaceMath && image.has("current_equation")) ? "disabled" : "" %>>Update</button>
-					    				<span><a tabindex="0" data-trigger="focus" data-toggle="popover" title="About Alt" data-content="The alt attribute is designed to be a brief, alternative text description for images. Reading systems generally do not support alt-descriptions exceeding 255 characters. (Some systems are less.) Please consider shortening your description before saving." href="#" class="help" data-placement="auto"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span><span class="sr-only">Math Input Type Help</a></span>
+					    				<button class="btn btn-primary altButton" <%= (isMathImage && replaceMath && image.has("current_equation")) ? "style='display: none;'" : "" %>>Update</button>
+					    				<span><a tabindex="0" data-trigger="focus" data-toggle="popover" title="About Alt" data-content="The alt attribute is designed to be a brief, alternative text description for images. Reading systems generally do not support alt-descriptions exceeding 255 characters (some systems are less). Please consider shortening your description before saving." href="#" class="help" data-placement="auto">About Alt</a></span>
 									</div>
 					  			</div>
 					  		<% } %>
