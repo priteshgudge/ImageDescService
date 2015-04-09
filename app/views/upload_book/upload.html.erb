@@ -51,7 +51,7 @@
 						<p>
 							After the process completes, you will need to remember the code displayed and follow the instructions.
 						</p>
-						<p><%= submit_tag "Upload", :class => "btn btn-primary" %></p>
+						<p><%= submit_tag "Upload", :class => "btn btn-primary", :disabled => true, :id => "upload" %></p>
 					</li>
 				</ol>
 			</div>
@@ -61,6 +61,10 @@
 	</div>
 </div>
 <script type="text/javascript">
+  $("#book").on("change", function(e) {
+  	$("#upload").prop("disabled", false);
+
+  });
   $("#learnMore").on("click", function(e) {
   	$(this).hide();
   });
