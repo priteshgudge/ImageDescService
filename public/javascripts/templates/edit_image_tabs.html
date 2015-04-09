@@ -7,7 +7,7 @@
         <label for="long-description-<%= image.get("id") %>">Long Description*</label>
     <% } %> 
     <ul class="nav nav-tabs" role="tablist">
-        <li class="preview-tab <% if (image.has("dynamic_description") || image.has("current_equation")) { %> active <% } %>" <% if ((!isMathImage && !image.has("dynamic_description")) || (isMathImage && !image.has("current_equation"))) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
+        <li class="preview-tab <% if ((!isMathImage && image.has("dynamic_description")) || (isMathImage && image.has("current_equation"))) { %> active <% } %>" <% if ((!isMathImage && !image.has("dynamic_description")) || (isMathImage && !image.has("current_equation"))) { %> style="display: none;" <% } %>><a href="#preview-<%=image.get("id") %>" role="tab" data-toggle="tab" class="preview">Preview</a></li>
         <li class="edit-tab <%= !image.has("dynamic_description") ? "active" : "" %>" <%= (isMathImage || !use_mmlc) ? "style='display: none;'" : "" %>><a href="#edit-<%=image.get("id") %>" role="tab" data-toggle="tab" id="edit-tab-<%= image.get("id") %>" class="edit tab-link">Text Editor</a></li>
         <li class="math-tab <%= (isMathImage && !image.has("current_equation")) ? "active" : "" %>" <%= (!isMathImage || !use_mmlc) ? "style='display: none;'" : "" %>><a href="#math-<%=image.get("id") %>" role="tab" data-toggle="tab" class="math tab-link"><%= !replaceMath ? "Text" : "Math" %> Editor</a></li>
         <li class="additional-fields-tab" <% if ($("#show_additional_fields").val() !== "true") { %> style="display: none;" <% } %>><a href="#additional-fields-<%=image.get("id") %>" role="tab" data-toggle="tab" class="additional-fields tab-link">Additional Fields</a></li>
@@ -28,20 +28,15 @@
       <div class="tab-pane <% if ((!isMathImage && image.has("dynamic_description")) || (isMathImage && image.has("current_equation"))) { %> active <% } %>" id="preview-<%=image.get("id") %>">
         <div class="panel panel-default">
             <div class="panel-body">
-                <div class="image_description" id="image-description-<%= image.get("id") %>">
-                    <% if (isMathImage && image.has("current_equation")) { %>
-                        <div><%= image.get("current_equation").element %></div>
-                        <% if (replaceMath) { %>
-                            <h2 class="math-preview">Text Description</h2>
-                            <div><%= image.get("current_equation").description %></div>
-                        <% } %>
-                    <% } %> 
-                    <% if (!replaceMath && image.has("dynamic_description")) { %>
-                        <% if (isMathImage) { %>
-                            <h2 class="math-preview">Text Description</h2>
-                            <% } %>
-                        <div><%= image.get("dynamic_description").body %></div>
-                    <% } %>
+                <div class="current-equation" <%= (!isMathImage || !image.has("current_equation")) ? 'style="display: none;"' : "" %>>
+                    <%= (isMathImage && image.has("current_equation")) ? image.get("current_equation").element : "" %>
+                </div>
+                <h2 class="math-preview equation-description" <%= !isMathImage ? 'style="display: none;"' : "" %>>Text Description</h2>
+                <div class="equation-description current-description" <%= (!isMathImage || !replaceMath || !image.has("current_equation")) ? 'style="display: none;"' : "" %>>
+                    <%= image.has("current_equation") ? image.get("current_equation").description : "" %>
+                </div> 
+                <div class="image_description" id="image-description-<%= image.get("id") %>" <%= (isMathImage && replaceMath) ? 'style="display: none;"' : "" %>>
+                    <%= image.has("dynamic_description") ? image.get("dynamic_description").body : "" %>
                 </div>
             </div>
         </div>
@@ -51,8 +46,10 @@
             <button class="btn btn-primary open-edit-view edit-math-ml pull-right">Edit</button>
         </div>
         <div class="clearfix"></div>
-        <p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link">View Description History</a></p>
-        <p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
+        <% if (!isMathImage || !replaceMath) { %>
+            <p><a href="/dyn_desc_history/<%= image.get("id") %>" class="history_link">View Description History</a></p>
+            <p><strong>Author:</strong> <span class="author"><%= image.get("author") %></span></p>
+        <% } %>
       </div>
       <div class="tab-pane <%= (isMathImage && !image.has("current_equation")) ? "active" : "" %>" id="math-<%=image.get("id") %>">
         <div class="panel panel-default">

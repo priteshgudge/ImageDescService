@@ -1,7 +1,6 @@
 <% 
 	var replaceMath = $("#math_replacement_mode").val() != "";
 	var isMathImage = image.get("image_category_id") == $("#math_category").val();
-	console.log(isMathImage);
 %>
 <div id="edit-image-<%= image.get("id") %>">
 	<% if (typeof(previousImage) !== "undefined") { %>

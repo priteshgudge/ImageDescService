@@ -32,7 +32,6 @@ define([
       "click .additional-fields": "showAdditionalFields",
       "click .history_link": "showDescriptionHistory",
       "click .math-tab a": "toggleDescriptionMathML",
-      "click .save-as-replacement": "getEquation",
       "click .save-additional-fields": "saveAdditionalFields",
       "click .read-description": "readDescription",
       "click .tab-link": "clearMessages",
@@ -115,16 +114,28 @@ define([
     showPreview: function(e) {
       var editView = this;
       editView.$(".preview-tab").show();
-      
-      if ($("#math_replacement_mode").val() == "" || editView.model.get("image_category_id") != $("#math_category").val()) {
-        editView.model.fetch({
-          success: function (image, response, options) {
+      editView.model.fetch({
+        success: function (image, response, options) {
+          if (image.has("dynamic_description")) {
             editView.$(".image_description").html(image.has("dynamic_description") ? image.get("dynamic_description")["body"] : "");
-            editView.$(".author").html(image.get("author"));
+            editView.$(".author").html(image.get("author"));  
+            editView.$(".image_description").show();
           }
-        });
-      } //TODO equation.
-      
+          console.log(image.get("image_category_id") == $("#math_category").val() && image.has("current_equation"));
+          if (image.get("image_category_id") == $("#math_category").val() && image.has("current_equation")) {
+            editView.$(".current-equation").html(image.get("current_equation").element);
+            MathJax.Hub.Queue(["Typeset",MathJax.Hub, "image-description-" + editView.model.get("id")]);
+            editView.$(".current-equation").show();
+            console.log($("#math_replacement_mode").val());
+            if ($("#math_replacement_mode").val() != "") {
+              editView.$(".current-description").html(image.get("current_equation").description);
+              editView.$(".current-description").show();
+            } else {
+              editView.$(".current-description").hide();
+            }
+          }
+        }
+      });
     },
 
     saveDescription: function(description) {
@@ -181,7 +192,12 @@ define([
       }
       if ($("#math_replacement_mode").val() == "") {
         editView.saveDescription(editView.$(".math-text-description").val());
-      } 
+      } else {
+        editView.$(".preview").trigger("click");
+        //disable alt.
+        $("#edit-image-" + editView.model.get("id") + " .alt").prop("disabled", "disabled").val("replaced with auto-generated description");
+        $("#edit-image-" + editView.model.get("id") + " .altButton").hide();
+      }
     },
 
     getMMLCEquation: function(e) {
@@ -297,21 +313,6 @@ define([
       );
     },
 
-    getEquation: function(e) {
-      e.preventDefault();
-      var editView = this;
-      var mmlcEquation = new MmlcEquation();
-      mmlcEquation.save({math: editView.$(".math-editor").val()},
-        {
-          success: function(model, response, options) {
-            var components = new MmlcComponents(model.get("components"));
-            var mathML = components.findWhere({format: "mml"});
-            editView.saveEquation(mathML.get("source"), model.get("cloud_url"));
-          }
-        }
-      );
-    },
-
     saveEquation: function() {
       $("#waves-toolbar").hide();
       var editView = this;
@@ -333,12 +334,6 @@ define([
         {
           success: function () {
             if ($("#math_replacement_mode").val() != "") {
-              editView.$(".equation-updated").html("Your equation has been created and will replace the image when you update your book.");
-              editView.$(".alt").prop("disabled", "disabled").val("replaced with auto-generated description");
-              editView.$(".altButton").prop("disabled", "disabled");
-              console.log(editView.$(".image_description"));
-              editView.$(".image_description").html(mathML);
-              MathJax.Hub.Queue(["Typeset",MathJax.Hub,"image-description-" + editView.model.get("id")]);
               editView.$(".text-success").html("Your equation has been created.");
               editView.$(".preview").trigger("click");  
               $("#right").scrollTo($("#edit-image-" + editView.model.get("id")));
