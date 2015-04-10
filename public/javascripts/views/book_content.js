@@ -72,7 +72,12 @@ define([
       imageView.model = image;
       imageView.render();
       $(".domImage", editDiv.el).html(imageView.el);
-      domImage.replaceWith(editDiv.el);
+      if ($(domImage.parent()).is("a")) {
+        $(domImage).parent().append(editDiv.el);
+        domImage.remove();
+      } else {
+        domImage.replaceWith(editDiv.el);
+      }
     },
 
     renderDuplicates: function(image) {
