@@ -72,8 +72,8 @@ define([
       imageView.model = image;
       imageView.render();
       $(".domImage", editDiv.el).html(imageView.el);
-      if ($(domImage.parent()).is("a")) {
-        $(domImage).parent().append(editDiv.el);
+      if ($(parent).prop("tagName") == "a") {
+        $(parent).append(editDiv.el);
         domImage.remove();
       } else {
         domImage.replaceWith(editDiv.el);
