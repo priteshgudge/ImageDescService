@@ -31,16 +31,16 @@ define([
       "click .preview": "showPreview",
       "click .additional-fields": "showAdditionalFields",
       "click .history_link": "showDescriptionHistory",
-      "click .math-tab a": "toggleDescriptionMathML",
       "click .save-additional-fields": "saveAdditionalFields",
       "click .read-description": "readDescription",
       "click .tab-link": "clearMessages",
       "click .math-toggle": "setSelectedMathEditor",
       "click .jswaves-toggle": "showJSWaves",
-      "click .image_description": "showDynamicDescriptionForm",
+      "click .image_description": "showEditor",
       "keyup .math-editor": "enableGenerateButton",
       "change .math-type": "clearMathEditor",
-      "keyup .math-text-description": "enableSaveMathButton"
+      "keyup .math-text-description": "enableSaveMathButton",
+      "click .open-edit-view": "showEditor"
     },
 
     jax: {},
@@ -121,12 +121,10 @@ define([
             editView.$(".author").html(image.get("author"));  
             editView.$(".image_description").show();
           }
-          console.log(image.get("image_category_id") == $("#math_category").val() && image.has("current_equation"));
           if (image.get("image_category_id") == $("#math_category").val() && image.has("current_equation")) {
             editView.$(".current-equation").html(image.get("current_equation").element);
             MathJax.Hub.Queue(["Typeset",MathJax.Hub, "image-description-" + editView.model.get("id")]);
             editView.$(".current-equation").show();
-            console.log($("#math_replacement_mode").val());
             if ($("#math_replacement_mode").val() != "") {
               editView.$(".current-description").html(image.get("current_equation").description);
               editView.$(".current-description").show();
@@ -395,6 +393,17 @@ define([
     enableSaveMathButton: function() {
       this.$(".save-math").prop("disabled", false);
       this.warnUser = true;
+    },
+
+    showEditor: function(e) {
+      e.preventDefault();
+      var editImage = this;
+      if (editImage.model.get("image_category_id") == $("#math_category").val()) {
+        //Show math tab.
+        editImage.$("#math-tab-" + editImage.model.get("id")).tab('show');  
+      } else {
+        editImage.$(".edit").trigger("click");
+      }
     }
 
   });

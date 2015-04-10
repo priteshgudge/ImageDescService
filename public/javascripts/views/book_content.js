@@ -72,7 +72,7 @@ define([
       imageView.model = image;
       imageView.render();
       $(".domImage", editImage.el).html(imageView.el);
-      if ($(parent).prop("tagName").toUpperCase() === "A") {
+      if ($(parent).prop("tagName").toUpperCase() === "P") {
         editImage.$el.insertAfter(parent);
         domImage.remove();
       } else {
