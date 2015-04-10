@@ -67,16 +67,16 @@ define([
       editImage.model = image;
       editImage.previousImage = contentView.collection.models[i-1];
       editImage.nextImage = contentView.collection.models[i+1];
-      var editDiv = editImage.render();
+      editImage.render();
       var imageView = new ImageView();
       imageView.model = image;
       imageView.render();
-      $(".domImage", editDiv.el).html(imageView.el);
-      if ($(parent).prop("tagName") == "a") {
-        editDiv.el.insertAfter(parent);
+      $(".domImage", editImage.el).html(imageView.el);
+      if ($(parent).prop("tagName").toUpperCase() === "A") {
+        editImage.el.insertAfter(parent);
         domImage.remove();
       } else {
-        domImage.replaceWith(editDiv.el);
+        domImage.replaceWith(editImage.el);
       }
     },
 
