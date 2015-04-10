@@ -73,10 +73,10 @@ define([
       imageView.render();
       $(".domImage", editImage.el).html(imageView.el);
       if ($(parent).prop("tagName").toUpperCase() === "A") {
-        editImage.el.insertAfter(parent);
+        editImage.$el.insertAfter(parent);
         domImage.remove();
       } else {
-        domImage.replaceWith(editImage.el);
+        domImage.replaceWith(editImage.$el);
       }
     },
 
