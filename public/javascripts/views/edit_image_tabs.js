@@ -40,7 +40,7 @@ define([
       "keyup .math-editor": "enableGenerateButton",
       "change .math-type": "clearMathEditor",
       "keyup .math-text-description": "enableSaveMathButton",
-      "click .open-edit-view": "showEditor"
+      "click .open-editor": "showEditor"
     },
 
     jax: {},
@@ -400,6 +400,7 @@ define([
       var editImage = this;
       if (editImage.model.get("image_category_id") == $("#math_category").val()) {
         //Show math tab.
+        console.log(editImage.$("#math-tab-" + editImage.model.get("id")));
         editImage.$("#math-tab-" + editImage.model.get("id")).tab('show');  
       } else {
         editImage.$(".edit").trigger("click");
