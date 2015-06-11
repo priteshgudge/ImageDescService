@@ -161,7 +161,7 @@ module DaisyBookHelper
           imggroup = get_imggroup_parent_of(img_node)
 
           # Replace the image if there is an equation
-          if (book.math_replacement_mode_id == MathReplacementMode.MathML.id && dynamic_image.image_category_id == ImageCategory.MathEquations.id && dynamic_image.current_equation && dynamic_image.current_equation.element)
+          if (book.math_replacement_mode_id == MathReplacementMode.MathMLMode.id && dynamic_image.image_category_id == ImageCategory.MathEquations.id && dynamic_image.current_equation && dynamic_image.current_equation.element)
             math_element = MathHelper.create_math_element(dynamic_image.current_equation)
             image_element = imggroup ? imggroup : img_node
             MathHelper.replace_math_image(image_element, math_element, img_node['src'])
