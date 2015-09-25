@@ -32,12 +32,40 @@ require.config({
       deps: ['jquery'], 
       exports: '$.fn.tab' 
     },
+    'bootstrap/popover': { 
+      deps: ['jquery'], 
+      exports: '$.fn.popover' 
+    },
     fancybox: {
       deps: ["jquery"],
       exports: "fancybox"
     },
     mespeak: {
       exports: "mespeak"
+    },
+    scrollTo: {
+      deps: ['jquery'],
+      exports: ['scrollTo']
+    },
+    MathJax: {
+      exports: "MathJax",
+      init: function() {
+        MathJax.Hub.Config({
+          jax: ["input/AsciiMath", "input/MathML", "input/TeX", "output/SVG", "output/NativeMML"],
+          extensions: ["asciimath2jax.js", "tex2jax.js", "MathMenu.js", "MathZoom.js", "toMathML.js"],
+          tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+          }
+        });
+        MathJax.Hub.Startup.onload();
+        return MathJax;
+      }
+    },
+    JSWAVES: {
+      deps: ["jquery", "MathJax"],
+      exports: "JSWAVES"
     }
   },
   paths: {
@@ -50,10 +78,14 @@ require.config({
     'ckeditor': 'libs/ckeditor/adapters/jquery',
     'bootstrap': 'libs/bootstrap',
     'fancybox': 'libs/fancybox/jquery.fancybox',
-    'mespeak': 'libs/mespeak/mespeak.min'
+    'mespeak': 'libs/mespeak/mespeak.min',
+    'scrollTo': 'libs/jquery/jquery.scrollTo.min',
+    'MathJax': 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&amp;delayStartupUntil=configured',
+    'JSWAVES': 'libs/JSWAVES/waves.js?config=/javascripts/libs/JSWAVES/defaults/config.json'
   },
   mainConfigFile: '/javascripts/main.js',
-  waitSeconds: 120
+  waitSeconds: 120,
+  urlArgs: "bust=" + (new Date()).getTime()
 });
 
 require([

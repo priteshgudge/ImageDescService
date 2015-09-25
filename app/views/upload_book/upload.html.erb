@@ -5,28 +5,67 @@
     <div class="col-md-2" role="navigation">
         <%= render partial: 'books/my_books_navigation' %>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-10 upload-book">
 			<h1>Poet Book Upload </h1>
-			<p>
-			To add image descriptions to a DAISY or EPUB book in the Poet library, follow these steps:
-			</p>
-			<ol>
-			<li>Click the Browse (or Choose File) button below, and select a DAISY book (zip) or EPUB book (epub) from your local drive to upload.</li>
-			<li>If the book is password protected, enter your password in the field.</li>
-			<li>Click the Upload button.</li>
-			</ol>
-			<p>
-			After the upload process completes, you will need to remember the code displayed and follow the instructions.
-			</p>
-			</br>
-
-
 			<%= form_tag("/upload_book/submit", {:multipart => true}) do %>
-			<p><label for="book">Select book file</label> :
-			<%= file_field_tag 'book' %> </p>
-			<p></p>
-			<%= submit_tag "Upload", :class => "btn btn-primary" %>
+			<p>
+			To add image descriptions to a DAISY or EPUB book, follow these steps:
+			</p>
+			<div class="well">
+				<ol start="1">
+					<li>
+						<legend>Select Book File</legend>
+						<label for="book">Select a DAISY book (zip) or EPUB book (epub).</label>
+						<p><%= file_field_tag 'book' %></p>
+					</li>
+				</ol>
+			</div>
+			<div class="well">
+				<ol start="2">
+					<li>
+						<legend>Choose Math Image Type</legend>
+						<p>
+							For files containing math images, please select whether you want to keep the math as image files or replace them with MathML code. If images are replaced, existing alt descriptions will also be replaced.
+							<a data-toggle="collapse" id="learnMore" href="#collapseMathMore" aria-expanded="false" aria-controls="collapseMathMore">Learn More</a>
+						</p>
+						<p id="collapseMathMore" class="collapse">
+							Mathematical Markup Language (MathML) is a markup language for describing mathematical notations and capturing both its structure and content. While best practice is to use MathML, not all browsers and reading systems currently support the rendering of math code.
+						</p>
+						<p>
+							<label class="radio-inline">
+								<input type="radio" name="math_replacement_mode" value="MathML" <%= (can? :edit_book_content, @all) ? "checked" : "disabled" %>/>
+								Replace images with MathML
+							</label>
+							<label class="radio-inline">
+								<input type="radio" name="math_replacement_mode" value="" <%= (!can? :edit_book_content, @all) ? "checked" : "" %>/>
+								Keep math as images
+							</label>
+						</p>
+					</li>
+				</ol>
+			</div>
+			<div class="well">
+				<ol start="3">
+					<li>
+						<legend>Click the Upload button</legend>
+						<p>
+							After the process completes, you will need to remember the code displayed and follow the instructions.
+						</p>
+						<p><%= submit_tag "Upload", :class => "btn btn-primary", :disabled => true, :id => "upload" %></p>
+					</li>
+				</ol>
+			</div>
+			
 			<% end %>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+  $("#book").on("change", function(e) {
+  	$("#upload").prop("disabled", false);
+
+  });
+  $("#learnMore").on("click", function(e) {
+  	$(this).hide();
+  });
+</script>

@@ -127,8 +127,10 @@ class User < ActiveRecord::Base
    end
 
    def add_user_roles
-    describer = Role.where(:name => "Describer").first
-    self.roles = [describer]
+    if (self.roles.length == 0)
+      describer = Role.where(:name => "Describer").first
+      self.roles = [describer]
+    end
    end
    
   def set_demo_library

@@ -41,8 +41,25 @@ module DaisyUtils
     return "#{request.remote_addr}"
   end
 
+  def get_contents_xml_name(book_directory) 
+    DaisyUtils.get_contents_xml_name(book_directory)
+  end
+  
   def self.get_contents_xml_name(book_directory) 
     return Dir.glob(File.join(book_directory, '*.xml'))[0]
+  end
+  
+  def self.get_opf_name(book_directory)
+    return Dir.glob(File.join(book_directory, '*.opf'))[0]
+  end
+  
+  def get_opf_from_dir(book_directory)
+    DaisyUtils.get_opf_from_dir(book_directory)
+  end
+  
+  def self.get_opf_from_dir (book_directory)
+    opf_filename = get_opf_name(book_directory)
+    File.read(opf_filename)
   end
   
   def extract_images_prod_notes_for_daisy doc
@@ -71,6 +88,15 @@ module DaisyUtils
         end
       end
       images = nil;
+
+      maths = doc.xpath('//mathml:math', 'mathml' => 'http://www.w3.org/1998/Math/MathML')
+      #maths = doc.css("math")
+      @num_maths = maths.size()
+      @maths_hash = Hash.new()
+      maths.each_with_index do |node, index|
+        @maths_hash[index] = node.to_s
+      end
+      maths = nil;
   end
   
 end

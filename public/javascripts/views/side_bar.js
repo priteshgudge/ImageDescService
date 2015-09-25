@@ -3,10 +3,11 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'scrollTo',
   '/javascripts/collections/dynamic_image_collection.js',
   'text!/javascripts/templates/side_bar.html',
   '/javascripts/views/edit_book.js'
-], function($, _, Backbone, DynamicImageCollection, sideBarTemplate, EditBookView){
+], function($, _, Backbone, scrollTo, DynamicImageCollection, sideBarTemplate, EditBookView){
   var SideBarView = Backbone.View.extend({
     el: $('#left'),
 
@@ -15,7 +16,7 @@ define([
       "click #expand": "openNav",
       "change #fragment": "loadFragment",
       "change #filter": "filterNavImages",
-      "click navLink": "setFocusOnImage",
+      "click .navLink": "scrollToImage",
       "click #goToImage": "goToImage",
       "submit #filterForm": "goToImage"
     },
@@ -36,20 +37,29 @@ define([
       }
     },
 
-    closeNav: function() {
+    scrollToImage: function(e) {
+      e.preventDefault();
+      $("#right").scrollTo($(e.currentTarget).attr("href"));
+    },
+
+    closeNav: function(e) {
+      e.preventDefault();
       $("#left").removeClass("col-md-2");
       $("#right").removeClass("col-md-10");
       $("#right").addClass("col-md-12");
+      $("#right").css("right", "-15px");
       $(".offcanvas").hide();
       $("#close-nav").hide();
       $("#expand").show();
       $("#left").css("background-color", "#D4D4D4");
     },
 
-    openNav: function() {
+    openNav: function(e) {
+      e.preventDefault();
       $("#left").addClass("col-md-2");
       $("#right").addClass("col-md-10");
       $("#right").removeClass("col-md-12");
+      $("#right").css("right", "0");
       $(".offcanvas").show();
       $("#expand").hide();
       $("#close-nav").show();

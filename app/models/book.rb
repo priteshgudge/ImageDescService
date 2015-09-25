@@ -17,7 +17,6 @@ class Book < ActiveRecord::Base
     end
   end
   
-  
   def mark_approved
 
     # set the latest descriptions as current (approved)
@@ -56,7 +55,6 @@ class Book < ActiveRecord::Base
   def book_stats_plus_unessential_images_described
     book_stats.select("book_stats.*, total_images_described - essential_images_described as unessential_images_described") 
   end
-  
 
   def dynamic_desc_submitters
     User.where( :id => dynamic_descriptions.map(&:submitter_id), :deleted_at => nil).select(:email).map(&:email)

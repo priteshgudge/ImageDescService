@@ -1,5 +1,5 @@
 class EditBookController < ApplicationController
-  before_filter :authenticate_user!, :except => [:help, :description_guidance]
+  before_filter :authenticate_user!, :except => [:help]
   include RepositoryChooser
 
   def initialize
@@ -23,7 +23,9 @@ class EditBookController < ApplicationController
   end
 
   def edit
-    @image_categories = ImageCategory.order(:order_to_display).all;
+    @image_categories = ImageCategory.order(:order_to_display).all
+    @use_mmlc = !defined?(MATHML_CLOUD_BASE_PATH).nil?
+    
     response.headers['Access-Control-Allow-Origin'] = '*'
     error_redirect = 'edit_book/describe'
     book_id = params[:book_id]
@@ -165,7 +167,7 @@ class EditBookController < ApplicationController
     end
     ActiveRecord::Base.include_root_in_json = false
     @host = @repository.get_host(request)
-    render :json => JSON.parse(@images.to_json(:host => @host, :include => [:dynamic_description, :current_alt]))
+    render :json => JSON.parse(@images.to_json(:host => @host, :include => [:dynamic_description, :current_alt, :current_equation]))
   end
 
   def top_bar
@@ -177,10 +179,6 @@ class EditBookController < ApplicationController
  def help
  end
  
- def description_guidance
-   render :layout =>'guidelines_layout'
- end
-
  def image_categories
   render :json => JSON.parse(ImageCategory.order(:order_to_display).all.to_json);
  end 

@@ -1,28 +1,30 @@
+<% total_images = BookStats.sum("total_images") %>
+<% total_essential_images = BookStats.sum("total_essential_images") %>
+<% total_images_described = BookStats.sum("total_images_described") %>
+<% essential_images_described = BookStats.sum("essential_images_described") %>
 <table>  
 	<tr>
      <td align="right">Images </td>
-     <td align="right"> <%= current_library.related_book_stats.sum("total_images") %></td>
+     <td align="right"> <%= total_images %></td>
     </tr>
     <tr>
 	 <td align="right">Essential Images </td>
-	 <td align="right"> <%= current_library.related_book_stats.sum("total_essential_images") %></td> 
+	 <td align="right"> <%= total_essential_images %></td> 
 	</tr>
 	<tr>
 	 <td align="right">% Essential </td>
-	 <% total_images = current_library.related_book_stats.sum("total_images") %>
-	 <td align="right"> <%= number_to_percentage((total_images && total_images > 0 ? current_library.related_book_stats.sum("total_essential_images") * 100.00/total_images : 0), :precision => 1) %></td>
+	 <td align="right"> <%= number_to_percentage((total_images && total_images > 0 ? total_essential_images * 100.00/total_images : 0), :precision => 1) %></td>
 	</tr>
 	<tr> 
 	 <td align="right">Images Described </td>
-     <td align="right"> <%= current_library.related_book_stats.sum("total_images_described") %></td>
+     <td align="right"> <%= total_images_described %></td>
     </tr>
     <tr> 
      <td align="right">Essential Images Described </td>
-	 <td align="right"> <%= current_library.related_book_stats.sum("essential_images_described") %> </td>
+	 <td align="right"> <%= essential_images_described %> </td>
 	</tr>
 	<tr> 
      <td align="right">% Essential Described </td>
-     <% total_essential_images = current_library.related_book_stats.sum("total_essential_images")%>
-	 <td align="right"> <%= number_to_percentage((total_essential_images && total_essential_images > 0 ? current_library.related_book_stats.sum("essential_images_described")* 100.00/total_essential_images : 0), :precision => 1) %> </td>
+	 <td align="right"> <%= number_to_percentage((total_essential_images && total_essential_images > 0 ? essential_images_described * 100.00/total_essential_images : 0), :precision => 1) %> </td>
 	</tr>
 </table>

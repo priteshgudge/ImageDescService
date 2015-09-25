@@ -63,13 +63,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'foreman'
   gem 'oink'
-  gem 'factory_girl_rails', '1.2.0'
-end
-
-group :test do
-  # Selenium gem has an incompatibility with zipruby, so need
-  # to keep it out of the Rails runtime group.
-  # https://github.com/rubyzip/rubyzip/issues/115
-  gem 'selenium-webdriver'
-  gem 'page-object'
+  gem 'factory_girl_rails', '~> 4.0'
 end

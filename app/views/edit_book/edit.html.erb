@@ -11,8 +11,8 @@
 <div class="container-fixed" id="edit_book">
 	<div class="col-md-2" id="left">
 		<div id="toggle" class="pull-right">
-			<img src="/images/close-icon.png" id="close-nav" alt="close nav" />
-			<img src="/images/expand.jpg" alt="open nav" id="expand" style="display: none;" />
+			<a href="#" id="close-nav"><img src="/images/close-icon.png" alt="close nav" /></a>
+			<a href="#" id="expand" style="display: none;"><img src="/images/expand.jpg" alt="open nav" /></a>
 		</div>
 		<div id="tool_bar" class="offcanvas">
 			<form class="form-horizontal" role="form" id="filterForm">
@@ -58,6 +58,9 @@
 <input id="book_fragment_id" value="<%= book_fragment_id %>" type="hidden" />
 <input id="show_additional_fields" value="<%= can? :view_admin, @all %>" type="hidden" />
 <input id="can_edit_content" value="<%= can? :edit_book_content, @all %>" type="hidden" />
+<input id="use_mmlc" value="<%= @use_mmlc %>" type="hidden" />
+<input id="math_replacement_mode" value="<%= book.math_replacement_mode_id %>" type="hidden" />
+<input id="math_category" value="<%= ImageCategory.MathEquations.id %>" type="hidden" />
 
 <!-- Load the script "javascripts/edit_book/main.js" as our entry point -->
 <script>
@@ -72,7 +75,7 @@
 <script data-main="/javascripts/main" src="/javascripts/libs/require.js"></script>
 
 
-<!-- Tempaltes -->
+<!-- Templates -->
 <div class="modal fade" id="descriptionHistoryModal" tabindex="-1" role="dialog" aria-labelledby="descriptionHeader" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -87,7 +90,8 @@
     </div>
   </div>
 </div>
-
+<div class="waves-output"></div>
+<div class="waves-input"></div>
 
 
 

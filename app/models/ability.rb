@@ -12,6 +12,7 @@ class Ability
     can :approve_book, :all if user.admin?
     can :complete_book, :all if user.admin?
     can :reports, :all if user.admin?
+    can :edit_uesrs, :all if user.admin?
     can :data_cleanup, :all if user.admin?
     can :view_admin, :all if user.admin? || user.moderator?
     can :admin_user, :all if user.admin?

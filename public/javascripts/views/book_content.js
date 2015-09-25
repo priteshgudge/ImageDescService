@@ -4,21 +4,14 @@ define([
   'underscore',
   'backbone',
   'fancybox',
-  'mespeak',
   '/javascripts/models/image.js',
   '/javascripts/models/alt.js',
   '/javascripts/views/edit_image.js',
   '/javascripts/views/duplicate_image.js',
   '/javascripts/views/image.js'
-], function($, _, Backbone, fancybox, mespeak, ImageModel, Alt, EditImageView, DuplicateImageView, ImageView){
+], function($, _, Backbone, fancybox, ImageModel, Alt, EditImageView, DuplicateImageView, ImageView){
   var BookContentView = Backbone.View.extend({
     el: $('#book_content'),
-
-    initialize: function() {
-      //initialize meSpeak
-      meSpeak.loadConfig("/javascripts/libs/mespeak/mespeak_config.json"); 
-      meSpeak.loadVoice('/javascripts/libs/mespeak/voices/en/en-us.json'); 
-    },
 
     render: function() {
       var contentView = this;
@@ -74,12 +67,17 @@ define([
       editImage.model = image;
       editImage.previousImage = contentView.collection.models[i-1];
       editImage.nextImage = contentView.collection.models[i+1];
-      var editDiv = editImage.render();
+      editImage.render();
       var imageView = new ImageView();
       imageView.model = image;
       imageView.render();
-      $(".domImage", editDiv.el).html(imageView.el);
-      domImage.replaceWith(editDiv.el);
+      $(".domImage", editImage.el).html(imageView.el);
+      if ($(parent).prop("tagName").toUpperCase() === "P") {
+        editImage.$el.insertAfter(parent);
+        domImage.remove();
+      } else {
+        domImage.replaceWith(editImage.$el);
+      }
     },
 
     renderDuplicates: function(image) {

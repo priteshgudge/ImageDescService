@@ -18,12 +18,12 @@ module EpubBookHelper
         begin
           Zip::Archive.decrypt(book.path, password)
         rescue Zip::Error => e
-          ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+          Rails.logger.info "#{e.class}: #{e.message}"
           if e.message.include?("Wrong password")
-            ActiveRecord::Base.logger.info "Invalid Password for encrypted zip"
+            Rails.logger.info "Invalid Password for encrypted zip"
             flash[:alert] = "Please check your password and re-enter"
           else
-            ActiveRecord::Base.logger.info "Other problem with encrypted zip"
+            Rails.logger.info "Other problem with encrypted zip"
             flash[:alert] = "There is a problem with this zip file"
           end
           redirect_to :action => 'process'
@@ -40,12 +40,12 @@ module EpubBookHelper
       begin
         get_epub_with_descriptions zip_directory, book_directory, epub_file, job, current_library
       rescue Zip::Error => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "#{e.class}: #{e.message}"
         if e.message.include?("File encrypted")
-          ActiveRecord::Base.logger.info "Password needed for zip"
+          Rails.logger.info "Password needed for zip"
           flash[:alert] = "Please enter a password for this book"
         else
-          ActiveRecord::Base.logger.info "Other problem with zip"
+          Rails.logger.info "Other problem with zip"
           flash[:alert] = "There is a problem with this zip file"
         end
 
@@ -61,7 +61,7 @@ module EpubBookHelper
         content_documents = get_content_documents_with_updated_descriptions(book_directory, contents_filenames, current_library)
         zip_filename = create_zip(epub_file, content_documents)
         basename = File.basename(contents_filenames[0])
-        ActiveRecord::Base.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
+        Rails.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
       
         # Store this file in S3, update the Job; change exit_params and the state
         random_uid = UUIDTools::UUID.random_create.to_s
@@ -105,23 +105,23 @@ module EpubBookHelper
         contents_filenames.each do |cf|
           content_file = File.read(cf)
           content_doc = Nokogiri::XML content_file
-          content_documents[get_relative_path(book_directory, cf)] = EpubBookHelper::BatchHelper.get_contents_with_updated_descriptions(content_doc, File::basename(cf, '.xhtml'), matching_images_hash)
+          content_documents[get_relative_path(book_directory, cf)] = get_contents_with_updated_descriptions(content_doc, File::basename(cf, '.xhtml'), matching_images_hash)
         end
       rescue NoImageDescriptions
-        ActiveRecord::Base.logger.info "No descriptions available #{contents_filenames}"
+        Rails.logger.info "No descriptions available #{contents_filenames}"
         raise ShowAlertAndGoBack.new("There are no image descriptions available for this book")
       rescue MissingBookUIDException => e
-        ActiveRecord::Base.logger.info "Uploaded EPUB without Publication ID #{contents_filenames}"
+        Rails.logger.info "Uploaded EPUB without Publication ID #{contents_filenames}"
         raise ShowAlertAndGoBack.new("Uploaded EPUB XML content file must have a Publication ID element")
       rescue Nokogiri::XML::XPath::SyntaxError => e
-        ActiveRecord::Base.logger.info "Uploaded file must contain a valid EPUB Content Document #{contents_filenames}"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+        Rails.logger.info "Uploaded file must contain a valid EPUB Content Document #{contents_filenames}"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
         raise ShowAlertAndGoBack.new("Uploaded file must contain a valid EPUB Content Document")
       rescue Exception => e
-        ActiveRecord::Base.logger.info "Unexpected exception processing #{contents_filenames}:"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info e.backtrace.join("\n")
+        Rails.logger.info "Unexpected exception processing #{contents_filenames}:"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info e.backtrace.join("\n")
         $stderr.puts e
         raise ShowAlertAndGoBack.new("An unexpected error has prevented processing that file")
       end
@@ -153,7 +153,6 @@ module EpubBookHelper
     end
     
     def self.get_contents_with_updated_descriptions(doc, filename, image_hash)
-      
       # brute-force: remove aria-describedby attributes that reference Poet-injected elements
       doc.css('img[aria-describedby^="' + ASIDE_PREFIX + '"]').remove_attr('aria-describedby')
 
@@ -164,12 +163,30 @@ module EpubBookHelper
 
       doc.css('img').each do |img_node|
         unless (img_node['src']).blank?
-          image_location =  img_node['src']
-          matched_image = image_hash[image_location]
-          unless matched_image == nil 
-            dynamic_description = matched_image.dynamic_description
+          image_location = EpubUtils.sanitize_image_location(img_node['src'])
+          dynamic_image = image_hash[image_location]
+          unless dynamic_image == nil 
+            # Attach any alt text modifications that might exist
+            alt = dynamic_image.current_alt
+            if (alt && alt.alt)
+              img_node['alt'] = alt.alt
+            end
+
+            # Attempt to find the parent container of the image node
+            imggroup = get_imggroup_parent_of(img_node)
+            
+            # Replace the image if there is an equation
+            if (book.math_replacement_mode_id == MathReplacementMode.MathML.id && dynamic_image.image_category_id == ImageCategory.MathEquations.id && dynamic_image.current_equation && dynamic_image.current_equation.element)
+              math_element = MathHelper.create_math_element(dynamic_image.current_equation)
+              image_element = imggroup ? imggroup : img_node
+              MathHelper.replace_math_image(image_element, math_element, img_node['src'])
+              Rails.logger.info "Image #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
+              next
+            end
+            
+            dynamic_description = dynamic_image.dynamic_description
             if(!dynamic_description || !dynamic_description.body || dynamic_description.body.strip.length == 0)
-              ActiveRecord::Base.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
+              Rails.logger.info "Image #{@book_uid} #{image_location} is in database but with no descriptions"
               next
             end
 
@@ -190,35 +207,21 @@ module EpubBookHelper
       return doc.to_xml
     end
     
+    def self.get_imggroup_parent_of(image_node)
+      parent = image_node.parent
+      if (!parent || parent.node_name != 'div')
+        return nil
+      end 
+      
+      return parent
+    end
+    
     def self.get_relative_path(root_dir, path)
       rp = path[root_dir.length..-1]
       if (rp[0] == File::SEPARATOR)
         rp = rp[1..-1]
       end
       return rp
-    end
-    
-    def get_imggroup_parent_of(image_node)
-      DaisyBookHelper::BatchHelper.get_imggroup_parent_of(image_node)
-    end
-    def self.get_imggroup_parent_of(image_node)
-      node = image_node
-      prevent_infinite_loop = 100
-      while(node)
-        if(node.node_name == "imggroup")
-          return node
-        end
-        parent = node.at_xpath("..")
-        if(!parent || parent == node || parent.node_name == "dtbook")
-          break
-        end
-        node = parent
-        prevent_infinite_loop -= 1
-        if(prevent_infinite_loop < 0)
-          raise "XML file image was nested more than 100 levels deep"
-        end
-      end
-      return nil
     end
     
   end

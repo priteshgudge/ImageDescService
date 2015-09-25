@@ -134,7 +134,8 @@ class ApiController < ApplicationController
   API_BOOK_ATTRIBUTE_NAMES = ['uid', 'title', 'isbn', 'last_approved']
   def book_stats_from_uid book_uid
     @status = STATUS_APPROVED
-    @book = Book.where(:uid => book_uid, :deleted_at => nil).first
+    cleaned_book_uid = book_uid.gsub(/[^a-zA-Z0-9\-\_]/, '-')
+    @book = Book.where(:uid => cleaned_book_uid, :deleted_at => nil).first
 
     if @book && @book.last_approved
       @results = yield @book

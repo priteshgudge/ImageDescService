@@ -47,6 +47,7 @@ class UploadBookController < ApplicationController
       redirect_to :action => 'upload'
       return
     end
+    math_replacement_mode = params[:math_replacement_mode] == "MathML" ? MathReplacementMode.where(:mode => 'MathML').first.id : nil
 
     begin
       if valid_daisy_zip?(book_file.path)
@@ -97,7 +98,7 @@ class UploadBookController < ApplicationController
       end
 
       if !book
-         book = Book.create(:uid => @book_uid, :file_type => file_type, :status => 4, :library =>  current_library, :user_id => current_user.id)
+         book = Book.create(:uid => @book_uid, :file_type => file_type, :status => 4, :library =>  current_library, :user_id => current_user.id, :math_replacement_mode_id => math_replacement_mode)
       end
 
       pid = fork do

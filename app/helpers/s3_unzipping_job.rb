@@ -44,7 +44,7 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
   
   def create_images_in_database(book, fragment, book_directory, doc)
      each_image(doc) do | image_node |
-      image_location = sanitize_image_location(image_node['src'])
+      image_location = EpubUtils.sanitize_image_location(image_node['src'])
       xml_id = image_node['id']
 
       # if src exists
@@ -87,17 +87,6 @@ class S3UnzippingJob < Struct.new(:book_id, :repository_name, :library, :uploade
   def each_image (doc)
    
   end
-
-  def extract_book_uid(doc)
-    xpath_uid = "//xmlns:meta[@name='dtb:uid']"
-    matches = doc.xpath(doc, xpath_uid)
-    if matches.size != 1
-      raise MissingBookUIDException.new
-    end
-    node = matches.first
-    node.attributes['content'].content
-  end
-
 
   def get_image_size(image_file)
     width, height = 20

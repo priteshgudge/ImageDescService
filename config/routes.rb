@@ -2,6 +2,8 @@ DiagramRailsApp::Application.routes.draw do
   get "alt/:id", to: "alt#get"
   get "alt/current/:dynamic_image_id", to: "alt#get_current"
   post "alt", to: "alt#create"
+  post "mmlc/equation", to: "mmlc#equation"
+  post "equation", to: "equation#create"
 
   get "training/index"
   get "training/how_to_describe"
@@ -95,9 +97,6 @@ DiagramRailsApp::Application.routes.draw do
   match "book_list_by_user", :controller => 'books', :action => 'book_list_by_user'
   match "image_book/describe", :controller => 'edit_book', :action => 'describe'
   match "edit_book/help", :controller => 'edit_book', :action => 'help'
-  match "edit_book/description_guidance", :controller => 'edit_book', :action => 'description_guidance'
-  match "update_descriptions_in_book/upload" => "update_descriptions_in_book#upload", :via => "post"
-  match "update_descriptions_in_book" => "update_descriptions_in_book#index", :via => "get"
   match "user/terms_of_service", :controller => 'users', :action => 'terms_of_service'
 
   match "delete_descriptions_by_id", :controller => "dynamic_descriptions", :action => "delete_descriptions_by_id", :via => "post", :as => 'delete_descriptions_by_id'

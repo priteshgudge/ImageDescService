@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
       Book.where(:uid => (params[:book_uid] || params[:book_id]), :library_id => current_library.id, :deleted_at => nil).first
     end
   end
+  
   def authenticate_admin_user!
     authenticate_user!
     redirect_to '/' unless current_admin_user

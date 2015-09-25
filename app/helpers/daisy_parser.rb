@@ -19,7 +19,7 @@ class DaisyParser <  S3UnzippingJob
         doc = Nokogiri::XML xml
         opf = get_opf_from_dir(book_directory)
       
-        contents_filename = DaisyUtils.get_contents_xml_name(book_directory)
+        contents_filename = get_contents_xml_name(book_directory)
 
         book = Book.where(:id => book_id, :deleted_at => nil).first
         book = update_daisy_book_in_db(book, doc, File.basename(contents_filename), opf, uploader_id)
@@ -79,11 +79,6 @@ class DaisyParser <  S3UnzippingJob
             puts e.backtrace.join("\n")
             $stderr.puts e
       end
-    end
-    
-    def get_opf_from_dir (book_directory)
-      opf_filename = Dir.glob(File.join(book_directory, '*.opf'))[0]
-      File.read(opf_filename)
     end
     
     def update_daisy_book_in_db(book, doc, xml_file, opf, uploader)     

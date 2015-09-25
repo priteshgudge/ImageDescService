@@ -56,7 +56,7 @@ module UnzipUtils
      end
   end
   
-  def self.get_file_type filename
+  def get_file_type filename
     if filename=~/\.epub$/
        file_type = "Epub"
     else

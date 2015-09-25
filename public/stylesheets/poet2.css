@@ -75,6 +75,10 @@ html, body {
   border-right: 4px solid #D4D4D4;
 }
 
+#toggle a {
+  padding: 0;
+}
+
 #right {
   position: absolute;
   top: 41px;
@@ -111,10 +115,6 @@ html, body {
   transform-origin: left top 0;
 }
 
-#expand img {
-  margin-right: 7px;
-  margin-left: 5px;
-}
 
 h2.math-preview, h2.math-edit {
   color: #ffffff;
@@ -147,7 +147,7 @@ h2.math-edit {
   margin-top: auto;
 }
 
-button.cancel {
+button.cancel, button.math {
   margin-right: 5px;
 }
 
@@ -176,7 +176,24 @@ caption, .fig, .label, .caption, aside, figcaption, .chcaption {
 #book_title , #book_title h1{
   font-style: italic;
   font-size: 105%;
+},
+
+.altText, .mathML {
+  font-weight: bold;
 }
 
+.waves-output, .waves-input {
+  display: none;
+}
+
+.upload-book legend {
+  font-weight: bold;
+  border-style: none;
+  font-size: 100%;
+}
+
+.upload-book label {
+  font-weight: normal;
+}
 
 

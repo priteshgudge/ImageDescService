@@ -1,54 +1,68 @@
 require 'factory_girl'
-require 'factory_girl/syntax/sham'
-
-Sham.name        { "Name" }
-Sham.email {|n| "somebody#{n}@example.com" }
-Sham.username("FOO") { |c| "User-#{c}" }
-Sham.first_name { "John" }
-Sham.last_name { "Smith" }
 
 FactoryGirl.define do
+  
+  factory :alt do
+    alt "A description of the image"
+    dynamic_image
+  end
+  
+  factory :equation do
+    element "a + b = 3"
+    dynamic_image
+  end
 
   factory :user do 
-    email {Sham.email}
-    username {Sham.username}
-    first_name {Sham.first_name}
-    last_name {Sham.last_name}
+    transient do
+      demo_library Library.new(:id => 2, :name => 'Demo')
+      describer_role Role.new(:id => 3, :name => 'Describer')
+    end
+    
+    sequence(:email) {|n| 'somebody#{n}@example.com'}
+    sequence(:username) {|n| "User-#{n}"}
+    first_name "John"
+    last_name "Smith"
     password '123456'
-    libraries { |lib|
-      [ 
-        Factory(:library)
-      #  FactoryGirl.create(:library, name: 'Eureka Library')  
-      ]  
-    }
+    libraries { [ demo_library ]}
+    roles { [ describer_role ]}
+    after(:build) do |user, evaluator|
+      # Wire up has_many using the current user and defined role and library
+      user.user_libraries = [ UserLibrary.new(:user => user, :library => evaluator.demo_library) ]
+      user.user_roles = [ UserRole.new(:user => user, :role => Role.new(:id => 3)) ]
+    end
   end
 
-  factory :role do 
-    name 'writer'
-  end  
-  
-  factory :user_role do |ur|
-    ur.association :user
-    ur.association :role
+  factory :user_role do
+    user
+    role { Role.new(:id => 3) }
   end
   
-  factory :library do |lib|
-       lib.name 'San Francisco Public Library'
+  factory :book do
+    uid "123456"
+    isbn "1234567890123"
+    xml_file "foo.xml"
+    library
+  end
+  
+  factory :library do
+    sequence(:name) {|n| 'Test#{n}'}
   end
 
-  factory :user_library do |u_lib|
-       u_lib.association :user
-       u_lib.association :library
+  factory :user_library do
+    user
+    library
   end
 
-  factory :dynamic_image do |i|
-    i.image_location 'images/first.jpg'
+  factory :dynamic_image do
+    image_location 'images/first.jpg'
+    book
   end
 
-  factory :dynamic_description do |desc|
-    desc.body 'sample description'
-    desc.submitter 'testSystem'
-    desc.dynamic_image_id 1
+  factory :dynamic_description do
+    body 'sample description'
+    is_current 1
+    association :submitter, factory: :user
+    dynamic_image
   end
 
 end
