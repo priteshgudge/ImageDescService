@@ -32,6 +32,20 @@ jQuery(function($) {
     return $('<div/>').html(value).text(); 
   }
   
+  function handleSubmitResponse(responseText, responseStatus) {
+      var notification = document.getElementById("messageBox")
+      if(responseStatus == "success")  {
+          notification.innerHTML = "<%=t '.success' %>"
+          notification.style.fontWeight = "bold"
+          notification.style.color = "green"
+      }
+      else {
+          notification.innerHTML = "<%=t '.update_error' %>"
+          notification.style.fontWeight = "bold"
+          notification.style.color = "red"
+      }
+  }
+  
   $(".book-toggle").each(function() {
     if($(this).attr('checked')) {
       bookToggleOffElement(this).hide();
@@ -49,10 +63,30 @@ jQuery(function($) {
       bookToggleOnElement(this).toggle();
     });
 
-  $('.convert-to-iframe').each(function(index, item) {
-    $frame = $('<iframe width="100%" height="100" scrolling="yes"/>');
-    $($frame).insertAfter(item).contents().find('body').append(htmlDecode($(item).html()));
-    $(item).remove();
-  });
-  
+    $(".dropdown").on('shown.bs.dropdown', function() {
+      $("li a:first", this).first().focus();
+    });
+
+  window.Poet = {
+    imageCategoryPostSave: function(imageId, categoryId) {
+      return function(data, status) {
+        for (var i = 0; i < window.top.frames.length; i++) {
+
+          var win = window.top.frames[i];
+          var el = $(win.document).find('#dynamic_image_image_category_id_' + imageId);
+
+          if (el.val() != categoryId) {
+            el.val(categoryId);
+          }
+          el.find('option[value=""]').remove();
+
+          // update help text if available
+          if (win.name == "content") {
+            var helpText = win.imageCategoryContent[categoryId];
+            el.parents('table.outer-table-wrapper').find('div.category_description').html(helpText);
+          }
+        }
+      }
+    }
+  };
 });

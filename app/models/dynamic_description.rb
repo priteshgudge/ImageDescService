@@ -1,6 +1,6 @@
 class DynamicDescription < ActiveRecord::Base
-  validates :body, :length => { :minimum => 2, :maximum => 16384 } , :presence => true
-  #validates :submitter, :length => { :maximum => 255 }
+  audited  :allow_mass_assignment => true
+  validates :body, :length => { :minimum => 0, :maximum => 16384, :allow_blank => true } 
   validates :dynamic_image_id, :presence => true
 
   belongs_to :dynamic_image
@@ -12,8 +12,8 @@ class DynamicDescription < ActiveRecord::Base
   include Tire::Model::Callbacks
   accepts_nested_attributes_for :dynamic_image, :allow_destroy => true
   
-  index_name BONSAI_INDEX_NAME
-  # TO RUN THE INDEX: bundle exec rake environment tire:import CLASS='DynamicDescription' FORCE=1 --trace
+  # index_name 'dynamic_description'
+  # TO RUN THE INDEX: bundle exec rake environment tire:import CLASS='DynamicDescription' FORCE=true --trace
   
   # tire do
   #   mapping do
@@ -21,36 +21,23 @@ class DynamicDescription < ActiveRecord::Base
   #   end
   # end
   
-  settings :number_of_shards => 1,
-           :number_of_replicas => 1,
-           :analysis => {
-                      :analyzer => {
-                                 :str_search_analyzer => {
-                                               :type => :custom,
-                                               :tokenizer => :keyword,
-                                               :filter => [:lowercase]
-                                 },
-                                 :str_index_analyzer => {
-                                               :type => :custom,
-                                               :tokenizer => :keyword,
-                                               :filter => [:lowercase, :substring]
-                                 }
-                                 
-                      },
-                      :filter => {
-                               :substring => {
-                                          :type => "nGram",
-                                          :min_gram => 3,
-                                          :max_gram => 7
-                               }
-                      }
+  settings :analysis => {
+                      poet_analyzer: {
+                         tokenizer: "standard",
+                         # note, this lowercase filter is now redundant with the ElasticSearchable.ascii_folding logic
+                         filter: ["standard","lowercase"],
+                         char_filter: 'html_strip'
+                       }
             }  do
     mapping do
+      indexes :is_not_deleted, :as => 'DynamicDescription.connection.select_value("select (select id from books b where b.deleted_at is null limit 1) = dynamic_descriptions.book_id from dynamic_descriptions where id = #{self.id}")'
+      indexes :submitter_by, :as => 'DynamicDescription.connection.select_value("select user.id from users user, dynamic_descriptions dyn_des where dyn_des.submitter_id = user.id and user.deleted_at is null and dyn_des.id = #{self.id}")' 
       indexes :image_type, :as => 'DynamicDescription.connection.select_value("select dynamic_image.image_category_id from dynamic_images dynamic_image, dynamic_descriptions dyn_des where dyn_des.dynamic_image_id = dynamic_image.id and dyn_des.id = #{self.id}")'      
       indexes :dynamic_image_id, :type => 'integer'  
-      indexes :isbn, :type => 'string', :index_analyzer => "str_index_analyzer", :search_analyzer => "str_search_analyzer", :as => 'DynamicDescription.connection.select_value("select book.isbn from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id and dyn_des.id = #{self.id}")'
-      indexes :title, :type => 'string', :index_analyzer => "str_index_analyzer", :search_analyzer => "str_search_analyzer", :as => 'DynamicDescription.connection.select_value("select book.title from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id and dyn_des.id = #{self.id}")'
-      indexes :body, :type => 'string', :index_analyzer => "str_index_analyzer", :search_analyzer => "str_search_analyzer"
+      indexes :isbn, :type => 'string', :as => 'DynamicDescription.connection.select_value("select book.isbn from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id  and dyn_des.id = #{self.id}")'
+      indexes :title, :type => 'string', :as => 'DynamicDescription.connection.select_value("select book.title from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id and dyn_des.id = #{self.id}")'
+      indexes :authors, :type => 'string', :as => 'DynamicDescription.connection.select_value("select book.authors from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id and dyn_des.id = #{self.id}")'
+      indexes :body, :type => 'string'
       indexes :dynamic_description_library_id, :as => 'DynamicDescription.connection.select_value("select book.library_id from books book, dynamic_descriptions dyn_des where dyn_des.book_id = book.id and dyn_des.id = #{self.id}")'
       indexes :is_last_approved, :as => 'DynamicDescription.connection.select_value("select (select id from dynamic_descriptions inner_dd where inner_dd.dynamic_image_id = dynamic_descriptions.dynamic_image_id and date_approved is not null order by date_approved desc limit 1) = dynamic_descriptions.id from dynamic_descriptions where id = #{self.id}")'
     end
@@ -80,4 +67,7 @@ class DynamicDescription < ActiveRecord::Base
     end
   end
 
+  def description_history
+     audits.map {|changes| changes.audited_changes['body']}
+  end
 end

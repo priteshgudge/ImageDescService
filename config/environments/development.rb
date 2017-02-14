@@ -6,12 +6,15 @@ DiagramRailsApp::Application.configure do
   # since you don't have to restart the webserver when you make code changes.
   config.cache_classes = false
 
+  # non-minified JS for environment
+  config.action_view.javascript_expansions[:defaults] = ['jquery.min.js', 'jquery_ujs.js']
+
   # Log error messages when you accidentally call methods on nil.
   config.whiny_nils = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_view.debug_rjs             = true
+  #config.action_view.debug_rjs             = true
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
@@ -38,6 +41,10 @@ DiagramRailsApp::Application.configure do
   PAPERCLIP_S3_STORAGE_OPTIONS = {:storage => :aws,
                                :s3_credentials => {:access_key_id => ENV['AWS_ACCESS_KEY_ID'], :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']},
                                :bucket => ENV['POET_ASSET_BUCKET']}
+
+  #MathML Cloud subscription key
+  MATHML_CLOUD_BASE_PATH = "api.staging.mathmlcloud.org"
+  MATHML_CLOUD_SUBSCRIPTION_KEY = "620eb80e0d8a4461b6f255d974735037"
 
   #PAPERCLIP_S3_STORAGE_OPTIONS = {}
 end

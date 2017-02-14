@@ -1,0 +1,7 @@
+<div class="row">
+		<% _.each(images, function(image) { %>
+		<div class="col-xs-6 col-md-3">
+			<a href="<%= image["path"] %>" class="toDescribe thumbnail" data-image-id="<%= image["image_id"] %>"><img src="<%= image["thumb_image_path"] %>" alt="<%= image["alt"] %>" /></a>
+		</div>
+	<% }); %>
+</div>

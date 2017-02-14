@@ -111,13 +111,13 @@ When /^the first description for the image "([^"]*)" in book "([^"]*)" with titl
   image = DynamicImage.create(:book_id => book_id, :image_location => image_location)
   image.save
   description = DynamicDescription.create(:dynamic_image_id => image['book_id'], :submitter_id => 1, :body => text)
-  image.dynamic_descriptions << description
+  image.dynamic_description = description
 end
 
 When /^another description for the image "([^"]*)" in book "([^"]*)" is "([^"]*)"$/ do |image_location, book_id, text|
   image = DynamicImage.where("book_id = ? AND image_location = ?", book_id, image_location).first
   description = DynamicDescription.create(:dynamic_image_id => image['book_id'], :submitter_id => 1, :body => text)
-  image.dynamic_descriptions << description
+  image.dynamic_description = description
 end
 
 

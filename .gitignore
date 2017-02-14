@@ -5,3 +5,10 @@ log/*.log
 DiagramRailsApp.iml
 tmp/
 .project
+/books
+.env
+.rvmrc
+.ruby-version
+.ruby-gemset
+.ruby-env
+.DS_Store

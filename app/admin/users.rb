@@ -1,6 +1,7 @@
 ActiveAdmin.register User do  
   menu :if => proc{ can? :admin_user, @all }
- # scope_to :current_library, :association_method => :related_users
+  # returns non-deleted users all libraries 
+  scope_to :current_library, :association_method => :related_users
   
   form do |f|
       f.inputs "User Details" do
@@ -15,6 +16,11 @@ ActiveAdmin.register User do
       f.input :use_new_library, :label => 'Click to Create a new library', :as => :boolean, :input_html => {:class => 'book-toggle', 'data-related-off' => '.library-select', 'data-related-on' => '.new-library'}  
       f.input :libraries, :as => :select, :collection => Library.all.map {|library| [library.name, library.id]}, :include_blank => nil, :multiple => true
       f.input :new_library, :label => 'New Library', :wrapper_html => {:class => 'new-library'}
+      
+      if !f.object.new_record? 
+          f.input :use_delete_library, :label => 'Click to Delete a existing library', :as => :boolean, :input_html => {:class => 'book-toggle', 'data-related-off' => '.library-select', 'data-related-on' => '.delete-library'}  
+          f.input :delete_library, :label => 'Delete Library', :wrapper_html => {:class => 'delete-library'}
+      end
       # dropdown of roles
       f.input :roles, :as => :select, :collection => Role.all.map {|role| [role.name, role.id]}, :include_blank => nil
     end
@@ -41,14 +47,22 @@ ActiveAdmin.register User do
       User.connection.select_value "select group_concat(roles.name separator ' ') from user_roles, roles where 
            user_roles.user_id = #{user.id} and user_roles.role_id = roles.id"
     end
-    default_actions
+   # default_actions  
+    column :actions do |user|
+      links = link_to I18n.t('active_admin.view'), resource_path(user)
+      links += " "
+      links += link_to I18n.t('active_admin.edit'), edit_resource_path(user)
+      links += " "
+      links += link_to "Delete", admin_user_delete_path(:user_id => user.id), :confirm=>'Are you sure?'
+      links
+    end
   end
   
-  filter :user_libraries_library_id, :as => :select, :collection => proc { Library.all}, :label => 'Library'
-  filter :user_roles_role_id, :as => :select, :collection => proc { Role.all}, :label => 'Role'
+  filter :libraries, :as => :select
+  filter :roles, :as => :select
   filter :username
   filter :email
-  filter :user_subject_expertises_subject_expertise_id, :as => :select, :collection => proc { SubjectExpertise.all}, :label => 'Subject Matter Expertise'
+  filter :subject_expertises, :as => :select
   filter :other_subject_expertise
   
   show do

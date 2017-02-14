@@ -13,21 +13,30 @@
          <%= form_for :search, :url => dynamic_descriptions_search_path do |f|%>
             <tr>
             <td><%= f.label :title,  'Title:'  %></td>
-            <td><%= f.text_field :title, options={:style=> "width: 100px;"} %></td>
+            <td><%= f.text_field :title, options={:value => @search_title, :style=> "width: 100px;"} %></td>
             </tr><tr>
             <td><%= f.label :isbn,  'ISBN:'  %></td>
-            <td><%= f.text_field :isbn, options={:style=> "width: 100px;"} %></td>
+            <td><%= f.text_field :isbn, options={:value => @search_isbn, :style=> "width: 100px;"} %></td>
             </tr><tr>
             <td><%= f.label :image,  'Image:'  %></td>
-            <td><%= f.text_field :image, options={:style=> "width: 100px;"} %></td>
+            <td><%= f.text_field :image, options={:value => @search_image, :style=> "width: 100px;"} %></td>
             </tr><tr>
             <td><%= f.label :term,  'Descriptions:'  %></td>
-            <td><%= f.text_field :term, options={:style=> "width: 100px;"} %></td>
+            <td><%= f.text_field :term, options={:value => @search_term, :style=> "width: 100px;"} %></td>
             </tr><tr>
+            <td><%= f.label :term,  'Authors:'  %></td>  
+            <td><%= f.text_field :authors, options={:value => @search_authors, :style=> "width: 100px;"} %></td>  
+            </tr><tr>  
              <td><%= f.label :image_type,  'Image Type:'  %></td>
               <td>
-               <%= f.select :image_type,  ImageCategory.order(:order_to_display).all.map {|category| [category.name, category.id]}, {:include_blank => 'None', :custom_label => 'Category'}%>
+               <%= f.select :image_type,  ImageCategory.order(:order_to_display).all.map {|category| [category.name, category.id]}.reject {|k| k[0] == "None"}, :selected => @search_image_type, :include_blank => true, :custom_label => 'Category'%>
              </td>
+            </tr>
+            <tr>
+            <td> <%= f.label :submitter_by,  'Descriptions by user:'  %></td>
+            <td>
+               <%= f.select :submitter_by,  User.all.map {|user| [user.full_name.blank? ? user.email : user.full_name, user.id]}, :selected => @search_submitter_by, :include_blank => true, :custom_label => 'Submitter'%>
+            </td>
             </tr>
           </table>
           <div align="right">
@@ -78,10 +87,16 @@
        <b>Title:</b> <%= dynamic_description.try(:book).try(:title) %> </br>
        
        <b>ISBN:</b> <%= dynamic_description.try(:book).try(:isbn) %> </br>
+       
+       <b>Authors:</b> <%= dynamic_description.try(:book).try(:authors) %>
 
        <b>Image Type:</b> 
        <%= ImageCategory.find(image.try(:image_category_id)).try(:name) if image.image_category_id%></br>
-       </td>
+       
+       <b> Submitter: </b>
+       <%= dynamic_description.try(:submitter).try(:full_name).blank? ? dynamic_description.try(:submitter).try(:email) : dynamic_description.try(:submitter).try(:full_name)%>  
+    
+    </td>
        
       </div>      
 

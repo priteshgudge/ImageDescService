@@ -1,5 +1,6 @@
   Given /^I am a user named "([^"]*)" with an email "([^"]*)" and password "([^"]*)" and username "([^"]*)"$/ do |name, email, password, username|
-  User.new(:name => name,
+  User.new(:first_name => name,
+            :last_name => 'User',
             :email => email,
             :username => username,
             :password => password,

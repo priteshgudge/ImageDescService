@@ -95,8 +95,11 @@ ActiveAdmin.setup do |config|
   # and feel.
   #
   # To load a stylesheet:
-  #   config.register_stylesheet 'my_stylesheet.css'
+     config.register_stylesheet 'bootstrap.min.css'
+     config.register_stylesheet 'non-responsive.css'
+     config.register_stylesheet 'poet2.css'
   #
   # To load a javascript file:
     config.register_javascript 'active_admin_books.js'
+    config.register_javascript 'application.js'
 end

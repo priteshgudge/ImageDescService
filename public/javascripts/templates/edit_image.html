@@ -1,0 +1,95 @@
+<% 
+	var replaceMath = $("#math_replacement_mode").val() != "";
+	var isMathImage = image.get("image_category_id") == $("#math_category").val();
+%>
+<div id="edit-image-<%= image.get("id") %>">
+	<% if (typeof(previousImage) !== "undefined") { %>
+		<div class="fluid-container upArrow">
+			<a href="#edit-image-<%= previousImage.get("id") %>" class="arrow"><img src="/images/up.jpg" alt="Go To Previous Image" /></a>
+		</div>
+	<% } %>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<div class="container-fluid">
+				<div class="col-md-4 domImage">
+				</div>
+				<div class="col-md-8" id="image<%= image.get("id") %>_editor">
+					<h3>Image Description Details</h3>
+					<form class="form-horizontal" role="form" action="#">
+						<div class="row">
+							<div class="form-group">
+				    			<span class="col-sm-3 control-label">Poet Image ID</span>
+				    			<div class="col-sm-9">
+				      				<p class="form-control-static"> <%= image.get("id") %></p>
+				    			</div>
+				  			</div>
+				  			<% if (can_edit_content == "false") { %>
+					  			<div class="form-group">
+					    			<span class="col-sm-3 control-label">Alt Text</span>
+					    			<div class="col-sm-9">
+					      				<p class="form-control-static altText">
+					      					<%= image.get("alt").length > 0 ? image.get("alt") : "<em>(No alt text provided by publisher)</em>" %>
+					      				</p>
+					    			</div>
+					  			</div>
+					  		<% } else { %>
+					  			<div class="form-group" id="alt-group">
+					    			<label class="col-sm-3 control-label">Alt Text</label>
+					    			<div class="col-sm-6">
+					      				<input type="text" class="alt form-control" value="<%= (isMathImage && replaceMath && image.has("current_equation")) ? 'replaced with auto-generated description' : image.get("alt") %>" <%= (isMathImage && replaceMath && image.has("current_equation")) ? "disabled" : "" %>/>
+					    			</div>
+					    			<div class="col-sm-3">
+					    				<button class="btn btn-primary altButton" <%= (isMathImage && replaceMath && image.has("current_equation")) ? "style='display: none;'" : "" %>>Update</button>
+					    				<span><a tabindex="0" data-trigger="focus" data-toggle="popover" title="About Alt" data-content="The alt attribute is designed to be a brief, alternative text description for images. Reading systems generally do not support alt-descriptions exceeding 255 characters (some systems are less). Please consider shortening your description before saving." href="#" class="help" data-placement="auto">About Alt</a></span>
+									</div>
+					  			</div>
+					  		<% } %>
+				  			<% if (image.has("caption")) { %>
+				  				<div class="form-group">
+					    			<span class="col-sm-3 control-label">Caption</span>
+					    			<div class="col-sm-9">
+					      				<p class="form-control-static altText">
+					      					<%= image.get("caption") %>
+					      				</p>
+					    			</div>
+					  			</div>
+				  			<% } %>
+				  			<div class="form-group">
+				  				<label class="col-sm-3 control-label" for="dynamic_image_should_be_described_<%= image.get("id") %>">Needs Description?</label>
+				  				<div class="col-sm-6">
+				  					<select id="dynamic_image_should_be_described_<%= image.get("id") %>" name="dynamic_image[should_be_described]" class="form-control should_be_described">
+				  						<option value="">Don't Know</option>
+										<option value="true" <%= image.get("should_be_described") == true ? "selected" : "" %>>Yes</option>
+										<option value="false" <%= image.get("should_be_described") == false ? "selected" : "" %>>No</option>
+									</select>
+				  				</div>
+				  				<div class="col-sm-3"><a href="/training/when_to_describe" target="_blank">Not Sure?</a></div>
+				  			</div>
+				  			<div class="form-group image-category" <%= image.get("should_be_described") == false ? "style=\"display: none;\"" : "" %>>
+				  				<label class="col-sm-3 control-label" for="dynamic_image_image_category_<%= image.get("id") %>">Image Type*</label>
+				  				<div class="col-sm-6">
+				  					<select id="dynamic_image_image_category_<%= image.get("id") %>" name="dynamic_description[dynamic_image_attributes][image_category_id]" class="form-control image_category">
+				  						<% _.each(image_categories, function(category) { %>
+				  							<option value="<%= category.get("id") %>" <%= typeof(image.get("image_category_id")) !== "undefined" && image.get("image_category_id") == category.get("id") ? "selected" : "" %>><%= category.get("name") %></option>
+				  						<% }); %>
+									</select>
+				  				</div>
+				  				<div class="col-sm-3">
+				  					<a class="view_sample" href="#">View Sample</a>
+				  				</div>
+				  			</div>
+				  			<div class="editor" <%= (!image.get("should_be_described")) ? "style=\"display: none;\"" : "" %>>
+					  			
+					  		</div>
+				  		</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% if (typeof(nextImage) !== "undefined") { %>
+		<div class="fluid-container">
+			<a href="#edit-image-<%= nextImage.get("id") %>" class="arrow"><img src="/images/down.jpg" alt="Go To Next Image" /></a>
+		</div>
+	<% } %>
+</div>

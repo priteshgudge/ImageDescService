@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?xml-stylesheet type="text/css" href="daisy.css" media="screen"?><?xml-stylesheet type="text/xsl" href="daisyTransform.xsl" media="screen"?><!DOCTYPE dtbook SYSTEM "dtbook-2005-3.dtd"><dtbook version='2005-2' xmlns='http://www.daisy.org/z3986/2005/dtbook/'>
+  <head>
+    <meta content='en-us-201310230123456' name='dtb:uid'/>
+    <meta content='Doing Data Science' name='dc:Title'/>
+    <meta content='Unknown' name='dc:Creator'/>
+    <meta content='OReilly' name='dc:Publisher'/>
+    <meta content='2013-10-23' name='dc:Date' scheme='yyyy-mm-dd'/>
+    <meta content='' name='dc:Format'/>
+    <meta content='' name='dc:Identifier'/>
+
+    <meta content='en' name='dc:Language' scheme='ISO 639'/>
+    <meta content='Doing Data Science' name='dc:Description'/>
+    <meta content='Bookshare' name='dc:Publisher'/>
+  </head>
+  <book id='book_15239038561' xml:space='preserve'>
+    <frontmatter id='frontmatter_000001'>
+      <doctitle id='doctitle_000001'>Doing Data Science</doctitle>
+      <docauthor id='docauthor_000001'>Cathy O'Neill</docauthor>
+    </frontmatter>
+
+    <bodymatter id='bodymatter_000001'>
+      <level1 id='level1_000001'>
+        <p class='MsoNormal' id='p_000001' smilref='Doing_Data_Science00001.smil#p_000001'>
+          
+			<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" mode="display" overflow="scroll">
+	          <mml:mrow>
+	            <mml:mi>f</mml:mi>
+	            <mml:mrow>
+	              <mml:mo>(</mml:mo>
+	              <mml:mi>x</mml:mi>
+	              <mml:mo>)</mml:mo>
+	            </mml:mrow>
+	            <mml:mo>=</mml:mo>
+	            <mml:mfrac>
+	              <mml:mn>1</mml:mn>
+	              <mml:msqrt>
+	                <mml:mrow>
+	                  <mml:mn>2</mml:mn>
+	                  <mml:mi>π</mml:mi>
+	                </mml:mrow>
+	              </mml:msqrt>
+	            </mml:mfrac>
+	            <mml:mo form="prefix">exp</mml:mo>
+	            <mml:mrow>
+	              <mml:mo>(</mml:mo>
+	              <mml:mo>-</mml:mo>
+	              <mml:msup>
+	                <mml:mi>x</mml:mi>
+	                <mml:mn>2</mml:mn>
+	              </mml:msup>
+	              <mml:mo>/2)</mml:mo>
+	            </mml:mrow>
+	          </mml:mrow>
+	        </mml:math>
+        
+		</p>
+        <level2 id='level2_000001'>
+          <p id='p_000002' smilref='Outline_of_U_S__History00001.smil#p_000002'>
+            <strong id='strong_000001'>Contents</strong>
+          </p>
+    </bodymatter>
+  </book>
+</dtbook>
+

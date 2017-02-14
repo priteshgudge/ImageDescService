@@ -1,8 +1,8 @@
 class Job < ActiveRecord::Base
   def json_enter_params
-    enter_params ? enter_params.de_json : {}
+    enter_params ? ActiveSupport::JSON.decode(enter_params) : {}
   end
   def json_exit_params
-    exit_params ? exit_params.de_json : {}
+    exit_params ? ActiveSupport::JSON.decode(exit_params) : {}
   end
 end

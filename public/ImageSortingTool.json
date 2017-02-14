@@ -1,0 +1,275 @@
+{
+  "questionnaire": {
+    "title": "IMAGE SORTING TOOL",
+    "questions": [
+      {
+        "question_id":"1",
+        "text": "Which of the following best describes this type of image?",
+        "answers": [
+          {
+            "answer_id": "1",
+            "label": "Photo",
+            "value": "A1",
+            "next": "2"
+          },
+          {
+            "answer_id": "2",
+            "label": "Drawing",
+            "value": "A2",
+            "next": "2"
+          },
+          {
+            "answer_id": "3",
+            "label": "Cartoon",
+            "value": "A3",
+            "next": "2"
+          },
+          {
+            "answer_id": "4",
+            "label": "Illustration of a process",
+            "value": "A4",
+            "next": "2"
+          },
+          {
+            "answer_id": "5",
+            "label": "Flowchart",
+            "value": "A5",
+            "next": "2"
+          },
+          {
+            "answer_id": "6",
+            "label": "Table (data display)",
+            "value": "A6",
+            "next": "2"
+          },
+          {
+            "answer_id": "7",
+            "label": "Graphic organizer (hierarchy charts, decision tree, etc)",
+            "value": "A7",
+            "next": "2"
+          },
+          {
+            "answer_id": "8",
+            "label": "Map",
+            "value": "A8",
+            "next": "2"
+          },
+          {
+            "answer_id": "9",
+            "label": "Timeline",
+            "value": "A9",
+            "next": "2"
+          },
+          {
+            "answer_id": "10",
+            "label": "Graph (e.g. bar, circle, pie, line)",
+            "value": "A10",
+            "next": "2"
+          },
+          {
+            "answer_id": "11",
+            "label": "Displays text only, with no additional graphics",
+            "value": "A11",
+            "next": "2"
+          },
+          {
+            "answer_id": "12",
+            "label": "Displays a math expression only, with no additional graphics",
+            "value": "A12",
+            "next": "2"
+          },
+          {
+            "answer_id": "13",
+            "label": "Other",
+            "value": "-oth",
+            "next": "2",
+            "contingentQuestion": {
+              "text": "Other",
+              "length": "24"
+            }
+          }
+        ]
+      },
+      {
+        "question_id":"2",
+        "text": "What is the purpose of this image?",
+        "answers": [
+          {
+            "answer_id": "14",
+            "label": "It provides visual interest only (it is not needed for understanding subject matter).",
+            "value": "6",
+            "describe":"no",
+            "comments": "do not describe."
+          },
+          {
+            "answer_id": "15",
+            "label": "It is a functional icon (e.g., a button or link).",
+            "value": "A2",
+            "next": "3"
+          },
+          {
+            "answer_id": "16",
+            "label": "It provides information needed for understanding subject matter.",
+            "value": "A1",
+            "next":"4"
+          },
+          {
+            "answer_id": "17",
+            "label": "Other",
+            "value": "-oth",
+            "next":"9",
+            "contingentQuestion": {
+              "text": "Other",
+              "length": "24"
+            }
+          }
+        ]
+      },
+      {
+        "question_id":"3",
+        "text": "Does the icon prepare the student for an activity, or represent a concept necessary to understanding the subject?",
+        "answers": [
+          {
+            "answer_id": "18",
+            "label": "Yes.",
+            "value": "4",
+            "describe": "yes",
+            "comments": "provide a text description of the icon’s functional role."
+          },
+          {
+            "answer_id": "19",
+            "label": "No.",
+            "value": "6",
+            "describe": "no",
+            "comments": "do not describe."
+          }
+        ]
+      },
+      {
+        "question_id": "4",
+        "text": "Does the image provide information essential to understanding that is not available in the surrounding text?",
+        "answers": [
+          {
+            "answer_id": "20",
+            "label": "Yes.",
+            "value": "7",
+            "next": "5"
+          },
+          {
+            "answer_id": "21",
+            "label": "No.",
+            "value": "A1",
+            "describe": "no",
+            "comments": "do not describe."
+          }
+        ]
+      },
+      {
+        "question_id": "5",
+        "text": "Does the image contain embedded text?",
+        "answers": [
+          {
+            "answer_id": "22",
+            "label": "Yes.",
+            "value": "5",
+            "next": "6"
+          },
+          {
+            "answer_id": "23",
+            "label": "No.",
+            "value": "A1",
+            "next": "6"
+          }
+        ]
+      },
+      {
+        "question_id": "6",
+        "text": "Would a text description adequately convey the main idea of this image?",
+        "answers": [
+          {
+            "answer_id": "24",
+            "label": "Yes.",
+            "value": "4",
+            "describe": "yes",
+            "comments": "provide a text description for the image."
+          },
+          {
+            "answer_id": "25",
+            "label": "No.",
+            "value": "A1",
+            "next": "7"
+          }
+        ]
+      },
+      {
+        "question_id": "7",
+        "text": "Would a tactile representation convey the main idea of this image better?",
+        "directive": {
+          "position": "during",
+          "text": "(i.e. does not require further interpretation)",
+          "administration": "self"
+        },
+        "answers": [
+          {
+            "answer_id": "26",
+            "label": "Yes.",
+            "value": "5",
+            "next": "8"
+          },
+          {
+            "answer_id": "27",
+            "label": "No.",
+            "value": "A1",
+            "next": "9"
+          }
+        ]
+      },
+      {
+        "question_id": "8",
+        "text": "This image should be converted to tactile format because:",
+        "answers": [
+          {
+            "answer_id": "28",
+            "label": "It represents a spatial concept.",
+            "value": "A1",
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
+          },
+          {
+            "answer_id": "29",
+            "label": "It is needed for the student to participate in an activity.",
+            "value": "A2",
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
+          },
+          {
+            "answer_id": "30",
+            "label": "The subject matter is otherwise inaccessible.",
+            "value": "A3",
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
+          },
+          {
+            "answer_id": "31",
+            "label": "It would require an excessively longer time to describe the image than if it would if the student explored it tactually.",
+            "describe": "yes",
+            "comments": "provide a tactile representation of the image."
+          },
+          {
+            "answer_id": "32",
+            "label": "A tactile representation is inadequate for this image.",
+            "value": "A4",
+            "next": "9"
+          }
+        ]
+      },
+      {
+        "question_id": "9",
+        "text": "How do you think this image could be best represented to a student who is visually impaired?",
+        "freeform": "yes",
+        "describe": "yes",
+        "comments": "please refer to the &quotComments from the Experts.&quot;"
+      }
+    ]
+  }
+}

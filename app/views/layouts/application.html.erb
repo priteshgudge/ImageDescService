@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Poet Image Description</title>
-  <%= stylesheet_link_tag :all %>
+  <title><%= @title ? @title + " - " : "" %>Poet Image Description Tool</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+  <%= stylesheet_link_tag "bootstrap.min.css" %>
+  <%= stylesheet_link_tag "non-responsive.css" %>
+  <%= stylesheet_link_tag "poet2.css" %>
+  <%= stylesheet_link_tag "training.css" %>
+  <%= stylesheet_link_tag "zoomer.css" %>
+  <link rel="stylesheet" type="text/css" href="/javascripts/libs/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+
   <%= javascript_include_tag :defaults %>
 
   <%= csrf_meta_tag %>
@@ -11,58 +24,21 @@
   <% elsif ENV['POET_HOST'] == 'diagram.herokuapp.com' %>
     <%= raw render_ga('UA-36099695-1') %>
   <% end %>
-  
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
 </head>
 
-  <body class="index admin_books logged_in">
-     <div id="header-wrap">
-       <div id="header">
-         <h1 id="site_title"><a title="Poet, version <%= t(:version)%>, home page" href="/">Poet Image Description</a></h1>
-         <ul class="tabbed_navigation" id="tabs">
-           <li>
-           <%# <% if current_user %>
-           <%#  <%= form_for :search, :url => dynamic_descriptions_search_path, :html => { :style => 'background:none;border:0;display:inline;', :method => :get } do |f|%>
-           <%#     <%= f.label :term,  'Search Descriptions:', options={:style=>"color:white;"}  %>
-           <%#     <%= f.text_field :term, options={:style=> "width: 100px;"} %>
-           <%#     <%= f.submit "Go" %>
-           <%#  <% end %>
-           <%#<% end %>
-           </li>
-          <% if can? :view_admin, @all %>
-             <li><%= link_to "Books", admin_books_path %> </li>
-          <% else %>
-             <%#= link_to "Books", book_list_path %> &nbsp;
-          <% end %>
-          <li><%= link_to "Guidelines", edit_book_description_guidance_path %> </li>
-          <li><%= link_to "Help", edit_book_help_path %> </li>
-          <% if current_user %>
-             <li><%= link_to 'User Profile', edit_user_path(current_user) %> </li>
-          <% end %>
-          <% if current_user %>
-             <li><%= link_to 'My Books', book_list_by_user_path %> </li>
-          <% end %>
-          <% if can? :view_admin, @all %> 
-             <li><%= link_to "Admin", admin_dashboard_path %> </li>
-          <% end %>
-          <% if user_signed_in? %>
-            <li><%= current_user.username %></li>
-            <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
-          <% else %>
-            <li><%= link_to 'Register', new_user_registration_path %> or <%= link_to 'Sign in', new_user_session_path %></li>
-          <% end %>
-         </ul>
-       </div>
-     </div>
-
-       <%= render "shared/error_display" %>
-       <%= yield %>
-
-   <div id="poet_footer" class="poet_footer"> <!-- TODO -- footer font smaller !-->
-    <p><strong>Legal Disclaimer</strong>: The Poet tool is intended to assist in the creation of accessible content. Use of the Poet tool is limited to activities for creating content that comply with applicable copyright law and contractual agreements. By using this tool, you accept all provisions contained in the <%= link_to('Terms of Use', user_terms_of_service_path, :target => '_blank' ) %>. If you do not wish to be bound by the provisions contained in the Terms of Use, do not use the Poet tool.</p>
-    <p>Copyright &copy; 2012 <a href="http://www.benetech.org">Benetech</a>.</p>
-   </div>
-     
-   </body>    
+<body>
+	<%= render partial: 'shared/header' %>
+  <div class="fluid-container">
+    <%= render "shared/error_display" %>
+    <%= yield %>
+  </div> <!-- /container -->
+  <%= render partial: 'shared/footer' %>
+</body>    
   
 </html>
 

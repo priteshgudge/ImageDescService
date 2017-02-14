@@ -1,48 +1,53 @@
-
- <div style="margin-left: 50px; width:900px; padding-top: 40px;" >
- <p><p><p>
- <table border="0" cellspacing="0" cellpadding="4" id="books" class="index_table">
-  
-  <thead>
-    <tr>
-    <th class="inputs" colspan="11">
-     &nbsp; &nbsp; <%=current_user.username%>
-     <br>
-     &nbsp; &nbsp; Books that I have uploaded
-    </th>
-    </tr>
-    <tr>
-    <th>Id</th>
-    <th>Uid</th>
-    <th>Title</th>
-    <th>Library</a></th>
-    <th>Isbn</a></th>
-    <th>Status</a></th>
-    <th>Added</a></th>
-    <th>Updated</a></th>
-    <th></th>
-    <th></th>
-    <th></th>    
-    </tr>
-  </thead>
-  <tbody>
-  <% @books.each do |book| %>                  
-    <tr class="odd" id="book_<%= book.id %>">
-      <td><%= book.id %></td>
-      <td><a href="/reports/view_book?book_id=<%= book.id %>"><%= book.uid %></a></td>
-      <td><a href="/edit_book/edit?book_id=<%= book.id %>"><%=book.title%></a></td>
-      <td><%= book.library.name%></td>
-      <td><%= book.isbn %></td>
-      <td><%= book.status_to_english %></td>
-      <td><%= book.created_at.to_s(:poet_default) %></td>
-      <td><%= book.updated_at.to_s(:poet_default) %></td>
-      <td><div class='action'/><%= link_to "Mark All Essential", imageDesc_mark_all_essential_path(:book_id => book.id), :remote => true, :method => "post", :format => :js, :class => "book-link-ajax"  %></div></td>
-      <td><div class='action'/><%= link_to "Approve Image Description", books_mark_approved_path(:book_id => book.id), :remote => true, :method => "post", :format => :js, :class => "book-link-ajax"  %></div></td>
-      <td><%= link_to "Delete", admin_book_delete_path(:book_id => book.id, :nav => 'myBooks'), :confirm=>'Are you sure?' %></td>
-    </tr>
-   <% end%>
-  </tbody>
- <table>
-
-</div>
+<% @title="My Books" %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10 container-fluid"> 
+        <h1>My Books</h1>
+        <table class="table table-bordered table-striped" id="books">
+        
+          <thead>
+            <tr>
+            <th class="inputs" colspan="11">
+             &nbsp; &nbsp; <%=current_user.username%>
+             <br>
+             &nbsp; &nbsp; Books that I have uploaded
+            </th>
+            </tr>
+            <tr>
+            <th>Id</th>
+            <th>Uid</th>
+            <th>Title</th>
+            <th>Library</a></th>
+            <th>Isbn</a></th>
+            <th>Status</a></th>
+            <th>Added</a></th>
+            <th>Updated</a></th>
+            <th></th>
+            <th></th>
+            <th></th>    
+            </tr>
+          </thead>
+          <tbody>
+          <% @books.each do |book| %>                  
+            <tr class="odd" id="book_<%= book.id %>">
+              <td><%= book.id %></td>
+              <td><a href="/reports/view_book?book_id=<%= book.id %>"><%= book.uid %></a></td>
+              <td><a href="/edit_book/edit?book_id=<%= book.id %>"><%=book.title%></a></td>
+              <td><%= book.library.name%></td>
+              <td><%= book.isbn %></td>
+              <td><%= book.status_to_english %></td>
+              <td><%= book.created_at.to_s(:poet_default) %></td>
+              <td><%= book.updated_at.to_s(:poet_default) %></td>
+              <td><div class='action'/><%= link_to "Mark All Essential", imageDesc_mark_all_essential_path(:book_id => book.id), :remote => true, :method => "post", :format => :js, :class => "book-link-ajax"  %></div></td>
+              <td><div class='action'/><%= link_to "Approve Image Description", books_mark_approved_path(:book_id => book.id), :remote => true, :method => "post", :format => :js, :class => "book-link-ajax"  %></div></td>
+              <td><%= link_to "Delete", admin_book_delete_path(:book_id => book.id, :nav => 'myBooks'), :confirm=>'Are you sure?' %></td>
+            </tr>
+           <% end%>
+          </tbody>
+       </table>
+    </div>
+  </div>
 </div>

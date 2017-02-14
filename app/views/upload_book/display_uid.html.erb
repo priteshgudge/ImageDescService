@@ -1,11 +1,21 @@
-
- <div style="margin: auto; width:700px; padding-top: 40px;" >
-<h3>Thank You! Your book is being processed.</h3>
-
-Please give us 15 minutes to finish preparing your book. </br>
-Copy the following book ID, <b><%= @book_uid%></b></br>
-and enter it on the home page to edit image descriptions.
-
-</br></br>
-<a href="/">Back to home page</a>
+<% @title="Poet Book Upload" %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10">
+    	<h3>Thank You! Your book is being processed.</h3>
+		<p>
+			Please give us 15 minutes&mdash;or longer, if your book contains a lot of images&mdash;to finish preparing your book. 
+		</p>
+		<p>
+			Copy the following book ID, <b><%= @book_uid%></b></br>
+			and enter it on the home page to edit image descriptions.
+		</p>
+		<p>
+			<a href="/">Back to home page</a>
+		</p>
+	</div>
+  </div>
 </div>

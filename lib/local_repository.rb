@@ -19,10 +19,11 @@ class LocalRepository
           # puts "file does not exist in local dir #{file_path} for copy to local store"
         end
       rescue Exception => e
-         puts "Unknown problem copying to local storage dir for book #{book_uid}"
-          puts "#{e.class}: #{e.message}"
-          puts e.backtrace.join("\n")
-          $stderr.puts e
+        puts "Unknown problem copying to local storage dir for book #{book_uid}"
+        puts "#{e.class}: #{e.message}"
+        puts e.backtrace.join("\n")
+        $stderr.puts e
+        raise
       end
   end
 
@@ -60,11 +61,9 @@ class LocalRepository
   end
 
   def self.xslt(xml, xsl)
-    engine = XML::XSLT.new
-    engine.xml = xml
-    engine.xsl = xsl
-
-    return engine.serve
+    document = Nokogiri::XML(xml)
+    transformer = Nokogiri::XSLT(xsl)
+    return transformer.transform(document)
   end
 
   def self.generate_file_path(book_uid, file_name, expires = 60)

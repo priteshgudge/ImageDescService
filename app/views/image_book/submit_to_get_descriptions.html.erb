@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2" role="navigation">
+        <%= render partial: 'books/my_books_navigation' %>
+    </div>
+    <div class="col-md-10">
+      <h1>Update Book Image Descriptions</h1>
+      <div class="download_link">
+        <h3>Thank You! Your book is being processed.</h3>
+
+        <p>
+          Poet is inserting image descriptions back into
+          <strong><%= @book_title %>.</strong>
+          Please give us up to 15 minutes to finish preparing your book.
+        </p>
+
+        <p><img src="/images/throbber.gif" alt="Please wait" /></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  function doPoll(){
+    $.getJSON('<%= poll_file_with_descriptions_path(:job_id => @job.id) %>', function(job) {
+      if (job.state === "complete" || job.state === "error") {
+        if(job.state == 'complete') {
+          $('.download_link').html("<h3>Download your book</h3><p>Click the provided link to download your updated book.</p><p><a href='<%= download_with_descriptions_path(:job_id => @job.id, :file_type => @file_type) %>'><strong><%= @book_title %></strong></a>");
+        }
+        else if(job.state == 'error') {
+          $('.download_link').html("<h3>Sorry!</h3><p>" + job.error_explanation);
+        }
+      } else {
+        setTimeout(doPoll, 5000);
+      }
+    });
+  }
+  doPoll();
+</script>

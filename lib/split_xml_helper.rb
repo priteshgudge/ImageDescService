@@ -22,7 +22,6 @@ module SplitXmlHelper
     end
 
     def start_element name, attrs = []
-
       if name == "img"
         @num_images += 1
       end
@@ -61,7 +60,8 @@ module SplitXmlHelper
     end
 
     def end_element_post_processing name
-      if LEVEL_BOUNDARY_TAGS.include? name
+      if LEVEL_BOUNDARY_TAGS.include?(name) || (name == 'section' && @active_element.id_attribute_value.present? && LEVEL_BOUNDARY_TAGS.any?{|tag_name| (@active_element.id_attribute_value =~ /^#{tag_name}/) == 0})
+       
         if should_split
           active_element.include_in_scoop=false
           store_segment
@@ -171,6 +171,11 @@ module SplitXmlHelper
     @attribute_names #String[]
     @attribute_values #String[]
     @children #List<AbstractScoopableNode>
+    
+    @id_attribute_value 
+    def id_attribute_value
+      @id_attribute_value 
+    end
 
     def initialize name, attributes
       super()
@@ -182,9 +187,10 @@ module SplitXmlHelper
         attributes.each do |element|
           @attribute_names[i] = element[0]
           @attribute_values[i] = escape_attr(element[1])
+          @id_attribute_value = @attribute_values[i] if @attribute_names[i].try(:downcase) == 'id'
           i += 1
         end
-
+        
       end
       @children = Array.new
     end

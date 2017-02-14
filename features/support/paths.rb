@@ -22,7 +22,7 @@ module NavigationHelpers
     when /the daisy upload page/
       '/upload_book/upload'
     when /the description editing page/
-      '/daisy_book/edit'
+      '/image_book/edit'
     when /the content page/
       '/edit_book/content'
     when /the sidebar/
@@ -30,9 +30,9 @@ module NavigationHelpers
     when /the images list page/
       '/dynamic_images'
     when /the daisy process page/
-      '/daisy_book/process'
+      '/image_book/process'
     when /the raw xml download page/
-      '/daisy_book/get_xml_with_descriptions'
+      '/image_book/get_xml_with_descriptions'
     when /the upload for edit success page/
       '/upload_book/submit'
     when /the home page/

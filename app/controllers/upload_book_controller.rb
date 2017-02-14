@@ -1,7 +1,7 @@
 require 'fileutils'
 require 'nokogiri'
 require 'tempfile'
-include DaisyUtils, UnzipUtils
+include DaisyUtils, UnzipUtils, EpubUtils
 include ActionView::Helpers::NumberHelper
 
 
@@ -35,58 +35,92 @@ class UploadBookController < ApplicationController
 
 
   def submit
-
     #init session vars
     session[:book_id] = nil
     session[:content] = nil
     session[:daisy_directory] = nil
-
-
-
-    book = params[:book]
-    if !book
+    file_type = nil
+    
+    book_file = params[:book]
+    if !book_file
       flash[:alert] = "Must specify a book file to upload"
       redirect_to :action => 'upload'
       return
     end
-
-
-    if !valid_daisy_zip?(book.path)
-      redirect_to :action => 'upload'
-      return
-    end
+    math_replacement_mode = params[:math_replacement_mode] == "MathML" ? MathReplacementMode.where(:mode => 'MathML').first.id : nil
 
     begin
-      zip_directory, book_directory, daisy_file = accept_book(book.path)
-      xml = get_xml_from_dir book_directory
+      if valid_daisy_zip?(book_file.path)
+        file_type = "Daisy"
+      elsif valid_epub_zip?(book_file.path)
+        # to do - when turning on the upload for EPUB files we need to check the deleted_at flag
+        file_type = "Epub"
+      else  
+        redirect_to :action => 'upload'
+        return
+      end 
+
+    rescue Exception => e
+        logger.info "#{e.class}: #{e.message}"
+        if e.message.include?("Not a zip archive")
+            logger.info "#{caller_info} Not a ZIP File"
+            flash[:alert] = "Uploaded file must be a valid DAISY or EPUB 3 file"
+        else
+            logger.info "#{caller_info} Other problem with zip file"
+            flash[:alert] = "There is a problem with this zip file"
+        end
+        puts e
+        puts e.backtrace.join("\n")
+        redirect_to :action => 'upload'
+        return false
+    end   
+
+    begin
+      zip_directory, book_directory, file = accept_and_copy_book(book_file.path, file_type)
+      xml = get_xml_from_dir(book_directory, file_type)
       doc = Nokogiri::XML xml
-      @book_uid = extract_book_uid(doc)
+      @book_uid = extract_book_uid(doc, file_type)
       doc = nil
       xml = nil
-      preprocessing_book = Book.where(:uid => @book_uid).first
      
-      if preprocessing_book && preprocessing_book.status == 4
+      book = Book.where(:uid => @book_uid, :deleted_at => nil).first
+      if book && book.status == 4
         flash[:alert] = "The book (#{@book_uid}) is still being processed. Please try again later."
         redirect_to :action => 'upload'
         return
       end
+      #uploading a book that has been deleted uid number unique? look into this TODO
+      this_book = Book.where(:uid => @book_uid, :file_type => file_type, :deleted_at => nil).first
+      if this_book
+        flash[:alert] = "The #{file_type} book (#{@book_uid}) has already been uploaded."
+        redirect_to :action => 'upload'
+        return
+      end
 
-      if !preprocessing_book
-         preprocessing_book = Book.create(:uid => @book_uid, :status => 4, :library =>  current_library, :user_id => current_user.id)
+      if !book
+         book = Book.create(:uid => @book_uid, :file_type => file_type, :status => 4, :library =>  current_library, :user_id => current_user.id, :math_replacement_mode_id => math_replacement_mode)
       end
 
       pid = fork do
         begin
-          @repository.store_file(book.path, @book_uid, @book_uid + ".zip", nil)
-          job = S3UnzippingJob.new(preprocessing_book.id, @repository.name, current_library, current_user.id)
-          Delayed::Job.enqueue(job)
-
-          # hack for testing
-          if (Rails.env.test?)
-            Delayed::Worker.new.work_off
+          @repository.store_file(book_file.path, @book_uid, @book_uid + ".zip", nil)
+          job = nil
+          if file_type == "Epub"
+            job = EpubParser.new(book.id, @repository.name, current_library, current_user.id)
+          else
+            job = DaisyParser.new(book.id, @repository.name, current_library, current_user.id)
           end
 
+        job.perform
+          # Delayed::Job.enqueue(job)
+          # 
+          # # hack for testing
+          # if (Rails.env.test?)
+          #   Delayed::Worker.new.work_off
+          # end
+
         rescue AWS::Errors::Base => e
+          book.update_attribute("status", 5) if book
           logger.info "S3 Problem uploading book to S3 for book #{@book_uid}"
           logger.info "#{e.class}: #{e.message}"
           logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
@@ -94,6 +128,7 @@ class UploadBookController < ApplicationController
           redirect_to :action => 'upload'
           return
         rescue Exception => e
+          book.update_attribute("status", 5) if book
           logger.info "Unknown problem uploading book to S3 for book #{@book_uid}"
           logger.info "#{e.class}: #{e.message}"
           logger.info e.backtrace.join("\n")
@@ -121,16 +156,5 @@ class UploadBookController < ApplicationController
       return
     end
   end
-
-private
-  def get_xml_from_dir book_directory = nil
-    contents_filename = get_daisy_contents_xml_name(book_directory)
-    File.read(contents_filename)
-  end
-
-  def get_daisy_contents_xml_name(book_directory)
-    return Dir.glob(File.join(book_directory, '*.xml'))[0]
-  end
-
 
 end

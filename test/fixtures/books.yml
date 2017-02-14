@@ -1,0 +1,45 @@
+one:
+  id: 1
+  uid: 12345678
+  title: Test Book
+  isbn: "9780596516178"
+  status: 3
+  library_id: 1
+  xml_file: foo
+  
+ushistory:
+  id: 2
+  uid: en-us-20100517111839
+  title: US History
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: bar
+
+magic_tree_house_abbrev:
+  id: 3
+  uid: 382575fe-a84b-4450-807a-98cd64fa58b3
+  title: Magic Tree House 4
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: baz
+  
+math:
+  id: 4
+  uid: en-us-201310230123456
+  title: Doing Data Science
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: blah
+
+magic_tree_house_abbrev_math:
+  id: 5
+  uid: 382575fe-a84b-4450-807a-98cd64fa58b4
+  title: Magic Tree House 4 Math
+  isbn: ""
+  status: 3
+  library_id: 1
+  xml_file: baz
+  

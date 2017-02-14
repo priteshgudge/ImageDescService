@@ -1,0 +1,71 @@
+{
+  "gallery": {
+    "title": "Decision Tree Image Gallery",
+    "images": [
+      {
+        "image_id":"0",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/0.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/0_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/0_thumb.jpg",
+        "alt": "Heart and Lungs Diagram",
+        "comments": "<p>The image is an &quot;illustration of a process&quot; that requires a text description or tactile graphic.</p><p>The image contains essential content not available in the surrounding text and needs to be made accessible. A tactile graphic should be produced if the physical relationship between elements in the image are important for the target audience; otherwise, a text description will suffice.</p><p><strong>Reminder:</strong> The embedded text should be transcribed and the embedded key also needs to be made accessible.</p>"
+      },
+      {
+        "image_id":"1",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/1.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/1_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/1_thumb.jpg",
+        "alt": "Mathematical Equation",
+        "comments": "<p>The image is one that &quot;displays an equation only, with no accompanying picture&quot; and requires MathML (mathematics markup language) encoding or a text description.</p><p>Math expressions are often treated as images in books, resulting in inaccessible content. Mathematics can be made accessible using special math encoding (e.g. MathML) or prose transcriptions. Semantically-rich MathML is preferred when supported by authoring and reading tools. When MathML is not an option, a plain-English text description should be provided.</p>"
+      },
+      {
+        "image_id":"2",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/2.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/2_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/2_thumb.jpg",
+        "alt": "Growing Up",
+        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image is a decorative series of photographs that does not provide additional information critical for understanding the content. The photographs serve a presentational role (&quot;eye-candy&quot;) and do not need to be made accessible.</p>"
+      },
+      {
+        "image_id":"3",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/3.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/3_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/3_thumb.jpg",
+        "alt": "Picture Book Cartoon",
+        "comments": "<p>The image is a &quot;drawing&quot; that requires a text description.</p><p>The image is found in a children’s picture book and contains information that helps paint a more comprehensive portrait of the story. The image can be made fully accessible via a text description that provides supplemental details about the relationships and mannerisms between characters in the book.</p>"
+      },
+      {
+        "image_id":"4",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/4_thumb.jpg",
+        "alt": "Court Case Photo",
+        "comments": "<p>The image is a &quot;photograph&quot; that does not need to be described.</p><p>The image adds value by presenting a courtroom example affirming the impact of prior research. Details are already available in the caption immediately right of the image, so providing another description would be redundant. </p><p><strong>Note:</strong> If the caption was also part of an inaccessible image, then a transcription of the caption would be required. </p>"
+      },
+      {
+        "image_id":"5",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/5_thumb.jpg",
+        "alt": "Discriminatory Lending Bar Graph",
+        "comments": "<p>The image is a &quot;(bar) graph&quot; and requires a text description or tactile graphic.</p><p>The text surrounding the image provides a high-level description, but lacks details only available in the image. The image can be made fully accessible via a detailed text description and accompanying data table. Alternatively, a tactile graphic may be beneficial for different learner types and braille readers.</p><p><strong>Reminder:</strong> The image contains embedded text and a legend that also need to be made accessible.</p>"
+      },
+      {
+        "image_id":"6",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/6.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/6_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/6_thumb.jpg",
+        "alt": "Header Banner",
+        "comments": "<p>The image &quot;displays text only, with no additional graphic&quot; and requires a brief text description. </p><p>The image does not provide additional information critical for understanding the content, but serves a functional role that needs to be made accessible. The lack of a functional and textual description makes it difficult for readers to get quickly oriented with the content to follow. The role of the image (i.e. section header) should be identified along with a text description transcribing the embedded copy. </p>"
+      },
+      {
+        "image_id":"7",
+        "path": "https://poet-static.s3.amazonaws.com/images/decision_tree/7.jpg",
+        "context_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/7_context.jpg",
+        "thumb_image_path": "https://poet-static.s3.amazonaws.com/images/decision_tree/7_thumb.jpg",
+        "alt": "Diversity Map",
+        "comments": "<p>The image is a &quot;map&quot; and requires a text description or tactile graphic.</p><p>The text surrounding the image provides a high-level description, but lacks details only available in the image. These details are essential for answering the questions posed in the copy to the right of the image. The image can be made fully accessible via a detailed text description and accompanying data table. Alternatively, a tactile graphic also produces the same results while catering to different learner types and braille readers.</p><p><strong>Reminder:</strong> The image contains a key that also needs to be made accessible.</p>"
+      }
+    ]
+  }
+}

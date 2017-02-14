@@ -16,6 +16,22 @@ jQuery(function($) {
 	    actionDiv.css('color', "red");
     });
 
+
+  $(".delete-descriptions-link-ajax")
+  	.bind("ajax:success", function(event, data, status, xhr) {
+			var actionDiv = $(this).parents('.action');
+			actionDiv.text("Deleting..");
+			actionDiv.css('fontWeight', "bold");
+	    actionDiv.css('color', "orange");
+	    location.reload();
+    }) 
+  .bind("ajax:failure", function(event, data, status, xhr) {
+			var actionDiv = $(this).parents('.action');
+			actionDiv.text("failure");
+			actionDiv.css('fontWeight', "bold");
+	    actionDiv.css('color', "red");
+    });
+
   function bookToggleOnElement(element) {
     var selectorForOnElement = $(element).attr('data-related-on');
     return $(selectorForOnElement, $(element).parents());
@@ -44,12 +60,5 @@ jQuery(function($) {
       bookToggleOffElement(this).toggle();
       bookToggleOnElement(this).toggle();
     });
-
-  $('.convert-to-iframe').each(function(index, item) {
-    $frame = $('<iframe width="100%" height="100" scrolling="yes"/>');
-    $($frame).insertAfter(item).contents().find('body').append(htmlDecode($(item).html()));
-    $(item).remove();
-  });
-
 
 });

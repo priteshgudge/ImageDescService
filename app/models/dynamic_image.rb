@@ -6,17 +6,23 @@ class DynamicImage < ActiveRecord::Base
   if ENV['AWS_ACCESS_KEY_ID'] && ENV['AWS_SECRET_ACCESS_KEY'] && ENV['POET_ASSET_BUCKET']
     has_attached_file :physical_file, {:styles => PAPERCLIP_STYLES,  :path => :path_by_book}.merge(PAPERCLIP_S3_STORAGE_OPTIONS)
   else
-    has_attached_file :physical_file, :styles => PAPERCLIP_STYLES, :path => :tmp_path_by_book
+    has_attached_file :physical_file, :styles => PAPERCLIP_STYLES, :path => :path_by_book
   end
 
   belongs_to :book
-  has_many :dynamic_descriptions
+  has_one :dynamic_description
   has_one :image_category
+  has_many :alt
+  has_many :equation
 
-  def best_description
-    return dynamic_descriptions.last
+  def as_json(options = {})
+    json = super(options)
+    json['thumb_source'] = thumb_source(options[:host])
+    json['image_source'] = image_source(options[:host])
+    json['author'] = dynamic_description.submitter_name() if dynamic_description
+    json
   end
-  
+
   def image_source(host)
     return "#{host}/#{book.uid}/original/#{image_location}"
   end
@@ -42,17 +48,21 @@ class DynamicImage < ActiveRecord::Base
     ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/jpg'].join('').include?(physical_file.content_type)
   end
 
-  private
-
-  def tmp_path_by_book
-    "tmp/#{book.uid}/:style/#{image_location}"
+  def current_alt
+    return self.alt.where(:from_source => false).order("created_at DESC").first
   end
 
+  def current_equation
+    return self.equation.order("created_at DESC").first
+  end
+
+private
+
   def path_by_book
-    root = ""
-    if ENV['POET_LOCAL_STORAGE_DIR']
-      root = ENV['POET_LOCAL_STORAGE_DIR']
+    path = "#{book.uid}/:style/#{image_location}"
+    if ENV['POET_LOCAL_STORAGE_DIR'] && ENV['POET_LOCAL_STORAGE_DIR'].length > 0
+      path = File.join(ENV['POET_LOCAL_STORAGE_DIR'], path)
     end
-    root + "#{book.uid}/:style/#{image_location}"
+    path
   end
 end

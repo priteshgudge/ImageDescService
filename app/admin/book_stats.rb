@@ -1,6 +1,5 @@
 ActiveAdmin.register BookStats, :as => "Reports" do
   menu :if => proc{ can? :admin_user, @all }
-  scope_to :current_library, :association_method => :related_book_stats
   
   actions :index
   
@@ -10,6 +9,9 @@ ActiveAdmin.register BookStats, :as => "Reports" do
     end  
     column "Title" do |book_stats| 
        book_stats.book.title
+    end
+    column "Library" do |book_stats|
+      Library.joins(:books).where(books: {:id => book_stats.book_id}).first.name
     end
     column :total_images
     column :total_essential_images
@@ -35,6 +37,9 @@ ActiveAdmin.register BookStats, :as => "Reports" do
     column "Title" do |book_stats| 
        link_to book_stats.book.title, edit_book_edit_path(:book_id => book_stats.book_id)
     end
+    column "Library" do |book_stats|
+      Library.joins(:books).where(books: {:id => book_stats.book_id}).first.name
+    end
     column :total_images
     column :total_essential_images
     column "% Essential" do |book_stats|
@@ -54,19 +59,20 @@ ActiveAdmin.register BookStats, :as => "Reports" do
   
   sidebar "Totals" do
     div do
-      render 'image_totals' 
+      render 'image_totals'
     end
   end
 
   sidebar "Update" do
     div :class => :action do
-      link_to "Update Book Stats", reports_update_book_stats_path( ), :remote => true, :method => "get", :format => :js, :class => "book-link-ajax"
+      link_to "Update Book Stats", reports_update_book_stats_path(), :data => {:remote => true, :method => "get", :type => :text}, :class => "book-link-ajax"
     end
     div :class => :action do
-      link_to "Describer Count Report", reports_describer_list_path( ), :target => '_blank'
+      link_to "Describer Count Report", reports_describer_list_path(), :target => '_blank'
     end
   end
 
+  filter :book_library_name, as: :select, collection: proc { Library.all.collect {|lib| [lib.name, lib.name]} }
   filter :percent_essential_described
   filter :book_title, as: :string
   filter :book_uid, as: :string

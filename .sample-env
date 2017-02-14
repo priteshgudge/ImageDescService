@@ -1,0 +1,3 @@
+RACK_ENV=development
+POET_LOCAL_STORAGE_DIR=books
+POET_HOST=localhost

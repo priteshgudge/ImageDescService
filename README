@@ -36,6 +36,8 @@ the following environment variables:
 SENDGRID_USERNAME     {Sendgrid username}
 SENDGRID_PASSWORD     {Sendgrid password}
 
+To setup the MySQL database, modify config/database.yml and add the proper connection info for whatever environments will be used. Then run 'rake db:migrate' to create the necessary tables.
+
 
 After downloading the source code and setting the environment variables, you should run the application using:
 "foreman start"

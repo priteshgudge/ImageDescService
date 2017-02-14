@@ -1,5 +1,5 @@
 class EditBookController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:help]
   include RepositoryChooser
 
   def initialize
@@ -8,10 +8,9 @@ class EditBookController < ApplicationController
   end
 
   FILTER_ALL = 0
-  FILTER_ESSENTIAL = 1
-  FILTER_NON_ESSENTIAL = 2
-  FILTER_DESCRIPTION_NEEDED = 3
-  FILTER_UNSPECIFIED = 4
+  FILTER_ALREADY_DESCRIBED = 1
+  FILTER_NEEDS_DESCRIPTION = 2
+  FILTER_UNSPECIFIED = 3
 
   # just to help determine page size limits
   def edit_side_bar_only
@@ -24,13 +23,16 @@ class EditBookController < ApplicationController
   end
 
   def edit
+    @image_categories = ImageCategory.order(:order_to_display).all
+    @use_mmlc = !defined?(MATHML_CLOUD_BASE_PATH).nil?
+    
     response.headers['Access-Control-Allow-Origin'] = '*'
     error_redirect = 'edit_book/describe'
     book_id = params[:book_id]
     book_uid = params[:book_uid]
     
     if (book_uid)
-      book = Book.where(:uid => book_uid, :library_id => current_library.id).first
+      book = Book.where(:uid => book_uid, :library_id => current_library.id, :deleted_at => nil).first
       book_id = session[:book_id] = book.id.to_s if book
     elsif (book_id)
       session[:book_id] = book_id.strip
@@ -50,7 +52,7 @@ class EditBookController < ApplicationController
       return
     end
 
-    @book = Book.where(:id => book_id, :library_id => current_library.id).first
+    @book = Book.where(:id => book_id, :library_id => current_library.id, :deleted_at => nil).first
     if(!@book)
       flash[:alert] = "There is no book in the system with that ID (#{book_id}) ."
       render :template => error_redirect
@@ -68,7 +70,8 @@ class EditBookController < ApplicationController
       render :template => error_redirect
       return
     end
-    render :layout => 'frames'
+    flash[:notice] = nil;
+    flash[:alert] = nil;
   end
   
   def book_header
@@ -81,17 +84,17 @@ class EditBookController < ApplicationController
     @book, @book_fragment = load_fragment
     if @book
       file_name = "#{@book.uid}_#{@book_fragment.sequence_number}.html"
-      @book_url = if @repository <= S3Repository
+      if @repository <= S3Repository
         @repository.generate_file_path(@book.uid, file_name)
-        edit_book_s3_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        #edit_book_s3_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        return s3_file
       else
         edit_book_local_file_path(:book_id => @book.id, :book_fragment_id => @book_fragment.id)
+        return local_file
       end
     end
 
-    if (@book_fragment && @book_url)
-      render :layout => 'content_layout', :text => ' ', :content_type => 'text/html'
-    else
+    if (!@book_fragment || ! @book_url)
       logger.warn "could not find cached html for book id, #{book_id}"
       render :status => 404
     end
@@ -124,12 +127,18 @@ class EditBookController < ApplicationController
     end
   end
   
-  def side_bar
+  def book_fragments
+    @book = Book.where(:id => params[:book_id], :library_id => current_library.id, :deleted_at => nil).first
+    ActiveRecord::Base.include_root_in_json = false
+    render :json => JSON.parse(@book.book_fragments.to_json)
+  end
+  
+  def book_images
     @book, @book_fragment = load_fragment
     book_id = @book.id
     session[:book_id] = book_id
     @fragment_id = @book_fragment.id
-    @book = Book.where(:id => book_id, :library_id => current_library.id).first
+    @book = Book.where(:id => book_id, :library_id => current_library.id, :deleted_at => nil).first
     
     if @book
       filter = params[:filter]
@@ -141,14 +150,13 @@ class EditBookController < ApplicationController
         case filter.to_i
           when FILTER_ALL
             @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id).order("id ASC")
-          when FILTER_ESSENTIAL
-            @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => true).order("id ASC")
-          when FILTER_NON_ESSENTIAL
-            @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => false).order("id ASC")
-          when FILTER_DESCRIPTION_NEEDED
+          when FILTER_ALREADY_DESCRIBED
+            # If we upgrade to ActiveRecord 4, we can use where.not.
+            @images = DynamicImage.includes(:dynamic_description).where("dynamic_descriptions.id IS NOT NULL").where(:book_id => @book.id, :book_fragment_id => @book_fragment.id).order('dynamic_images.id asc')
+          when FILTER_NEEDS_DESCRIPTION
             # ESH: used to be:::
             # @images = DynamicImage.find_by_sql("SELECT * FROM dynamic_images WHERE book_uid = '#{book_uid}' and should_be_described = true and id not in (select dynamic_image_id from dynamic_descriptions where dynamic_descriptions.book_uid = '#{book_uid}') ORDER BY id ASC;")
-            @images = DynamicImage.includes(:dynamic_descriptions).where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => true, :dynamic_descriptions => {:id => nil}).order('dynamic_images.id asc')
+            @images = DynamicImage.includes(:dynamic_description).where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => true, :dynamic_descriptions => {:id => nil}).order('dynamic_images.id asc')
           when FILTER_UNSPECIFIED
             @images = DynamicImage.where(:book_id => @book.id, :book_fragment_id => @book_fragment.id, :should_be_described => nil).order("id ASC")
           else
@@ -157,7 +165,9 @@ class EditBookController < ApplicationController
         end
       end
     end
-    render :layout => 'nav_bar'
+    ActiveRecord::Base.include_root_in_json = false
+    @host = @repository.get_host(request)
+    render :json => JSON.parse(@images.to_json(:host => @host, :include => [:dynamic_description, :current_alt, :current_equation]))
   end
 
   def top_bar
@@ -169,9 +179,9 @@ class EditBookController < ApplicationController
  def help
  end
  
- def description_guidance
-   render :layout =>'guidelines_layout'
- end
+ def image_categories
+  render :json => JSON.parse(ImageCategory.order(:order_to_display).all.to_json);
+ end 
 
  protected
  def load_fragment
@@ -187,14 +197,14 @@ class EditBookController < ApplicationController
 
    unless book_fragment_id
      book_id = params[:book_id] || session[:book_id]
-     book = Book.where(:id => book_id, :library_id => current_library.id).first
+     book = Book.where(:id => book_id, :library_id => current_library.id, :deleted_at => nil).first
      if book
        book_fragment = book.book_fragments.first
        book_fragment_id = book_fragment.id if book_fragment
      end
    end
    
-   book_fragment = BookFragment.joins(:book).where(:id => book_fragment_id, :books => {:library_id => current_library.id}).first
+   book_fragment = BookFragment.joins(:book).where(:id => book_fragment_id, :books => {:library_id => current_library.id, :deleted_at => nil}).first
    if book_fragment
      book = book_fragment.book
    

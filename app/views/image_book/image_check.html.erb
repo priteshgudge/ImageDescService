@@ -1,0 +1,38 @@
+<% @title="Check File for Image Coverage and MathML" %>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2" role="navigation">
+            <%= render partial: 'books/my_books_navigation' %>
+        </div>
+        <div class="col-md-10">
+            <h1>Check File for Image Coverage and MathML</h1>
+            </br>
+            <p>
+            To check image coverage and MathML for a DAISY or EPUB book, follow these steps:
+            </p>
+            <ol>
+            <li>Click the Browse (or Choose File) button below, and select a DAISY book (zip) or EPUB book (epub) from your local drive to process.</li>
+            <li>Click the Process button.</li>
+            </ol>
+
+            <%= form_tag("/image_book/check_image_coverage", {:multipart => true}) do %>
+            <p><label>Select book:
+            <%= file_field_tag 'book' %></label></p>
+            <%= submit_tag "Check", :class => "btn btn-primary" %>
+            <% end %>
+            <p id="throbber" style="display: none;">
+                Please wait while we check image coverage
+                <img src="/images/throbber.gif" alt="Please wait" />
+            </p>
+        </div>
+    </div>
+ </div>
+
+ <script type="text/javascript">
+    $(function() {
+        $("form").on("submit", function() {
+            $("input[name='commit']").hide();
+            $("#throbber").show();
+        });
+    });
+ </script>

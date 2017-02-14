@@ -24,11 +24,13 @@ class S3Repository
           puts "S3 Problem uploading book to S3 for book #{book_uid}"
           puts "#{e.class}: #{e.message}"
           puts "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+          raise
         rescue Exception => e
           puts "Unknown problem uploading book to S3 for book #{book_uid}"
           puts "#{e.class}: #{e.message}"
           puts e.backtrace.join("\n")
           $stderr.puts e
+          raise
         end
   end
   
@@ -54,14 +56,6 @@ class S3Repository
         bucket = s3_service.buckets[ENV['POET_ASSET_BUCKET']]
         s3_object = bucket.objects[file_path]
         File.open(new_local_file, 'wb') {|f| f.write(s3_object.read) }
-        rescue AWS::Errors::Base => e
-          puts "S3 Problem uploading reading file #{file_path}"
-          puts "#{e.class}: #{e.message}"
-        rescue Exception => e
-          puts "Unknown problem reading file from S3 for  #{file_path}"
-          puts "#{e.class}: #{e.message}"
-          puts e.backtrace.join("\n")
-          $stderr.puts e
       end
       return new_local_file
   end
@@ -125,13 +119,10 @@ class S3Repository
     end
   end
 
-
-
   def self.xslt(xml, xsl)
-    engine = XML::XSLT.new
-    engine.xml = xml
-    engine.xsl = xsl
-    return engine.serve
+    document = Nokogiri::XML(xml)
+    transformer = Nokogiri::XSLT(xsl)
+    return transformer.transform(document)
   end
 
   def self.get_cached_html(book_uid, file_name)
@@ -148,7 +139,7 @@ class S3Repository
   end
 
   def self.get_host(request)
-    return "//s3.amazonaws.com/" + ENV['POET_ASSET_BUCKET']
+    return "//" + ENV['POET_ASSET_BUCKET'] + ".s3.amazonaws.com" 
   end
 
 private
@@ -187,7 +178,7 @@ private
         s3_object = bucket.objects[content.key]
         if (Time.now - s3_object.last_modified > num_seconds)
           if (! db_updated)
-            book = Book.where(:uid => book_uid).first
+            book = Book.where(:uid => book_uid, :deleted_at => nil).first
             book.update_attribute("status", 0)
             db_updated = true
           end
@@ -204,7 +195,7 @@ private
   def self.remove_cached_html(bucket, book_uid)
     s3_object = bucket.objects[book_uid + "/" + book_uid + ".html"]
     if (s3_object.exists?)
-      book = Book.where(:uid => book_uid).first
+      book = Book.where(:uid => book_uid, :deleted_at => nil).first
       
       book.update_attribute("status", 0)
       s3_object.delete

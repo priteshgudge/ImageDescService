@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+                <package xmlns="http://www.idpf.org/2007/opf"
+         prefix="dc: http://purl.org/dc/elements/1.1/"
+         unique-identifier="pub-id"
+         version="3.0">
+   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/"
+             xmlns:f="http://www.daisy.org/ns/pipeline/internal-functions">
+                            <dc:identifier id="pub-id">382575fe-a84b-4450-807a-98cd64fa58b3</dc:identifier>
+      <meta property="dcterms:modified">2013-10-23T00:22:14Z</meta>
+
+                            <meta scheme="xsd:string" property="identifier-type" refines="#pub-id">uuid</meta>
+                        <dc:title id="d30288e17">Magic Tree House #4: Pirates Past Noon</dc:title>
+      <meta property="title-type" refines="#d30288e17">main</meta>
+      <dc:language>en</dc:language>
+      <dc:language>eng</dc:language>
+      <link rel="mods-record" href="zedai-mods.xml"/>
+      <meta property="dc:date">2013-10-23T00:22:08Z</meta>
+      <meta property="dcterms:title">Magic Tree House #4: Pirates Past Noon</meta>
+      <meta property="dcterms:creator">Sal Murdocca, Mary Pope Osborne</meta>
+      <meta property="dcterms:description">Jack and Annie are ready for their next fantasy adventure in the bestselling middle-grade series--the Magic Tree House!  It's a treasure trove of trouble!</meta>
+      <meta property="dcterms:publisher">Bookshare</meta>
+      <meta property="dcterms:date">1994-01-01</meta>
+      <meta property="dcterms:format">ANSI/NISO Z39.86-2005</meta>
+      <meta property="dcterms:language">en</meta>
+      <meta property="dcterms:rights">Copyright © 1994 by Mary Pope Osborne</meta>
+   </metadata>
+   <manifest>
+      <item id="item_1"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_cvi_r1.jpg"/>
+      <item id="item_2"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_tp_r1.jpg"/>
+      <item id="item_3"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_039_r1.jpg"/>
+      <item id="item_4"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_001_r1.jpg"/>
+      <item id="item_5"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_029_r1.jpg"/>
+      <item id="item_6"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_003_r1.jpg"/>
+      <item id="item_7"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_030_r1.jpg"/>
+      <item id="item_8"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_004_r1.jpg"/>
+      <item id="item_9"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_031_r1.jpg"/>
+      <item id="item_10"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_005_r1.jpg"/>
+      <item id="item_11"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_032_r1.jpg"/>
+      <item id="item_12"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_006_r1.jpg"/>
+      <item id="item_13"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_007_r1.jpg"/>
+      <item id="item_14"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_033_r1.jpg"/>
+      <item id="item_15"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_008_r1.jpg"/>
+      <item id="item_16"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_034_r1.jpg"/>
+      <item id="item_17"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_009_r1.jpg"/>
+      <item id="item_18"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_011_r1.jpg"/>
+      <item id="item_19"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_012_r1.jpg"/>
+      <item id="item_20"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_035_r1.jpg"/>
+      <item id="item_21"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_036_r1.jpg"/>
+      <item id="item_22"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_013_r1.jpg"/>
+      <item id="item_23"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_014_r1.jpg"/>
+      <item id="item_24"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_037_r1.jpg"/>
+      <item id="item_25"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_015_r1.jpg"/>
+      <item id="item_26"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_016_r1.jpg"/>
+      <item id="item_27"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_038_r1.jpg"/>
+      <item id="item_28"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_017_r1.jpg"/>
+      <item id="item_29"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_026_r1.jpg"/>
+      <item id="item_30"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_040_r1.jpg"/>
+      <item id="item_31"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_027_r1.jpg"/>
+      <item id="item_32"
+            media-type="image/jpeg"
+            href="images/osbo_9780375894213_epub_024_r1.jpg"/>
+      <item id="item_33"
+            media-type="image/jpeg" 
+            href="images/osbo_9780375894213_epub_025_r1.jpg"/> 
+      <item id="item_34" 
+            media-type="image/jpeg"  
+            href="images/osbo_9780375894213_epub_020_r1.jpg"/>   
+      <item id="item_35"  
+            media-type="image/jpeg"   
+            href="images/osbo_9780375894213_epub_021_r1.jpg"/>   
+      <item id="item_36"
+            media-type="image/jpeg" 
+            href="images/osbo_9780375894213_epub_028_r1.jpg"/> 
+      <item media-type="application/xhtml+xml" 
+            id="item_37"   
+            href="Magic_Tree_House__4__Pirates-1.xhtml"/> 
+      <item media-type="application/xhtml+xml"   
+            id="item_38"  
+            href="Magic_Tree_House__4__Pirates-2.xhtml"/>   
+      <item media-type="application/xhtml+xml"
+            id="item_39"    
+            href="Magic_Tree_House__4__Pirates-3.xhtml"/>   
+      <item media-type="application/xhtml+xml"  
+            id="item_40"  
+            href="Magic_Tree_House__4__Pirates-4.xhtml"/>    
+      <item media-type="application/xhtml+xml"    
+            id="item_41"  
+            href="Magic_Tree_House__4__Pirates-5.xhtml"/> 
+      <item media-type="application/xhtml+xml"
+            id="item_42"  
+            href="Magic_Tree_House__4__Pirates-6.xhtml"/>    
+      <item media-type="application/xhtml+xml" 
+            id="item_43" 
+            href="Magic_Tree_House__4__Pirates-7.xhtml"/>   
+      <item media-type="application/xhtml+xml"    
+            id="item_44"    
+            href="Magic_Tree_House__4__Pirates-8.xhtml"/>  
+      <item media-type="application/xhtml+xml"
+            id="item_45"
+            href="Magic_Tree_House__4__Pirates-9.xhtml"/>
+      <item media-type="application/xhtml+xml"
+            id="item_46"
+            href="Magic_Tree_House__4__Pirates-10.xhtml"/>
+      <item media-type="application/xhtml+xml"
+            id="item_47"
+            href="Magic_Tree_House__4__Pirates-11.xhtml"/>
+      <item media-type="application/xhtml+xml"
+            id="item_48"
+            href="Magic_Tree_House__4__Pirates-12.xhtml"/>
+      <item media-type="application/xhtml+xml"
+            id="item_49"
+            href="Magic_Tree_House__4__Pirates-13.xhtml"/>
+      <item properties="nav"
+            media-type="application/xhtml+xml"
+            id="item_50"
+            href="toc.xhtml"/>
+   </manifest>
+   <spine>
+      <itemref idref="item_37" id="itemref_1"/>
+      <itemref idref="item_38" id="itemref_2"/>
+      <itemref idref="item_39" id="itemref_3"/>
+      <itemref idref="item_40" id="itemref_4"/>
+      <itemref idref="item_41" id="itemref_5"/>
+      <itemref idref="item_42" id="itemref_6"/>
+      <itemref idref="item_43" id="itemref_7"/>
+      <itemref idref="item_44" id="itemref_8"/>
+      <itemref idref="item_45" id="itemref_9"/>
+      <itemref idref="item_46" id="itemref_10"/>
+      <itemref idref="item_47" id="itemref_11"/>
+      <itemref idref="item_48" id="itemref_12"/>
+      <itemref idref="item_49" id="itemref_13"/>
+   </spine>
+</package>
+

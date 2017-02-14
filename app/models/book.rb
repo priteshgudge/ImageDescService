@@ -9,7 +9,13 @@ class Book < ActiveRecord::Base
   has_many :book_stats, :class_name => 'BookStats', :foreign_key => :book_id, :dependent => :destroy
   has_many :book_fragments, :dependent => :destroy
   belongs_to :library
+  after_save :index_related_descriptions
   
+  def index_related_descriptions
+    if deleted_at
+      dynamic_descriptions.each{|description| description.index.store description}
+    end
+  end
   
   def mark_approved
 
@@ -43,11 +49,15 @@ class Book < ActiveRecord::Base
   end
 
   def current_images_and_descriptions
-    dynamic_images.includes(:dynamic_descriptions).where(:dynamic_descriptions => {:is_current => true}).group('dynamic_descriptions.id')
+    dynamic_images.includes(:dynamic_description).where(:dynamic_descriptions => {:is_current => true}).group('dynamic_descriptions.id')
   end
-  
+    
   def book_stats_plus_unessential_images_described
     book_stats.select("book_stats.*, total_images_described - essential_images_described as unessential_images_described") 
+  end
+
+  def dynamic_desc_submitters
+    User.where( :id => dynamic_descriptions.map(&:submitter_id), :deleted_at => nil).select(:email).map(&:email)
   end
   
   def status_to_english
@@ -62,8 +72,11 @@ class Book < ActiveRecord::Base
         'Ready'
       when 4
         'Preprocessing Book'  
+      when 5
+        'Failed'
       else
         'Processing'
     end
   end
+
 end

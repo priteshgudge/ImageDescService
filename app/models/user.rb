@@ -5,9 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessor :login, :new_library, :use_new_library, :current_user, :from_signup
+  attr_accessor :login, :new_library, :use_new_library, :current_user, :from_signup, :delete_library, :use_delete_library
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, 
-                   :remember_me, :username, :role_ids, :subject_expertise_ids,  :other_subject_expertise, :library_ids, :new_library, :use_new_library, :from_signup, :agreed_tos
+                   :remember_me, :username, :role_ids, :subject_expertise_ids,  :other_subject_expertise, :library_ids, :new_library, :use_new_library, :from_signup, :agreed_tos, :delete_library, :use_delete_library
   has_many :user_roles, :dependent => :destroy
   has_many :roles, :through => :user_roles
   
@@ -18,13 +18,14 @@ class User < ActiveRecord::Base
   has_many :user_subject_expertises, :dependent => :destroy
   has_many :subject_expertises, :through => :user_subject_expertises
   
-  validates_length_of :email, :within => 6..250 
-  validates_uniqueness_of :email
+  validates_length_of :email, :within => 6..250, :if => lambda {|user| !user.email.blank? } 
+  validates_uniqueness_of :email, :if => lambda {|user| !user.email.blank? }, :scope => [:deleted_at]
   validates_presence_of  :email
 
-  validates_length_of :username, :within => 5..40 
-  validates_uniqueness_of :username 
+  validates_length_of :username, :within => 5..40, :if => lambda {|user| !user.login.blank? } 
+  validates_uniqueness_of :username, :if => lambda {|user| !user.username.blank? }, :scope => [:deleted_at] 
   validates_presence_of  :username
+#  validates_uniqueness_of :username
 
   validates_presence_of :password, :if => lambda {|user| user.new_record? }
   validates_length_of :password, :within => 6..40, :if => lambda {|user| !user.password.blank? }
@@ -33,21 +34,26 @@ class User < ActiveRecord::Base
   validates_presence_of  :first_name
   validates_presence_of  :last_name
   
-  before_save :populate_new_library
-  before_validation_on_create :set_demo_library
+  before_save :populate_new_library, :delete_library_if_checked
+  before_create :populate_new_library, :add_user_roles
+  before_validation :set_demo_library, :on => :create
   validates_acceptance_of :agreed_tos, :accept => true, :message => "To Sign up you must accept our Terms of Service", :if => lambda {|user| user.from_signup }
-   
+  validate :library_to_delete_not_linked
   
   def full_name
     [first_name, last_name].compact.join ' '
   end
  
   def has_role?(role_sym)
-    roles.any? { |r| r.name.underscore.to_sym == role_sym }
+    roles.any? { |r| r.name.parameterize.underscore.to_sym == role_sym }
   end
   
   def admin?
     has_role? :admin
+  end
+
+  def content_owner?
+    has_role? :content_owner
   end
 
   def moderator?
@@ -58,16 +64,12 @@ class User < ActiveRecord::Base
      has_role? :describer
   end
   
-  def screener?
-     has_role? :screener
-  end
-  
   protected
-
+  
    def self.find_for_database_authentication(warden_conditions)
      conditions = warden_conditions.dup
      login = conditions.delete(:login)
-     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
+     where(conditions).where("deleted_at is null").where(["lower(username) = :value OR lower(email) = :value", { :value => login.downcase }]).first
    end
 
    # Attempt to find a user by it's email. If a record is found, send new
@@ -123,13 +125,48 @@ class User < ActiveRecord::Base
         self.libraries = [library]   
      end
    end
+
+   def add_user_roles
+    if (self.roles.length == 0)
+      describer = Role.where(:name => "Describer").first
+      self.roles = [describer]
+    end
+   end
    
   def set_demo_library
      if libraries.blank?
        library = Library.where(:name => 'Demo').first
        self.libraries = [library]
      end
-   end
+  end
+  
+  
+  def library_to_delete_not_linked
+     if use_delete_library.eql? "1"
+         library = Library.where(:name => delete_library).first
+         if library 
+           if library.user_libraries.try(:size) > 0
+             errors[:use_delete_library] << "Please assign users that belong to this library to another library"
+           end
+           if library.books.try(:size) > 0
+             errors[:use_delete_library] << "Please assign books that belong to this library to another library"
+           end
+         else
+            errors[:use_delete_library] << "Please enter a valid library"
+         end
+         
+    end
+  end
+  
+  def delete_library_if_checked
+    if use_delete_library.eql? "1"
+       library = Library.where(:name => delete_library).first
+       if library && library.user_libraries.try(:size) == 0 && library.books.try(:size) == 0
+         library.destroy
+       end
+      
+    end
+  end
    
 end
 

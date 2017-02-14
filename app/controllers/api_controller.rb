@@ -97,7 +97,7 @@ class ApiController < ApplicationController
   def get_approved_stats
     @stats = BookStats.connection.select_all("select b.uid, b.title, b.isbn, bs.total_images, bs.total_essential_images,
       bs.total_images_described, bs.approved_descriptions, b.last_approved from book_stats bs left join books b on bs.book_id = b.id
-      where b.last_approved > '#{params[:since]}' and bs.approved_descriptions > 0")
+      where b.last_approved > '#{params[:since]}' and bs.approved_descriptions > 0 and b.deleted_at is null")
     respond_to do |format|
       format.xml  { render :xml => @stats }
       format.json  { render :json => @stats, :callback => params[:callback] }
@@ -108,7 +108,7 @@ class ApiController < ApplicationController
 
   def extract_dynamic_description_images book
     book.current_images_and_descriptions.all.map do |image|
-      last_description = image.dynamic_descriptions.last || DynamicDescription.new
+      last_description = image.dynamic_description || DynamicDescription.new
       {:image => (image ? image.image_location : nil), :longdesc => last_description.body, :iscurrent => last_description.is_current,
         :submitter => last_description.submitter_name, :date_approved => last_description.date_approved, :dynamic_image_id => last_description.dynamic_image_id,
         :book_id => last_description.book_id, :book_fragment_id => image ? image.book_fragment_id : nil, :summary => last_description.summary, 
@@ -122,7 +122,7 @@ class ApiController < ApplicationController
   
   def extract_image_and_description book
     book.current_images_and_descriptions.all.map do |image| 
-      {:image => (image ? image.image_location : nil), :description => image.dynamic_descriptions.first}
+      {:image => (image ? image.image_location : nil), :description => image.dynamic_description}
     end
   end
   
@@ -134,7 +134,8 @@ class ApiController < ApplicationController
   API_BOOK_ATTRIBUTE_NAMES = ['uid', 'title', 'isbn', 'last_approved']
   def book_stats_from_uid book_uid
     @status = STATUS_APPROVED
-    @book = Book.where(:uid => book_uid).first
+    cleaned_book_uid = book_uid.gsub(/[^a-zA-Z0-9\-\_]/, '-')
+    @book = Book.where(:uid => cleaned_book_uid, :deleted_at => nil).first
 
     if @book && @book.last_approved
       @results = yield @book

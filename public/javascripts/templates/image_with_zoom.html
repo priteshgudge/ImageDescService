@@ -1,0 +1,31 @@
+<div class="image thumbnail">
+	<% var timestamp = new Date().getTime(); %>
+	<img src="<%= image.get("path") + "?" + timestamp%>" class="target" alt="<%= image.get("alt") %>" />
+</div>
+<div class="loader">Initializing Zoom...</div>
+<div class="console fluid-container">
+	<ul class="left">	
+		<li>
+			<a class="zoomerIn zoom" href="#"><img src="/images/zoomer/in.png" alt="Zoom In" class="img-responsive"></a>
+			<a class="zoomerOut zoom" href="#"><img src="/images/zoomer/out.png" alt="Zoom Out"></a>
+		</li>				
+		<li>
+			<a class="zoomerUp zoom" href="#"><img src="/images/zoomer/up.png" alt="Move Up"></a>
+			<a class="zoomerDown zoom" href="#"><img src="/images/zoomer/down.png" alt="Move Down"></a>
+			<a class="zoomerLeft zoom" href="#"><img src="/images/zoomer/left.png" alt="Move Left"></a>
+			<a class="zoomerRight zoom" href="#"><img src="/images/zoomer/right.png" alt="Move Right"></a>		
+		</li>
+	</ul>
+	<ul class="pull-right">
+		<li>
+			<a class="zoomerReset zoom" href="#"><img src="/images/zoomer/reset.png" alt="Reset"></a>
+		</li>
+	</ul>
+</div>	
+<br clear="all" />
+<div class="viewOriginalImage">
+	<a class="lightboxTrigger fancybox pull-left" href="<%= image.get("path") %>">View Larger</a>
+	<% if (image.has("context_image_path")) { %>
+		<a class="contextToggle pull-right toggle" href="<%= image.get("context_image_path") %>">View Image In Context</a>
+	<% } %>
+</div>

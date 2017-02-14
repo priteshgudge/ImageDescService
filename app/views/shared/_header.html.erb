@@ -1,0 +1,73 @@
+<!-- Part 1: Wrap all page content here -->
+    <div id="wrap">
+<!-- Static navbar -->
+      <div class="navbar navbar-inverse navbar-static-top" role="navigation" id="header">
+        <div class="fluid-container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" title="Poet, version <%= t(:version)%>, home page" href="/">Poet Image Description</a>
+          </div>
+          <div class="navbar-collapse collapse">
+          	<ul class="nav navbar-nav navbar-left">
+            <% if current_user %>
+               <li><%= link_to 'My Books', book_list_by_user_path %> </li>
+            <% end %>
+	          <li><%= link_to "Training", training_index_path %> </li>
+	          <li><%= link_to "Help", edit_book_help_path %> </li>
+	          <% if can? :reports, @all %>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+        	        <li><%= link_to "Descriptions by Book", admin_reports_path %> </li>
+                  <li><%= link_to "Descriptions by User", reports_describer_list_path %> </li>
+                </ul>
+              </li>
+            <%  end %>
+            <% if can? :view_admin, @all %>
+	          	 <li class="dropdown">
+		          	 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                 	Books <span class="caret"></span>
+	                 </a>
+	                 <ul class="dropdown-menu" role="menu">
+	                  	<li><%= link_to "Uploaded Books", admin_books_path %></li>
+	                  	<li><%= link_to "Descriptions", admin_book_descriptions_path %></li>
+	                  	<li><%= link_to "Deleted Books", admin_deleted_books_path %></li>
+	                 </ul>
+	             </li>
+            <%  end %>
+            <% if can? :edit_uesrs, @all %>
+	             <li class="dropdown">
+		          	 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                 	Users <span class="caret"></span>
+	                 </a>
+	                 <ul class="dropdown-menu" role="menu">
+	                  	<li><%= link_to "All Users", admin_users_path %></li>
+	                  	<li><%= link_to "Deleted Users", admin_deleted_users_path %></li>
+	                 </ul>
+	             </li>
+	          <% end %>
+	          <% if current_user %>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                  <%= current_user.username %> <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><%= link_to 'Profile', edit_user_path(current_user) %> </li>
+                  <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+                </ul>
+              </li>
+	             
+	          <% end %>
+	          <% if !user_signed_in? %>
+	            <li><%= link_to 'Register', new_user_registration_path %></li>
+              <li><%= link_to 'Sign in', new_user_session_path %></li>
+	          <% end %>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>

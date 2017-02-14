@@ -1,25 +1,29 @@
 source 'http://rubygems.org'
+ruby "2.0.0"
 
-gem 'rails', '3.0.20'
+gem 'rails', '3.2.17'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
+# gem "sass", "~> 3.2.12"
 gem 'thin' # avoids massive memory consumption (as with webrick) on dev machine
 gem 'mysql2'
 gem 'uuidtools'
 gem 'test-unit'
 gem 'zipruby'
 gem 'aws-sdk'
-gem 'activeadmin'
 gem 'cancan'
-gem 'jquery-rails', '>= 1.0.12'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem "haml"
 gem "paperclip", "~> 3.0"
 gem "paperclip-aws"
 gem "tire"
-gem 'ffi', '1.0.9'
-
+gem 'ffi'
+gem 'sass-rails', :require => 'sass'
+gem 'meta_search', '>= 1.1.0.pre'
+gem 'activeadmin', '0.6.2'
 # Use unicorn as the web server
 # gem 'unicorn'
 
@@ -36,15 +40,16 @@ gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 
-gem 'ruby-xslt'
 gem 'image_size'
 gem 'parallel'
 gem 'delayed_job'
+gem 'delayed_job_active_record'
 gem 'devise'
 gem 'newrelic_rpm'
 gem 'kaminari'
 gem "airbrake"
 gem 'rack-ssl', :require => 'rack/ssl'
+gem 'audited-activerecord', '~> 3.0'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
@@ -58,5 +63,5 @@ group :development, :test do
   gem 'sqlite3'
   gem 'foreman'
   gem 'oink'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.0'
 end

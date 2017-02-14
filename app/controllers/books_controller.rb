@@ -5,7 +5,7 @@ class BooksController < ApplicationController
   # GET /books.xml
   def index
     #@books = Book.all
-    @books = Book.where(:library_id => current_library.id).where("status <> 4").page(params[:page]).order('title ASC')
+    @books = Book.where(:library_id => current_library.id, :deleted_at => nil).where("status <> 4").page(params[:page]).order('title ASC')
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @books }
@@ -21,19 +21,19 @@ class BooksController < ApplicationController
   
 
   def book_list
-    @books = Book.where(:library_id => current_library.id).where(" status <> 4 ").page(params[:page]).order('title ASC')
+    @books = Book.where(:library_id => current_library.id, :deleted_at => nil).where(" status <> 4 ").page(params[:page]).order('title ASC')
   end
   
   def book_list_by_user 
-    @books =  Book.where(:user_id => current_user.id).where(" status <> 4 ")  
+    @books =  Book.where(:user_id => current_user.id, :deleted_at => nil).where(" status <> 4 ")  
   end
   
   def delete
     @book = Book.find(params[:book_id])
     #@book.destroy
-
-    job = DeleteBookJob.new(params[:book_id])
-    Delayed::Job.enqueue(job)
+    @book.update_attributes :deleted_at => Time.now
+    # job = DeleteBookJob.new(params[:book_id])
+    # Delayed::Job.enqueue(job)
 
     flash[:alert] = "#{@book.title} will be deleted in a few moments"
     if params[:nav] == 'myBooks'

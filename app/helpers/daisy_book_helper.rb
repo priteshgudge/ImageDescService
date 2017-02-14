@@ -1,113 +1,89 @@
 module DaisyBookHelper
   class BatchHelper
     ROOT_XPATH = "/xmlns:dtbook"
-    def self.batch_add_descriptions_to_book job_id, current_library
-      DaisyBookHelper::BatchHelper.batch_add_descriptions_to_book job_id, current_library
-    end
-    def self.batch_add_descriptions_to_book job_id, current_library
-      p "ESH: 3333333 in batch_add_descriptions_to_book with job_id=#{job_id}"
+
+    def self.batch_add_descriptions_to_book job_id, current_library 
       job = Job.where(:id => job_id).first
       # Retrieve file from S3
       repository = RepositoryChooser.choose
       enter_params = job.json_enter_params
       password = enter_params['password']
       random_uid = enter_params['random_uid']
+      Rails.logger.info "Reading file from repository at #{random_uid}"
       random_uid_book_location = repository.read_file(random_uid, File.join( "", "tmp", "#{random_uid}.zip"))
-      zip_directory, book_directory, daisy_file = UnzipUtils.accept_book(random_uid_book_location)
+
+      zip_directory, book_directory, daisy_file = UnzipUtils.accept_and_copy_book(random_uid_book_location, "Daisy")
       book = File.open daisy_file
+
       unless password.blank?
-        begin
-          Zip::Archive.decrypt(book.path, password)
-        rescue Zip::Error => e
-          ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-          if e.message.include?("Wrong password")
-            ActiveRecord::Base.logger.info "Invalid Password for encyrpted zip"
-            flash[:alert] = "Please check your password and re-enter"
-          else
-            ActiveRecord::Base.logger.info "Other problem with encrypted zip"
-            flash[:alert] = "There is a problem with this zip file"
-          end
-          redirect_to :action => 'process'
-          return
-        end
+        Zip::Archive.decrypt(book.path, password)
       end
 
       if !DaisyUtils.valid_daisy_zip?(book.path)
-        flash[:alert] = "Not a valid DAISY book"
-        redirect_to :action => 'process'
-        return
+        Exception.new "Not a valid DAISY book"
       end
-    
-      begin
-        zip_directory, book_directory, daisy_file = UnzipUtils.accept_book(book.path)
-        get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
-      rescue Zip::Error => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        if e.message.include?("File encrypted")
-          ActiveRecord::Base.logger.info "Password needed for zip"
-          flash[:alert] = "Please enter a password for this book"
-        else
-          ActiveRecord::Base.logger.info "Other problem with zip"
-          flash[:alert] = "There is a problem with this zip file"
-        end
-
-        redirect_to :action => 'process'
-        return
-      end
+      
+      get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
     end
+    
   
     def self.get_daisy_with_descriptions zip_directory, book_directory, daisy_file, job, current_library
       begin
-        contents_filename = get_daisy_contents_xml_name(book_directory)
+        contents_filename = DaisyUtils.get_contents_xml_name(book_directory)
         relative_contents_path = contents_filename[zip_directory.length..-1]
         if(relative_contents_path[0,1] == '/')
           relative_contents_path = relative_contents_path[1..-1]
         end
+        
+        Rails.logger.info "Getting XML contents with descriptions from #{book_directory}"
         xml = get_xml_contents_with_updated_descriptions(contents_filename, current_library)
-        zip_filename = create_zip(daisy_file, relative_contents_path, xml)
+
+        # If we added Math to this, the OPF needs to be updated
+        opf_filename = DaisyUtils.get_opf_name(book_directory)
+        relative_opf_path = File.basename opf_filename
+        
+        opf = MathHelper.get_opf_contents_for_math(opf_filename, xml)
+        
+        zip_filename = create_zip(daisy_file, relative_contents_path, xml, relative_opf_path, opf)
+
         basename = File.basename(contents_filename)
-        ActiveRecord::Base.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
+        Rails.logger.info "Sending zip #{zip_filename} of length #{File.size(zip_filename)}"
       
         # Store this file in S3, update the Job; change exit_params and the state
         random_uid = UUIDTools::UUID.random_create.to_s
         repository = RepositoryChooser.choose
-        repository.store_file(zip_filename, 'delayed', random_uid, nil) #store file in a directory
+        repository.store_file(zip_filename, 'delayed', random_uid, nil)
         job.update_attributes :state => 'complete', :exit_params => ({:basename => basename, :random_uid => random_uid}).to_json
-      rescue ShowAlertAndGoBack => e
-        p "ESH: have an error e=#{e.inspect}, trace=#{e.backtrace.inspect}"
-        flash[:alert] = e.message
-        job.update_attributes :state => 'error', :error_explanation => 'Unable to process this book at this time.  Please contact your Poet administrator.'
-        redirect_to :action => 'process'
+      rescue ShowAlertAndGoBack, Exception => e
+        Rails.logger.info "#{e.class}: #{e.message}"
+        job.update_attributes :state => 'error', :error_explanation => e.message
         return
       end
     end
-    
-    def self.get_daisy_contents_xml_name(book_directory)
-      return Dir.glob(File.join(book_directory, '*.xml'))[0]
-    end
+
     
     def self.get_xml_contents_with_updated_descriptions(contents_filename, current_library)
       xml_file = File.read(contents_filename)
       begin
         xml = get_contents_with_updated_descriptions(xml_file, current_library)
       rescue NoImageDescriptions
-        ActiveRecord::Base.logger.info "No descriptions available #{contents_filename}"
+        Rails.logger.info "No descriptions available #{contents_filename}"
         raise ShowAlertAndGoBack.new("There are no image descriptions available for this book")
       rescue NonDaisyXMLException => e
-        ActiveRecord::Base.logger.info "Uploaded non-dtbook #{contents_filename}"
+        Rails.logger.info "Uploaded non-dtbook #{contents_filename}"
         raise ShowAlertAndGoBack.new("Uploaded file must be a valid Daisy book XML content file")
       rescue MissingBookUIDException => e
-        ActiveRecord::Base.logger.info "Uploaded dtbook without UID #{contents_filename}"
+        Rails.logger.info "Uploaded dtbook without UID #{contents_filename}"
         raise ShowAlertAndGoBack.new("Uploaded Daisy book XML content file must have a UID element")
       rescue Nokogiri::XML::XPath::SyntaxError => e
-        ActiveRecord::Base.logger.info "Uploaded invalid XML file #{contents_filename}"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
+        Rails.logger.info "Uploaded invalid XML file #{contents_filename}"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info "Line #{e.line}, Column #{e.column}, Code #{e.code}"
         raise ShowAlertAndGoBack.new("Uploaded file must be a valid Daisy book XML content file")
       rescue Exception => e
-        ActiveRecord::Base.logger.info "Unexpected exception processing #{contents_filename}:"
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        ActiveRecord::Base.logger.info e.backtrace.join("\n")
+        Rails.logger.info "Unexpected exception processing #{contents_filename}:"
+        Rails.logger.info "#{e.class}: #{e.message}"
+        Rails.logger.info e.backtrace.join("\n")
         $stderr.puts e
         raise ShowAlertAndGoBack.new("An unexpected error has prevented processing that file")
       end
@@ -115,16 +91,23 @@ module DaisyBookHelper
       return xml
     end
     
-    def self.create_zip(old_daisy_zip, contents_filename, new_xml_contents)
+    def self.create_zip(old_daisy_zip, contents_filename, new_xml_contents, 
+                      opf_filename, new_opf_contents)
       new_daisy_zip = Tempfile.new('baked-daisy')
       new_daisy_zip.close
       FileUtils.cp(old_daisy_zip, new_daisy_zip.path)
       Zip::Archive.open(new_daisy_zip.path) do |zipfile|
         zipfile.num_files.times do |index|
-          if(zipfile.get_name(index) == contents_filename)
+          if (zipfile.get_name(index) == contents_filename)
             zipfile.replace_buffer(index, new_xml_contents)
-            break
           end
+          if (zipfile.get_name(index) == opf_filename)
+            zipfile.replace_buffer(index, new_opf_contents)
+          end
+        end
+        
+        if MathHelper.contains_math(new_xml_contents)
+          zipfile.add_or_replace_file(MathHelper::MATHML_FALLBACK_FILE, "public/#{MathHelper::MATHML_FALLBACK_FILE}")
         end
       end
       return new_daisy_zip.path
@@ -143,13 +126,13 @@ module DaisyBookHelper
     def get_contents_with_updated_descriptions(file, current_library)
       DaisyBookHelper::BatchHelper.get_contents_with_updated_descriptions(file, current_library)
     end
+
     def self.get_contents_with_updated_descriptions(file, current_library)
       doc = Nokogiri::XML file
 
-      root = doc.xpath(doc, ROOT_XPATH)
-      if root.size != 1
-        raise NonDaisyXMLException.new
-      end
+      # TODO: Do we really need this? If we're checking validity, there would
+      # be much more we would want to check
+      get_doc_root(doc)
 
       book_uid = DaisyUtils.extract_book_uid(doc)
 
@@ -157,53 +140,84 @@ module DaisyBookHelper
         raise NoImageDescriptions.new
       end
 
-      book = Book.where(:uid => book_uid, :library_id => current_library.id).first
+      book = Book.where(:uid => book_uid, :library_id => current_library.id, :deleted_at => nil).first
       matching_images = DynamicImage.where("book_id = ?", book.id).all
       matching_images.each do | dynamic_image |
         image_location = dynamic_image.image_location
-        image = doc.at_xpath( doc, "//xmlns:img[@src='#{image_location}']")
-        if !image
-          ActiveRecord::Base.logger.info "Missing img element for database description #{book_uid} #{image_location}"
+
+        image_references = doc.xpath("//xmlns:img[@src='#{image_location}']")
+        if image_references.size == 0
+          Rails.logger.info "Missing img element for database description #{book_uid} #{image_location}"
           next
         end
 
-        dynamic_description = dynamic_image.best_description
-        if(!dynamic_description)
-          ActiveRecord::Base.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
-          next
-        end
-
-        image_id = image['id']
-
-        parent = image.at_xpath("..")
-        imggroup = get_imggroup_parent_of(image)
-        if(!imggroup)
-          imggroup = Nokogiri::XML::Node.new "imggroup", doc
-          imggroup['id'] =  "imggroup_#{image_id}"
-          imggroup.parent = parent
-
-          parent.children.delete(image)
-          image.parent = imggroup
-          parent = imggroup
-        end
-
-        prodnotes = imggroup.xpath(".//xmlns:prodnote")
-        our_prodnote = nil
-        prodnotes.each do | prodnote |
-          if(prodnote['id'] == create_prodnote_id(image_id))
-            our_prodnote = prodnote
+        image_references.each do |img_node|
+          # Attach any alt text modifications that might exist
+          if (dynamic_image.current_alt && dynamic_image.current_alt.alt)
+            img_node['alt'] = dynamic_image.current_alt.alt
           end
-        end
-        if(!our_prodnote)
-          our_prodnote = Nokogiri::XML::Node.new "prodnote", doc 
-          imggroup.add_child our_prodnote 
-        end
+          
+          # Attempt to find the parent imggroup
+          imggroup = get_imggroup_parent_of(img_node)
 
-        our_prodnote.add_child(dynamic_description.body)
-        our_prodnote['render'] = 'optional'
-        our_prodnote['imgref'] = image_id
-        our_prodnote['id'] = create_prodnote_id(image_id)
-        our_prodnote['showin'] = 'blp'
+          # Replace the image if there is an equation
+          if (book.math_replacement_mode_id == MathReplacementMode.MathMLMode.id && dynamic_image.image_category_id == ImageCategory.MathEquations.id && dynamic_image.current_equation && dynamic_image.current_equation.element)
+            math_element = MathHelper.create_math_element(dynamic_image.current_equation)
+            image_element = imggroup ? imggroup : img_node
+            MathHelper.replace_math_image(image_element, math_element, img_node['src'])
+            MathHelper.attach_math_extensions(doc)
+            Rails.logger.info "Image #{book_uid} #{image_location} was removed in favor or equation #{dynamic_image.current_equation.id}"
+            next
+          end
+
+          dynamic_description = dynamic_image.dynamic_description
+          if (!dynamic_description)
+            Rails.logger.info "Image #{book_uid} #{image_location} is in database but with no descriptions"
+            next
+          end
+
+          # note that there's no guarantee this will be non-null
+          image_id = img_node['id']
+
+          # Push down into an imggroup element if none already exists
+          if (!imggroup)
+            imggroup = Nokogiri::XML::Node.new "imggroup", doc
+            parent = img_node.parent
+            # could result in an ID collision
+            imggroup['id'] =  "imggroup_#{image_id}"
+            imggroup.parent = parent
+
+            parent.children.delete(img_node)
+            img_node.parent = imggroup
+          end
+
+          # Attempt to locate prodnote that conforms to our ID naming convention 
+          prodnotes = imggroup.xpath(".//xmlns:prodnote")
+          our_prodnote = nil
+          prodnotes.each do | prodnote |
+            if (prodnote['id'] == create_prodnote_id(image_id))
+              # Found a match, keep it
+              our_prodnote = prodnote
+            end
+          end
+
+          # If not found, create a new one
+          if (!our_prodnote)
+            our_prodnote = Nokogiri::XML::Node.new "prodnote", doc 
+            imggroup.add_child our_prodnote 
+          end
+
+          # flush old contents then append most recent ones
+          our_prodnote.children.each do |child|
+            child.remove
+          end
+
+          our_prodnote.add_child(dynamic_description.body)
+          our_prodnote['render'] = 'optional'
+          our_prodnote['imgref'] = image_id
+          our_prodnote['id'] = create_prodnote_id(image_id)
+          our_prodnote['showin'] = 'blp'
+        end
       end
 
       return doc.to_xml
@@ -212,14 +226,15 @@ module DaisyBookHelper
     def create_prodnote_id(image_id)
       DaisyBookHelper::BatchHelper.create_prodnote_id(image_id)
     end
+
     def self.create_prodnote_id(image_id)
       "pnid_#{image_id}"
     end
     
-    
     def get_imggroup_parent_of(image_node)
       DaisyBookHelper::BatchHelper.get_imggroup_parent_of(image_node)
     end
+
     def self.get_imggroup_parent_of(image_node)
       node = image_node
       prevent_infinite_loop = 100
@@ -240,5 +255,13 @@ module DaisyBookHelper
       return nil
     end
     
+    private
+    def self.get_doc_root(doc)
+      root = doc.xpath(doc, ROOT_XPATH)
+      if root.size != 1
+        raise NonDaisyXMLException.new
+      end
+      return root
+    end
   end
 end

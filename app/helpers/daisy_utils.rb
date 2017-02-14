@@ -1,37 +1,22 @@
 module DaisyUtils
+
+  EXPECTED_DTD_FILES = ['dtbook-2005-2.dtd', 'dtbook-2005-3.dtd']
+
   def valid_daisy_zip?(file)
     DaisyUtils.valid_daisy_zip?(file)
   end
   
   def self.valid_daisy_zip?(file)
-    begin
       Zip::Archive.open(file) do |zipfile|
         zipfile.each do |entry|
-          if entry.name =~ /\.ncx$/
+          if EXPECTED_DTD_FILES.include? entry.name
             return true
           end
         end
       end
-    rescue Zip::Error => e
-        ActiveRecord::Base.logger.info "#{e.class}: #{e.message}"
-        if e.message.include?("Not a zip archive")
-            ActiveRecord::Base.logger.info "#{caller_info} Not a ZIP File"
-            flash[:alert] = "Uploaded file must be a valid Daisy (zip) file"
-        else
-            ActiveRecord::Base.logger.info "#{caller_info} Other problem with zip"
-            flash[:alert] = "There is a problem with this zip file"
-        end
-        puts e
-        puts e.backtrace.join("\n")
-        return false
-    end
-    flash[:alert] = "Uploaded file must be a valid Daisy (zip) file"
     return false
   end
   
-  def extract_book_uid(doc)
-    DaisyUtils.extract_book_uid(doc)
-  end
   def self.extract_book_uid(doc)
     xpath_uid = "//xmlns:meta[@name='dtb:uid']"
     matches = doc.xpath(doc, xpath_uid)
@@ -39,10 +24,10 @@ module DaisyUtils
       raise MissingBookUIDException.new
     end
     node = matches.first
-    return node.attributes['content'].content
+    return node.attributes['content'].content.gsub(/[^a-zA-Z0-9\-\_]/, '-')
   end
 
-  def extract_book_title(doc)
+  def self.extract_book_title(doc)
     xpath_title = "//xmlns:meta[@name='dc:Title']"
     matches = doc.xpath(doc, xpath_title)
     if matches.size != 1
@@ -56,4 +41,62 @@ module DaisyUtils
     return "#{request.remote_addr}"
   end
 
+  def get_contents_xml_name(book_directory) 
+    DaisyUtils.get_contents_xml_name(book_directory)
+  end
+  
+  def self.get_contents_xml_name(book_directory) 
+    return Dir.glob(File.join(book_directory, '*.xml'))[0]
+  end
+  
+  def self.get_opf_name(book_directory)
+    return Dir.glob(File.join(book_directory, '*.opf'))[0]
+  end
+  
+  def get_opf_from_dir(book_directory)
+    DaisyUtils.get_opf_from_dir(book_directory)
+  end
+  
+  def self.get_opf_from_dir (book_directory)
+    opf_filename = get_opf_name(book_directory)
+    File.read(opf_filename)
+  end
+  
+  def extract_images_prod_notes_for_daisy doc
+      prodnotes = doc.xpath("//xmlns:imggroup//xmlns:prodnote")
+      @prodnotes_hash = Hash.new()
+      prodnotes.each do |node|
+        @prodnotes_hash[node['imgref']] = node.inner_text
+      end
+      images = nil;
+      
+      captions = doc.xpath("//xmlns:imggroup//xmlns:caption")
+      @captions_hash = Hash.new()
+      captions.each do |node|
+        @captions_hash[node['imgref']] = node.inner_text
+      end
+      captions = nil;
+
+      images = doc.xpath("//xmlns:img")
+      @num_images = images.size()
+      @alt_text_hash = Hash.new()
+      images.each do |node|
+        alt_text =  node['alt']
+        id = node['id']
+        if alt_text.size > 1
+          @alt_text_hash[id] = alt_text
+        end
+      end
+      images = nil;
+
+      maths = doc.xpath('//mathml:math', 'mathml' => 'http://www.w3.org/1998/Math/MathML')
+      #maths = doc.css("math")
+      @num_maths = maths.size()
+      @maths_hash = Hash.new()
+      maths.each_with_index do |node, index|
+        @maths_hash[index] = node.to_s
+      end
+      maths = nil;
+  end
+  
 end

@@ -1,3 +1,4 @@
+<% @title="Sign up" %>
 <div style="margin: auto; width:700px; padding-top: 40px;" >
 <h2>Sign up</h2>
 <% if @user.errors.present? %>
@@ -6,14 +7,14 @@
     </div>
 <% end %>
 
-<% semantic_form_for  @user, :as => resource_name, :url => registration_path(resource_name) do |f| %>
+<%= semantic_form_for  @user, :as => resource_name, :url => registration_path(resource_name) do |f| %>
 
-<% f.inputs "New User Sign Up" do %>
-<%= f.input :from_signup, :as => :hidden, :value => true %>
-<%= render :partial => "users/form", :locals => {:f => f} %>
-<%= f.input :agreed_tos,  :label => "This is a legally binding agreement. By checking the box, I acknowledge <br> that I have read, understand, and agree to be bound by the ".html_safe + link_to('Terms of Use', user_terms_of_service_path, :target => '_blank' )+ "."%>
-<%= f.submit "Sign up" %>
-<% end %>
+  <%= f.inputs "New User Sign Up" do %>
+    <%= f.input :from_signup, :as => :hidden, :value => true %>
+    <%= render :partial => "users/form", :locals => {:f => f} %>
+    <%= f.input :agreed_tos,  :label => "This is a legally binding agreement. By checking the box, I acknowledge <br> that I have read, understand, and agree to be bound by the ".html_safe + link_to('Terms of Use', user_terms_of_service_path, :target => '_blank' )+ "."%>
+    <%= f.submit "Sign up" %>
+  <% end %>
 <% end %>
 <%= render :partial => "devise/shared/links" %>
 </div>

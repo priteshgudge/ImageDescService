@@ -1,0 +1,68 @@
+
+.left-col-nav {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-font-smoothing: antialiased;
+  border: 1px dashed #DADADA;
+}
+
+#yes {
+  color: green;
+}
+
+#no {
+  color: red;
+}
+
+#question legend {
+  padding: 15px 0px;
+}
+
+#buttons {
+  padding: 15px 0px;
+}
+
+ul.inline {
+    padding: 15px; 
+}
+
+ul.inline > li {
+    display: inline-block;
+    zoom:1;
+    *display:inline;
+}
+
+#when-to-describe {
+	max-width: 1000px;
+}
+
+#when-to-describe img {
+  padding-left: 20px;
+}
+
+
+
+.hidden-image {
+    display: none;
+}
+
+#imageGallery img {
+	width: 90%;
+}
+
+.shadow {
+	box-shadow: 2px 2px 3px #666;
+}
+
+.invisible1 {
+  display: none;
+}
+
+.holder {
+  text-align: center;
+} 
+
+
+
+

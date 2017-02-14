@@ -1,10 +1,11 @@
 # Following the example in: https://gist.github.com/2041121
 
-if ENV['BONSAI_INDEX_URL']
+if ENV['BONSAI_URL']
+  ENV['ELASTICSEARCH_URL'] = ENV['BONSAI_URL']
   Tire.configure do
-    url "http://index.bonsai.io"
+    url ENV['BONSAI_URL']
   end
-  BONSAI_INDEX_NAME = ENV['BONSAI_INDEX_URL'][/[^\/]+$/]
+  BONSAI_INDEX_NAME = ENV['BONSAI_URL'][/[^\/]+$/]
 else
   app_name = Rails.application.class.parent_name.underscore.dasherize
   app_env = Rails.env
